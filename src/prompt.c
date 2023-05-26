@@ -1,22 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/23 14:26:51 by lchew             #+#    #+#             */
-/*   Updated: 2023/05/26 18:47:03 by tzi-qi           ###   ########.fr       */
+/*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
+/*   Updated: 2023/05/26 18:47:32 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+void	prompt(char	**envp)
 {
-	(void)argc;
-	(void)argv;
+	char *line;
+	(void)envp;
 
-	prompt(envp);
-	return (0);
+	while (1)
+	{
+		write(1, "MINISHELL>>", 11);
+		line = get_next_line(0);
+		printf("%s", line);
+	}
+	return ;
 }
