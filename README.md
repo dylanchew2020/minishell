@@ -32,3 +32,38 @@ Working with Git
 ################################################################################
 
 - readlines not yet added to makefile. Review makefile if any compilation issue.
+   
+Reading Input
+- Implement the readline function to read user input.
+- Handle memory correctly.
+- Implement a working history feature.
+   
+Parsing Input
+- Parse the input into commands and arguments.
+- Handle quotes and metacharacters correctly.
+   
+Executing Commands
+- Execute the parsed commands using functions like fork, execve, wait, and waitpid.
+- Handle errors correctly and print useful error messages using perror or strerror.
+   
+Implement Built-in Commands
+- Implement the echo command with option -n.
+- Implement the cd command with only a relative or absolute path.
+- Implement the pwd command with no options.
+- Implement the export command with no options.
+- Implement the unset command with no options.
+- Implement the env command with no options or arguments.
+- Implement the exit command with no options.
+   
+Implement Redirection and Pipes
+- Implement input redirection using <.
+- Implement output redirection using >.
+- Implement input redirection with a delimiter using <<.
+- Implement output redirection in append mode using >>.
+- Implement pipes using the | character.
+   
+Handle Environment Variables
+- Implement the handling of environment variables that start with $.
+   
+Handle Control Sequences
+- Implement the handling of ctrl-C, ctrl-D, and ctrl-\.
