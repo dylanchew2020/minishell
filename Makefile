@@ -29,13 +29,14 @@ INC_LIBFT	= -I./$(LIBFT_DIR)$(INC_DIR)
 #                                 PROGRAM'S SRCS                               #
 ################################################################################
 
-SRC_DIR		:= src/
-SRC			:= minishell.c \
+SRC_DIR		:= ./src
+SRC			:= minishell.c prompt.c\
 
-OBJ_DIR		:= obj/
-OBJ			:= $(SRC:%.c=$(OBJ_DIR)%.o)
+OBJ_DIR		:= ./obj
+OBJ			:= $(SRC:%.c=$(OBJ_DIR)/%.o)
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)
 	@ $(CC) $(FLAGS) $(INC) $(INC_LIBFT) -c $< -o $@
 	@ printf "$(YELLOW)$<$(CLR_RMV)... "
 
@@ -52,7 +53,7 @@ BLUE		:= \033[1;34m
 CYAN 		:= \033[1;36m
 RM			:= rm -f
 
-$(NAME): $(LIBFT) $(OBJ_DIR) $(OBJ) 
+$(NAME): $(LIBFT) $(OBJ) 
 	@ echo "\n$(GREEN)Compilation $(CLR_RMV)of $(BLUE)$(NAME) $(CLR_RMV)..."
 	@ $(CC) $(FLAGS) -o $(NAME) $(OBJ) $(LIB)
 	@ echo "$(GREEN)[Success] $(BLUE)$(NAME) $(CLR_RMV)created ✔️"
@@ -67,7 +68,8 @@ all: $(NAME)
 bonus: all
 
 clean:
-	@ $(RM) *.o */*.o */*/*.o
+	@ $(RM) *.o */*.o */*/*.o 
+	@ $(RM) -r $(OBJ_DIR)
 	@ echo "$(RED)Deleting $(BLUE)$(NAME) $(CLR_RMV)objs ✔️"
 
 fclean: clean
