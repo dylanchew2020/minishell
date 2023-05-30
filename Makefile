@@ -20,6 +20,7 @@ LIBFT_DIR = libft/
 LIBFT = libft.a
 
 LIB := -lft -L./$(LIBFT_DIR)
+READLINE = -lreadline
 
 INC_DIR		= includes
 INC			= -I./$(INC_DIR)
@@ -30,7 +31,7 @@ INC_LIBFT	= -I./$(LIBFT_DIR)$(INC_DIR)
 ################################################################################
 
 SRC_DIR		:= ./src
-SRC			:= minishell.c prompt.c\
+SRC			:= minishell.c prompt.c history.c\
 
 OBJ_DIR		:= ./obj
 OBJ			:= $(SRC:%.c=$(OBJ_DIR)/%.o)
@@ -55,7 +56,7 @@ RM			:= rm -f
 
 $(NAME): $(LIBFT) $(OBJ) 
 	@ echo "\n$(GREEN)Compilation $(CLR_RMV)of $(BLUE)$(NAME) $(CLR_RMV)..."
-	@ $(CC) $(FLAGS) -o $(NAME) $(OBJ) $(LIB)
+	@ $(CC) $(FLAGS) -o $(NAME) $(OBJ) $(LIB) $(READLINE)
 	@ echo "$(GREEN)[Success] $(BLUE)$(NAME) $(CLR_RMV)created ✔️"
 
 $(LIBFT):
@@ -66,6 +67,9 @@ $(LIBFT):
 all: $(NAME)
 
 bonus: all
+
+run:
+	@ ./$(NAME)
 
 clean:
 	@ $(RM) *.o */*.o */*/*.o 
