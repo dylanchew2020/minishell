@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/05/30 19:37:39 by lchew            ###   ########.fr       */
+/*   Updated: 2023/05/31 14:46:30 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void		exit_prompt(char *cmd);
 
 /* HISTORY */
 t_history	*history_lstnew(int index, void *cmd);
+void		history_clear(t_history **history);
 void		history_add(t_history **history, char *cmd);
 void		history_print(t_history *history);
 
