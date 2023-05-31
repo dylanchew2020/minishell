@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:26:51 by lchew             #+#    #+#             */
-/*   Updated: 2023/05/26 18:47:03 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/05/31 14:45:38 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 int	main(int argc, char **argv, char **envp)
 {
 	(void)argc;
-	(void)argv;
 
-	prompt(envp);
+	prompt(envp, argv);
 	return (0);
 }
