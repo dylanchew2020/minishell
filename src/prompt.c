@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/05/31 14:47:01 by lchew            ###   ########.fr       */
+/*   Updated: 2023/05/31 19:02:06 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,15 @@
 void	prompt(t_root *root, char **envp)
 {
 	char	*cmd;
+	char	**path;
+	int		i = -1;
 
-	(void) envp;
+	path = find_path(envp);
+	while (path[++i])
+		printf("%s\n", path[i]);
 	while (1)
 	{
 		cmd = readline("MINISHELL>> ");
-		// write(1, "MINISHELL>>", 11);
-		// cmd = get_next_line(0);
 		add_history(cmd);
 		history_add(&root->history, cmd);
 		if (!ft_strncmp(cmd, "history", 8))

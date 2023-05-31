@@ -27,24 +27,53 @@ Working with Git
 #                                    UPDATES                                   #
 ################################################################################
 
-- readlines not yet added to makefile. Review makefile if any compilation issue.
+***Person 1:***
+**Setup the project:**
+Create the project repository.
+Create the necessary files: Makefile, *.h, *.c.
+Write a basic Makefile with the rules $(NAME), all, clean, fclean, and re.
 
-Tasks
-- Implement a command prompt
-- Read user input
-- Handle memory correctly
-- Implement a working history feature
+**Basic shell functionality:**
+Write a function to display a prompt that waits for a new command. (Relevant functions: readline, printf)
+Write a function to record and display a working history for the shell. (Relevant functions: add_history, rl_on_new_line)
 
-Member 1:
+**Executable handling:**
+Write a function to search for the right executable based on the PATH variable. (Relevant functions: getenv, access)
+Write a function to launch the executable using a relative or an absolute path. (Relevant functions: fork, execve)
 
-**Implement a command prompt**: This involves creating a loop that will continuously display a prompt for the user to enter their commands.
+**Quote and special character handling:**
+Write a function to handle ’ (single quote) correctly.
+Write a function to handle " (double quote) correctly.
+Ensure the shell does not interpret unclosed quotes or special characters such as \ (backslash) or ; (semicolon).
 
-**Read user input**: After the prompt is displayed, the next step is to read the command entered by the user. This can be done using functions like readline().
+**Built-in commands:**
+Write a function to implement the 'echo' builtin with option -n. (Relevant functions: write)
+Write a function to implement the 'cd' builtin with only a relative or absolute path. (Relevant functions: chdir)
+Write a function to implement the 'pwd' builtin with no options. (Relevant functions: getcwd)
 
-**Implement a working history feature**: This involves keeping track of the commands entered by the user. The GNU Readline library provides functions for working with history, which can be used to add the user's input to the history list after it's processed.
+***Person 2:***
+**Global variable:**
+Decide on the purpose of the one allowed global variable.
+Implement the necessary functionality using this global variable.
 
-Member 2:
+**Redirections and pipes:**
+Write a function to implement the '<' redirection. (Relevant functions: open, dup2)
+Write a function to implement the '>' redirection. (Relevant functions: open, dup2)
+Write a function to implement the '<<' redirection. (Relevant functions: open, dup2)
+Write a function to implement the '>>' redirection. (Relevant functions: open, dup2)
+Write a function to implement pipes (| character). (Relevant functions: pipe, dup2)
 
-**Handle memory correctly**: This involves managing the memory allocated during the program, especially the memory allocated by readline(). The member will need to ensure that all allocated memory is properly freed to avoid memory leaks.
+**Environment variables and exit status:**
+Write a function to handle environment variables ($ followed by a sequence of characters) which should expand to their values. (Relevant functions: getenv)
+Write a function to handle $? which should expand to the exit status of the most recently executed foreground pipeline. (Relevant functions: wait, waitpid)
 
-**Parsing User Input**: This involves breaking down the user input into commands and their arguments. Handling spaces, tabs, newline characters as delimiters, and correctly handling quotes and metacharacters are part of this task.
+**Handling of control sequences:**
+Write a function to handle ctrl-C. (Relevant functions: signal)
+Write a function to handle ctrl-D. (Relevant functions: exit)
+Write a function to handle ctrl-\. (Relevant functions: signal)
+
+**More built-in commands:**
+Write a function to implement the 'export' builtin with no options. (Relevant functions: setenv)
+Write a function to implement the 'unset' builtin with no options. (Relevant functions: unsetenv)
+Write a function to implement the 'env' builtin with no options or arguments. (Relevant functions: getenv)
+Write a function to implement the 'exit' builtin with no options. (Relevant functions: exit)

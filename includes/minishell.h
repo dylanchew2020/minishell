@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/05/31 14:46:30 by lchew            ###   ########.fr       */
+/*   Updated: 2023/05/31 19:02:44 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@
 
 # include "libft.h"
 # include "get_next_line.h"
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <string.h>
+# include <errno.h>
 
 # define EXIT "exit"
 
@@ -62,5 +66,9 @@ t_history	*history_lstnew(int index, void *cmd);
 void		history_clear(t_history **history);
 void		history_add(t_history **history, char *cmd);
 void		history_print(t_history *history);
+
+//path.c
+char	**find_path(char **envp);
+void	complete_path(char **split);
 
 #endif
