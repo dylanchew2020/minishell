@@ -3,25 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/05/26 18:47:32 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/05/31 14:47:01 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	prompt(char	**envp)
+void	prompt(t_root *root, char **envp)
 {
-	char *line;
-	(void)envp;
+	char	*cmd;
 
+	(void) envp;
 	while (1)
 	{
-		write(1, "MINISHELL>>", 11);
-		line = get_next_line(0);
-		printf("%s", line);
+		cmd = readline("MINISHELL>> ");
+		// write(1, "MINISHELL>>", 11);
+		// cmd = get_next_line(0);
+		add_history(cmd);
+		history_add(&root->history, cmd);
+		if (!ft_strncmp(cmd, "history", 8))
+			history_print(root->history);
+		else
+			printf("%s\n", cmd);
+		exit_prompt(cmd);
+		free(cmd);
 	}
+	clear_history();
+	history_clear(&root->history);
 	return ;
+}
+
+void	exit_prompt(char *cmd)
+{
+	if (!cmd || !ft_strncmp(cmd, EXIT, 5))
+	{
+		free(cmd);
+		clear_history();
+		exit(0);
+	}
 }

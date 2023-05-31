@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:26:51 by lchew             #+#    #+#             */
-/*   Updated: 2023/05/26 18:47:03 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/05/30 19:16:44 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,23 @@
 
 int	main(int argc, char **argv, char **envp)
 {
+	t_root	root;
 	(void)argc;
 	(void)argv;
 
-	prompt(envp);
+	// printf("argc: %d\n", argc);
+	// printf("argv: %s\n", *argv);
+	// while (*envp)
+	// {
+	// 	printf("%s\n", *envp);
+	// 	envp++;
+	// }
+	init_root(&root);
+	prompt(&root, envp);
 	return (0);
+}
+
+void	init_root(t_root *root)
+{
+	root->history = NULL;
 }
