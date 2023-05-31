@@ -28,3 +28,23 @@ Working with Git
 ################################################################################
 
 - readlines not yet added to makefile. Review makefile if any compilation issue.
+
+Tasks
+- Implement a command prompt
+- Read user input
+- Handle memory correctly
+- Implement a working history feature
+
+Member 1:
+
+**Implement a command prompt**: This involves creating a loop that will continuously display a prompt for the user to enter their commands.
+
+**Read user input**: After the prompt is displayed, the next step is to read the command entered by the user. This can be done using functions like readline().
+
+**Implement a working history feature**: This involves keeping track of the commands entered by the user. The GNU Readline library provides functions for working with history, which can be used to add the user's input to the history list after it's processed.
+
+Member 2:
+
+**Handle memory correctly**: This involves managing the memory allocated during the program, especially the memory allocated by readline(). The member will need to ensure that all allocated memory is properly freed to avoid memory leaks.
+
+**Parsing User Input**: This involves breaking down the user input into commands and their arguments. Handling spaces, tabs, newline characters as delimiters, and correctly handling quotes and metacharacters are part of this task.
