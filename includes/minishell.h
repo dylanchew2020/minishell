@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/05/31 19:02:44 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/06/03 23:37:59 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,32 @@ typedef struct s_history
 	struct s_history	*prev;
 }	t_history;
 
+typedef enum e_token
+{
+	COMMAND,
+	OPTION,
+	OPERATOR,
+	ARGUMENT
+}	t_token;
+
+typedef struct s_lexer
+{
+	char			*input;
+	struct s_lexer	*next;
+}	t_lexer;
+
+typedef struct s_ast
+{
+	t_token			token;
+	char			*value;
+	struct s_ast	*left;
+	struct s_ast	*right;
+}	t_ast;
+
 typedef struct s_root
 {
 	t_history	*history;
+	t_lexer		*lexer;
 }	t_root;
 
 /* PROGRAM */
@@ -62,13 +85,17 @@ void		prompt(t_root *root, char **envp);
 void		exit_prompt(char *cmd);
 
 /* HISTORY */
-t_history	*history_lstnew(int index, void *cmd);
+t_history	*history_node_new(int index, void *cmd);
 void		history_clear(t_history **history);
 void		history_add(t_history **history, char *cmd);
 void		history_print(t_history *history);
 
-//path.c
-char	**find_path(char **envp);
-void	complete_path(char **split);
+/* PATH */
+char		**find_path(char **envp);
+void		complete_path(char **split);
+
+/* LEXER */
+int			lexer(char *cmd);
+t_ast		*ast_node_new(t_token token, char *value);
 
 #endif

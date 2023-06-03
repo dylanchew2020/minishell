@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/05/31 19:02:06 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/06/03 17:44:29 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ void	prompt(t_root *root, char **envp)
 		printf("%s\n", path[i]);
 	while (1)
 	{
-		cmd = readline("MINISHELL>> ");
-		add_history(cmd);
+		cmd = readline("\033[1;32mminishell$\033[0m ");
 		history_add(&root->history, cmd);
+		lexer(cmd);
 		if (!ft_strncmp(cmd, "history", 8))
 			history_print(root->history);
 		else
@@ -33,7 +33,6 @@ void	prompt(t_root *root, char **envp)
 		exit_prompt(cmd);
 		free(cmd);
 	}
-	clear_history();
 	history_clear(&root->history);
 	return ;
 }
