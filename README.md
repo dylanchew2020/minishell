@@ -77,3 +77,13 @@ Write a function to implement the 'export' builtin with no options. (Relevant fu
 Write a function to implement the 'unset' builtin with no options. (Relevant functions: unsetenv)
 Write a function to implement the 'env' builtin with no options or arguments. (Relevant functions: getenv)
 Write a function to implement the 'exit' builtin with no options. (Relevant functions: exit)
+
+0: Successful execution. This status indicates that the command or script completed without any errors.
+1: General error. This status is typically used to indicate that an unspecified error occurred.
+2: Misuse of shell built-ins. It is used to indicate that a command was not used correctly.
+126: Command cannot be invoked. This status is used when the command or script is found but cannot be executed.
+127: Command not found. It is used when the command or script is not found or cannot be executed.
+128: Invalid argument to exit. This status is used when the exit command is used incorrectly, specifying an invalid argument.
+130: Script terminated by Control+C. This status is used when a script or command is terminated by the user using the Control+C key combination.
+137: Script terminated by a signal. This status is used when a script or command is terminated by a signal, usually indicating a fatal error.
+255: Exit status out of range. It is used when the exit command is given an exit status that is outside the valid range of 0 to 255.

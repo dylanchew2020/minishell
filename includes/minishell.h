@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/03 23:37:59 by lchew            ###   ########.fr       */
+/*   Updated: 2023/06/04 22:36:18 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,18 @@
 # include <errno.h>
 
 # define EXIT "exit"
+# define CD "cd"
+# define PWD "pwd"
+# define EXPORT "export"
+# define UNSET "unset"
+# define ENV "env"
+# define ECHO "echo"
+
+# define PIPE '|'
+# define REDIRECT_IN '<'
+# define REDIRECT_OUT '>'
+# define SINGLE_QUOTE '\''
+# define DOUBLE_QUOTE '\"'
 
 typedef struct s_history
 {
@@ -63,13 +75,13 @@ typedef struct s_lexer
 	struct s_lexer	*next;
 }	t_lexer;
 
-typedef struct s_ast
+typedef struct s_tree
 {
 	t_token			token;
 	char			*value;
-	struct s_ast	*left;
-	struct s_ast	*right;
-}	t_ast;
+	struct s_tree	*left;
+	struct s_tree	*right;
+}	t_tree;
 
 typedef struct s_root
 {
@@ -95,7 +107,17 @@ char		**find_path(char **envp);
 void		complete_path(char **split);
 
 /* LEXER */
-int			lexer(char *cmd);
-t_ast		*ast_node_new(t_token token, char *value);
+t_list		*lexer(char *cmd);
+t_tree		*tree_node_new(t_token token, char *value, t_tree *left, t_tree *right);
 
 #endif
+
+
+/* 
+
+		|
+		
+
+
+
+ */
