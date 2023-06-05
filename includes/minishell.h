@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/04 22:36:18 by lchew            ###   ########.fr       */
+/*   Updated: 2023/06/05 21:51:53 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,6 @@
 # include <errno.h>
 
 # define EXIT "exit"
-# define CD "cd"
-# define PWD "pwd"
-# define EXPORT "export"
-# define UNSET "unset"
-# define ENV "env"
-# define ECHO "echo"
 
 # define PIPE '|'
 # define REDIRECT_IN '<'
@@ -107,9 +101,16 @@ char		**find_path(char **envp);
 void		complete_path(char **split);
 
 /* LEXER */
-t_list		*lexer(char *cmd);
+t_list		*lexer(char *cmd, char **envp);
 t_tree		*tree_node_new(t_token token, char *value, t_tree *left, t_tree *right);
 
+/* PARSER */
+t_tree	*parser(t_list *lexer, int num_tokens, int redirect);
+t_tree	*op_check(t_list *lexer, char op, int num_tokens, int redirect);
+t_tree	*cmd_check(t_list *lexer, int num_tokens, int redirect);
+t_tree	*tree_node_new(t_token token, char *value, t_tree *left, t_tree *right);
+
+void	print_tree(t_tree *root, int b);
 #endif
 
 

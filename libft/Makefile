@@ -56,6 +56,7 @@ BLUE		:= \033[1;34m
 CYAN 		:= \033[1;36m
 
 all: $(NAME)
+	@:
 
 $(NAME): $(OBJ_DIR) $(OBJ)
 	@ echo "\n$(GREEN)[Success] $(CYAN)libft $(CLR_RMV)object files generated ✔️"

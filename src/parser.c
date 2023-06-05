@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:32:06 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/04 22:52:29 by lchew            ###   ########.fr       */
+/*   Updated: 2023/06/05 21:59:29 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ t_tree	*tree_node_new(t_token token, char *value, t_tree *left, t_tree *right)
 	EG
 	ls -l | grep test | cat > output
  */
-t_tree	*op_check(t_list *lexer, char op, int num_tokens)
+t_tree	*op_check(t_list *lexer, char op, int num_tokens, int redirect)
 {
-	t_tree	*root;
+	t_tree	*node;
 	t_tree	*left;
 	t_tree	*right;
 	t_list	*head;
@@ -44,10 +44,12 @@ t_tree	*op_check(t_list *lexer, char op, int num_tokens)
 	{
 		if (*(char *)(lexer->content) == op)
 		{
-			left = parser(head, i);
-			right = parser(lexer->next, num_tokens - i - 1);
-			root = tree_node_new(OPERATOR, lexer->content, left, right);
-			return (root);
+			left = parser(head, i, redirect);
+			if (op == REDIRECT_OUT || op == REDIRECT_IN)
+				redirect = 1;
+			right = parser(lexer->next, num_tokens - i - 1, redirect);
+			node = tree_node_new(OPERATOR, lexer->content, left, right);
+			return (node);
 		}
 		lexer = lexer->next;
 		++i;
@@ -55,32 +57,47 @@ t_tree	*op_check(t_list *lexer, char op, int num_tokens)
 	return (NULL);
 }
 
-t_tree	*cmd_check(t_list *lexer, int num_tokens)
+t_tree	*cmd_check(t_list *lexer, int num_tokens, int redirect)
 {
-	t_tree	*root;
+	t_tree	*cmd;
+	t_tree	*option;
+	t_tree	*arg;
+	t_list	*head;
 
 	if (!lexer)
 		return (NULL);
-	if (lexer->content == EXIT || lexer->content == CD || lexer->content == PWD
-		|| lexer->content == EXPORT || lexer->content == UNSET
-		|| lexer->content == ENV || lexer->content == ECHO)
-		root = tree_node_new(COMMAND, lexer->content, NULL, NULL);
-	else if (*(char *)(lexer->content) == '-')
-		root = tree_node_new(OPTION, lexer->content, NULL, NULL);
+	option = NULL;
+	arg = NULL;
+	head = lexer;
+	lexer = lexer->next;
+	while (num_tokens-- > 1 && lexer != NULL)
+	{
+		if (ft_strncmp(lexer->content, "-", 1) == 0)
+			option = tree_node_new(OPTION, lexer->content, NULL, NULL);
+		else if (ft_strncmp(lexer->content, "-", 1) != 0)
+			arg = tree_node_new(ARGUMENT, lexer->content, NULL, NULL);
+		lexer = lexer->next;
+	}
+	if (redirect == 1)
+		cmd = tree_node_new(ARGUMENT, head->content, option, arg);
 	else
-		root = tree_node_new(ARGUMENT, lexer->content, NULL, NULL);
-	return (root);
+		cmd = tree_node_new(COMMAND, head->content, option, arg);
+	return (cmd);
 }
 
-t_tree	*parser(t_list *lexer, int num_tokens)
+t_tree	*parser(t_list *lexer, int num_tokens, int redirect)
 {
 	t_tree	*root;
 
+	root = NULL;
 	if (!lexer)
 		return (NULL);
-	op_check(lexer, PIPE, num_tokens);
-	op_check(lexer, REDIRECT_IN, num_tokens);
-	op_check(lexer, REDIRECT_OUT, num_tokens);
-	cmd_check(lexer, num_tokens);
+	root = op_check(lexer, PIPE, num_tokens, redirect);
+	if (!root)
+		root = op_check(lexer, REDIRECT_OUT, num_tokens, redirect);
+	if (!root)
+		root = op_check(lexer, REDIRECT_IN, num_tokens, redirect);
+	if (!root)
+		root = cmd_check(lexer, num_tokens, redirect);
 	return (root);
 }

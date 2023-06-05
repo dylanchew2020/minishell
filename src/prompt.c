@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/06/03 17:44:29 by lchew            ###   ########.fr       */
+/*   Updated: 2023/06/05 21:30:25 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	prompt(t_root *root, char **envp)
 {
 	char	*cmd;
 	char	**path;
+	t_list	*cmd_lexer;
+	t_tree	*head;
 	int		i = -1;
 
 	path = find_path(envp);
@@ -25,7 +27,9 @@ void	prompt(t_root *root, char **envp)
 	{
 		cmd = readline("\033[1;32mminishell$\033[0m ");
 		history_add(&root->history, cmd);
-		lexer(cmd);
+		cmd_lexer = lexer(cmd, envp);
+		head = parser(cmd_lexer, ft_lstsize(cmd_lexer));
+		print_tree(head, 0);
 		if (!ft_strncmp(cmd, "history", 8))
 			history_print(root->history);
 		else
@@ -45,4 +49,25 @@ void	exit_prompt(char *cmd)
 		clear_history();
 		exit(0);
 	}
+}
+
+void	print_tree(t_tree *root, int b)
+{
+	static int level;
+
+	if (b == 0)
+		++level;
+	if (root == NULL)
+	{
+		printf("NULL\n");
+		if (b == 0)
+			--level;
+		return ;
+	}
+	printf("%u : %s\n", root->token, root->value);
+	printf("left %i  ", level);
+	print_tree(root->left, 0);
+	printf("right %i  ", level);
+	print_tree(root->right, 0);
+	--level;
 }
