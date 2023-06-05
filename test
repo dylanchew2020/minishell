@@ -1,9 +1,0 @@
-total 128
--rw-r--r--   1 lchew  2022_kuala-lumpur   2862  3 Jun 17:34 Makefile
--rw-r--r--   1 lchew  2022_kuala-lumpur   4221 31 May 22:08 README.md
-drwxr-xr-x   3 lchew  2022_kuala-lumpur    102 31 May 22:08 includes
-drwxr-xr-x   7 lchew  2022_kuala-lumpur    238 30 May 17:22 libft
--rwxr-xr-x   1 lchew  2022_kuala-lumpur  51064  3 Jun 17:46 minishell
-drwxr-xr-x  16 lchew  2022_kuala-lumpur    544  3 Jun 17:46 obj
-drwxr-xr-x  15 lchew  2022_kuala-lumpur    510  3 Jun 17:34 src
--rw-r--r--   1 lchew  2022_kuala-lumpur      0  3 Jun 23:22 test

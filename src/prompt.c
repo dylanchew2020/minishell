@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/06/05 21:30:25 by lchew            ###   ########.fr       */
+/*   Updated: 2023/06/05 22:23:27 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	prompt(t_root *root, char **envp)
 		cmd = readline("\033[1;32mminishell$\033[0m ");
 		history_add(&root->history, cmd);
 		cmd_lexer = lexer(cmd, envp);
-		head = parser(cmd_lexer, ft_lstsize(cmd_lexer));
+		head = parser(cmd_lexer, ft_lstsize(cmd_lexer), 0);
 		print_tree(head, 0);
 		if (!ft_strncmp(cmd, "history", 8))
 			history_print(root->history);
