@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/05/31 19:02:44 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/06/05 21:51:53 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,12 @@
 
 # define EXIT "exit"
 
+# define PIPE '|'
+# define REDIRECT_IN '<'
+# define REDIRECT_OUT '>'
+# define SINGLE_QUOTE '\''
+# define DOUBLE_QUOTE '\"'
+
 typedef struct s_history
 {
 	int					id;
@@ -49,9 +55,32 @@ typedef struct s_history
 	struct s_history	*prev;
 }	t_history;
 
+typedef enum e_token
+{
+	COMMAND,
+	OPTION,
+	OPERATOR,
+	ARGUMENT
+}	t_token;
+
+typedef struct s_lexer
+{
+	char			*input;
+	struct s_lexer	*next;
+}	t_lexer;
+
+typedef struct s_tree
+{
+	t_token			token;
+	char			*value;
+	struct s_tree	*left;
+	struct s_tree	*right;
+}	t_tree;
+
 typedef struct s_root
 {
 	t_history	*history;
+	t_lexer		*lexer;
 }	t_root;
 
 /* PROGRAM */
@@ -62,13 +91,34 @@ void		prompt(t_root *root, char **envp);
 void		exit_prompt(char *cmd);
 
 /* HISTORY */
-t_history	*history_lstnew(int index, void *cmd);
+t_history	*history_node_new(int index, void *cmd);
 void		history_clear(t_history **history);
 void		history_add(t_history **history, char *cmd);
 void		history_print(t_history *history);
 
-//path.c
-char	**find_path(char **envp);
-void	complete_path(char **split);
+/* PATH */
+char		**find_path(char **envp);
+void		complete_path(char **split);
 
+/* LEXER */
+t_list		*lexer(char *cmd, char **envp);
+t_tree		*tree_node_new(t_token token, char *value, t_tree *left, t_tree *right);
+
+/* PARSER */
+t_tree	*parser(t_list *lexer, int num_tokens, int redirect);
+t_tree	*op_check(t_list *lexer, char op, int num_tokens, int redirect);
+t_tree	*cmd_check(t_list *lexer, int num_tokens, int redirect);
+t_tree	*tree_node_new(t_token token, char *value, t_tree *left, t_tree *right);
+
+void	print_tree(t_tree *root, int b);
 #endif
+
+
+/* 
+
+		|
+		
+
+
+
+ */

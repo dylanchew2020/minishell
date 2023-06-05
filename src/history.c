@@ -6,13 +6,13 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:25:57 by lchew             #+#    #+#             */
-/*   Updated: 2023/05/31 14:45:52 by lchew            ###   ########.fr       */
+/*   Updated: 2023/06/03 17:39:31 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_history	*history_lstnew(int index, void *cmd)
+t_history	*history_node_new(int index, void *cmd)
 {
 	t_history	*history;
 
@@ -42,6 +42,7 @@ void	history_clear(t_history **history)
 		free(tmp);
 	}
 	*history = NULL;
+	clear_history();
 }
 
 void	history_add(t_history **history, char *cmd)
@@ -50,7 +51,8 @@ void	history_add(t_history **history, char *cmd)
 	t_history	*tmp;
 	static int	index;
 
-	new = history_lstnew(++index, cmd);
+	add_history(cmd);
+	new = history_node_new(++index, cmd);
 	if (!(*history))
 	{
 		*history = new;
