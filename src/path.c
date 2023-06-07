@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 15:52:57 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/05/31 18:36:06 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/06/06 15:53:56 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ char	**find_path(char **envp)
 	(void)envp;
 
 	path = getenv("PATH");
+	// printf("%s\n", path);
 	if (path != NULL)
 	{
 		path = ft_substr(path, 5, ft_strlen(path));

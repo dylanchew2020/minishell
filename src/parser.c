@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:32:06 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/05 21:59:29 by lchew            ###   ########.fr       */
+/*   Updated: 2023/06/06 16:31:53 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,23 @@ t_tree	*op_check(t_list *lexer, char op, int num_tokens, int redirect)
 
 t_tree	*cmd_check(t_list *lexer, int num_tokens, int redirect)
 {
-	t_tree	*cmd;
-	t_tree	*option;
-	t_tree	*arg;
-	t_list	*head;
+	t_tree	*node;
+	char	*cmd;
+	char	*tmp;
 
 	if (!lexer)
 		return (NULL);
-	option = NULL;
+	cmd = ft_strdup(lexer->content);
+	lexer = lexer->next;
+	while (num_tokens > 0 && lexer != NULL)
+	{
+		tmp = cmd;
+		cmd = ft_strjoin(cmd, lexer->content);
+		free(tmp);
+		lexer = lexer->next;
+	}
+	node = tree_node_new(COMMAND, cmd, NULL, NULL);
+	/* option = NULL;
 	arg = NULL;
 	head = lexer;
 	lexer = lexer->next;
@@ -81,8 +90,8 @@ t_tree	*cmd_check(t_list *lexer, int num_tokens, int redirect)
 	if (redirect == 1)
 		cmd = tree_node_new(ARGUMENT, head->content, option, arg);
 	else
-		cmd = tree_node_new(COMMAND, head->content, option, arg);
-	return (cmd);
+		cmd = tree_node_new(COMMAND, head->content, option, arg); */
+	return (node);
 }
 
 t_tree	*parser(t_list *lexer, int num_tokens, int redirect)
