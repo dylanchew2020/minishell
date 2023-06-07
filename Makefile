@@ -33,7 +33,7 @@ INC_LIBFT	= -I./$(LIBFT_DIR)$(INC_DIR)
 ################################################################################
 
 SRC_DIR		:= ./src
-SRC			:= minishell.c prompt.c history.c path.c\
+SRC			:= minishell.c prompt.c history.c path.c builtins.c\
 
 OBJ_DIR		:= ./obj
 OBJ			:= $(SRC:%.c=$(OBJ_DIR)/%.o)

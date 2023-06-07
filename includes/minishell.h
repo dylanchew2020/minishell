@@ -67,8 +67,11 @@ void		history_clear(t_history **history);
 void		history_add(t_history **history, char *cmd);
 void		history_print(t_history *history);
 
-//path.c
+/* PATH */
 char	**find_path(char **envp);
 void	complete_path(char **split);
+
+/* BUILTINS */
+int builtins_check(char *cmd);
 
 #endif

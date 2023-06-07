@@ -20,7 +20,7 @@ void	prompt(t_root *root, char **envp)
 
 	path = find_path(envp);
 	while (path[++i])
-		printf("%s\n", path[i]);
+		// printf("%s\n", path[i]);
 	while (1)
 	{
 		cmd = readline("MINISHELL>> ");
@@ -30,6 +30,7 @@ void	prompt(t_root *root, char **envp)
 			history_print(root->history);
 		else
 			printf("%s\n", cmd);
+		printf("builtins %i\n", builtins_check(cmd));
 		exit_prompt(cmd);
 		free(cmd);
 	}
