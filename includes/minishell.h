@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/06 16:26:51 by lchew            ###   ########.fr       */
+/*   Updated: 2023/06/10 21:32:00 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,13 @@
 
 # define EXIT "exit"
 
-# define PIPE '|'
-# define REDIRECT_IN '<'
-# define REDIRECT_OUT '>'
-# define SINGLE_QUOTE '\''
-# define DOUBLE_QUOTE '\"'
+# define PIPE "|"
+# define RDIN "<"
+# define HEREDOC "<<"
+# define RDOUT ">"
+# define RDAPP ">>"
+# define SINGLE_QUOTE "\'"
+# define DOUBLE_QUOTE "\""
 
 typedef struct s_history
 {
@@ -58,14 +60,14 @@ typedef struct s_history
 typedef enum e_token
 {
 	COMMAND,
-	OPTION,
 	OPERATOR,
-	ARGUMENT
+	FILE_ARG
 }	t_token;
 
 typedef struct s_lexer
 {
-	char			*input;
+	t_token			type;
+	char			*value;
 	struct s_lexer	*next;
 }	t_lexer;
 
@@ -85,6 +87,7 @@ typedef struct s_root
 
 /* PROGRAM */
 void		init_root(t_root *root);
+void		free_2D(char **str);
 
 /* PROMPT */
 void		prompt(t_root *root, char **envp);
@@ -101,16 +104,18 @@ char		**find_path(char **envp);
 void		complete_path(char **split);
 
 /* LEXER */
-t_list		*lexer(char *cmd, char **envp);
+t_list		*lexer(char *cmd);
 t_tree		*tree_node_new(t_token token, char *value, t_tree *left, t_tree *right);
 
 /* PARSER */
 t_tree	*parser(t_list *lexer, int num_tokens, int redirect);
-t_tree	*op_check(t_list *lexer, char op, int num_tokens, int redirect);
+t_tree	*op_check(t_list *lexer, char *op, int num_tokens, int redirect);
 t_tree	*cmd_check(t_list *lexer, int num_tokens, int redirect);
 t_tree	*tree_node_new(t_token token, char *value, t_tree *left, t_tree *right);
 
 void	print_tree(t_tree *root, int b);
+
+void	exec_cmd(t_tree *node, char **envp);
 #endif
 
 

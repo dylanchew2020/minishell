@@ -9,7 +9,7 @@
 
 NAME		:= minishell
 CC			:= gcc
-FLAGS		:= -Wall -Wextra -Werror 
+FLAGS		:= #-Wall -Wextra -Werror 
 FSAN		:= -fsanitize=address -g
 # LDFLAGS		= -L/goinfre/tzi-qi/.brew/opt/readline/lib
 # CPPFLAGS	= -I/goinfre/tzi-qi/.brew/opt/readline/include
@@ -53,7 +53,7 @@ OBJ			:= $(SRC:%.c=$(OBJ_DIR)/%.o)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
-	@ $(CC) $(FLAGS) $(INC) $(INC_LIBFT) -c $< -o $@
+	@ $(CC) $(FLAGS) $(FSAN) $(INC) $(INC_LIBFT) -c $< -o $@
 	@ printf "$(YELLOW)$<$(CLR_RMV)... "
 
 ################################################################################
@@ -71,7 +71,7 @@ RM			:= rm -f
 
 $(NAME): $(LIBFT) $(OBJ) 
 	@ echo "\n$(GREEN)Compilation $(CLR_RMV)of $(BLUE)$(NAME) $(CLR_RMV)..."
-	@ $(CC) $(FLAGS) $(LIB) $(READLINE) $(OBJ) -o $(NAME)  
+	@ $(CC) $(FLAGS) $(FSAN) $(LIB) $(READLINE) $(OBJ) -o $(NAME)  
 	@ echo "$(GREEN)[Success] $(BLUE)$(NAME) $(CLR_RMV)created ✔️"
 
 $(LIBFT):

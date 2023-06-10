@@ -12,15 +12,14 @@
 
 #include "libft.h"
 
-/*
-**	The ft_strchr() function returns a pointer to the first occurrence of the
-**	character c in the string s.
-**
-**	The ft_strchr() functions returns NULL if the character is not found.
-**
-**	The terminating null byte is considered part of the string, so that if c
-**	is specified as '\0', these functions return a pointer to the terminator.
-*/
+/**
+ * ft_strchr - Locates the first occurrence of 'c' in string 's'.
+ * @param s: The string to be scanned.
+ * @param c: The character to be located.
+ * 
+ * Returns: A pointer to the first occurrence of 'c' in 's', 
+ * 			or NULL if 'c' is not found.
+ */
 char	*ft_strchr(const char *s, int c)
 {
 	if (c >= 256)
