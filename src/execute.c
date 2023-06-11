@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/10 21:40:33 by lchew            ###   ########.fr       */
+/*   Updated: 2023/06/11 21:04:26 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,12 @@ void	exec_cmd(t_tree *node, char **envp)
 	int		i;
 	char	**argv;
 	pid_t	pid;
+	int		exec;
 
 	i = -1;
-	path = find_path(envp);
+	if (node == NULL)
+		return ;
+	path = find_path();
 	argv = ft_split(node->value, ' ');
 	int j = 0;
 	pid = fork();
@@ -31,12 +34,18 @@ void	exec_cmd(t_tree *node, char **envp)
 		printf("I am the child, PID = %d\n", getpid());
 		if (node->token == COMMAND)
 		{
-			while (argv[j])
-				printf("argv : %s\n", argv[j++]);
+			// while (argv[j])
+			// 	printf("argv : %s\n", argv[j++]);
 			while (path[++i])
 			{
-				printf("path : %s\n", path[i]);
-				execve(ft_strjoin(path[i], argv[0]), argv, NULL);
+				// printf("path : %s\n", path[i]);
+				exec = execve(ft_strjoin(path[i], argv[0]), argv, NULL);
+				// printf("exec : %d\n", exec);
+			}
+			if (exec == -1)
+			{
+				printf("Error: %s: %s\n", strerror(errno), *argv);
+				exit(0);
 			}
 		}
 	}

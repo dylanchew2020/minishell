@@ -11,13 +11,16 @@
 /* ************************************************************************** */
 #include "libft.h"
 
-/*
-**	The ft_strdup() function returns a pointer to a new string a of which is 
-**	a duplicate of the string s.
-**	
-**	The ft_strdup() function returns a pointer to the duplicated string.
-**	It returns NULL if insufficient memory was available
-*/
+/**
+ * ft_strdup - Duplicates a string by allocating enough memory, 
+ *             copying the characters, and returning a pointer to the new string.
+ *
+ * @param src: The source string to be duplicated.
+ *
+ * @return 
+ * A pointer to the newly allocated string, or NULL if memory allocation fails.
+ * The caller is responsible for freeing the memory when it is no longer needed.
+ */
 char	*ft_strdup(const char *src)
 {
 	char	*dup;

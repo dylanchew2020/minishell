@@ -17,8 +17,9 @@
  * @param s: The string to be scanned.
  * @param c: The character to be located.
  * 
- * Returns: A pointer to the first occurrence of 'c' in 's', 
- * 			or NULL if 'c' is not found.
+ * @returns 
+ * A pointer to the first occurrence of 'c' in 's', 
+ * or NULL if 'c' is not found.
  */
 char	*ft_strchr(const char *s, int c)
 {

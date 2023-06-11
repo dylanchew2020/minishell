@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/10 21:32:00 by lchew            ###   ########.fr       */
+/*   Updated: 2023/06/11 17:02:08 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,28 +86,33 @@ typedef struct s_root
 }	t_root;
 
 /* PROGRAM */
+
 void		init_root(t_root *root);
 void		free_2D(char **str);
 
 /* PROMPT */
+
 void		prompt(t_root *root, char **envp);
 void		exit_prompt(char *cmd);
 
 /* HISTORY */
+
 t_history	*history_node_new(int index, void *cmd);
 void		history_clear(t_history **history);
 void		history_add(t_history **history, char *cmd);
 void		history_print(t_history *history);
 
 /* PATH */
-char		**find_path(char **envp);
-void		complete_path(char **split);
+
+char		**find_path(void);
 
 /* LEXER */
+
 t_list		*lexer(char *cmd);
 t_tree		*tree_node_new(t_token token, char *value, t_tree *left, t_tree *right);
 
 /* PARSER */
+
 t_tree	*parser(t_list *lexer, int num_tokens, int redirect);
 t_tree	*op_check(t_list *lexer, char *op, int num_tokens, int redirect);
 t_tree	*cmd_check(t_list *lexer, int num_tokens, int redirect);
