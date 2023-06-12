@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 15:52:57 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/05/31 18:36:06 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/05/31 19:21:28 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,3 +45,5 @@ char	**find_path(char **envp)
 		printf("Error: %s\n", strerror(errno));
 	return (NULL);
 }
+
+void check_path
