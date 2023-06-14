@@ -56,6 +56,11 @@ void	exec_cmd(t_tree *node, char **envp)
 	}
 }
 
+
+void	execute(t_tree *node, char **envp)
+{
+	
+}
 	// char	**tmp;
 	// char	**argv;
 	// tmp = ft_calloc(2, sizeof(char *));
@@ -72,3 +77,4 @@ void	exec_cmd(t_tree *node, char **envp)
 	// // argv[1] = head->next->content;
 	// printf("argv : %s\n", argv[0]);
 	// execve("/usr/bin/touch", argv, tmp);
+

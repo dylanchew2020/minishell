@@ -27,6 +27,7 @@ int	main(int argc, char **argv, char **envp)
 	// }
 	init_root(&root);
 	prompt(&root, envp);
+	system("leaks minishell");
 	return (0);
 }
 

@@ -67,7 +67,7 @@ typedef enum e_token
 typedef struct s_lexer
 {
 	t_token			type;
-	char			*value;
+	char		  	*value;
 	struct s_lexer	*next;
 }	t_lexer;
 
