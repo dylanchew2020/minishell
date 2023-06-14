@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/11 17:02:08 by lchew            ###   ########.fr       */
+/*   Updated: 2023/06/14 15:48:19 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,11 @@ typedef struct s_history
 typedef enum e_token
 {
 	COMMAND,
-	OPERATOR,
-	FILE_ARG
+	PIPE_OP,
+	RDIN_OP,
+	RDOUT_OP,
+	RDAPP_OP,
+	HEREDOC_OP
 }	t_token;
 
 typedef struct s_lexer
@@ -113,9 +116,9 @@ t_tree		*tree_node_new(t_token token, char *value, t_tree *left, t_tree *right);
 
 /* PARSER */
 
-t_tree	*parser(t_list *lexer, int num_tokens, int redirect);
-t_tree	*op_check(t_list *lexer, char *op, int num_tokens, int redirect);
-t_tree	*cmd_check(t_list *lexer, int num_tokens, int redirect);
+t_tree	*parser(t_list *lexer, int num_tokens);
+t_tree	*op_check(t_list *lexer, char *op, int num_tokens);
+t_tree	*cmd_check(t_list *lexer, int num_tokens);
 t_tree	*tree_node_new(t_token token, char *value, t_tree *left, t_tree *right);
 
 void	print_tree(t_tree *root, int b);
