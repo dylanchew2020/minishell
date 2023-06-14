@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:32:06 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/11 21:08:40 by lchew            ###   ########.fr       */
+/*   Updated: 2023/06/14 15:51:08 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,21 @@
  * @returns 
  * A pointer to the root of the tree, or NULL if an error occurs.
  */
-t_tree	*parser(t_list *lexer, int num_tokens, int redirect)
+t_tree	*parser(t_list *lexer, int num_tokens)
 {
 	t_tree	*root;
+	int		nt;
 
 	root = NULL;
-	if (!lexer)
+	if (!lexer || num_tokens <= 0)
 		return (NULL);
-	root = op_check(lexer, PIPE, num_tokens, redirect);
+	root = op_check(lexer, PIPE, num_tokens);
 	if (!root)
-		root = op_check(lexer, RDOUT, num_tokens, redirect);
+		root = op_check(lexer, RDOUT, num_tokens);
 	if (!root)
-		root = op_check(lexer, RDIN, num_tokens, redirect);
+		root = op_check(lexer, RDIN, num_tokens);
 	if (!root)
-		root = cmd_check(lexer, num_tokens, redirect);
+		root = op_check(lexer, NULL, num_tokens);
 	return (root);
 }
 
@@ -54,7 +55,7 @@ t_tree	*parser(t_list *lexer, int num_tokens, int redirect)
  * A pointer to the new node, or NULL if the operator is not found in the 
  * lexer list.
  */
-t_tree	*op_check(t_list *lexer, char *op, int num_tokens, int redirect)
+t_tree	*op_check(t_list *lexer, char *op, int num_tokens)
 {
 	t_tree	*left;
 	t_tree	*right;
@@ -63,18 +64,24 @@ t_tree	*op_check(t_list *lexer, char *op, int num_tokens, int redirect)
 
 	i = 0;
 	head = lexer;
+	if (op == NULL)
+		return (tree_node_new(COMMAND, lexer->content, NULL, NULL));
 	while (lexer != NULL && i < num_tokens)
 	{
 		if (!ft_strncmp(lexer->content, op, ft_strlen(op)))
 		{
-			if (lexer != head)
-				left = parser(head, i, redirect);
-			else
-				left = NULL;
-			if (!ft_strncmp(op, RDOUT, 1) || !ft_strncmp(op, RDIN, 1))
-				redirect = 1;
-			right = parser(lexer->next, num_tokens - i - 1, redirect);
-			return (tree_node_new(OPERATOR, lexer->content, left, right));
+			left = parser(head, i);
+			right = parser(lexer->next, num_tokens - i - 1);
+			if (!ft_strncmp(lexer->content, RDIN, ft_strlen(RDIN)))
+				return (tree_node_new(RDIN_OP, lexer->content, left, right));
+			else if (!ft_strncmp(lexer->content, RDOUT, ft_strlen(RDOUT)))
+				return (tree_node_new(RDOUT_OP, lexer->content, left, right));
+			else if (!ft_strncmp(lexer->content, RDAPP, ft_strlen(RDAPP)))
+				return (tree_node_new(RDAPP_OP, lexer->content, left, right));
+			else if (!ft_strncmp(lexer->content, HEREDOC, ft_strlen(HEREDOC)))
+				return (tree_node_new(HEREDOC_OP, lexer->content, left, right));
+			else if (!ft_strncmp(lexer->content, PIPE, ft_strlen(PIPE)))
+				return (tree_node_new(PIPE_OP, lexer->content, left, right));
 		}
 		lexer = lexer->next;
 		++i;
@@ -93,16 +100,13 @@ t_tree	*op_check(t_list *lexer, char *op, int num_tokens, int redirect)
  * @returns 
  * A pointer to the new node, or NULL if lexer is NULL or a redirection operator.
  */
-t_tree	*cmd_check(t_list *lexer, int num_tokens, int redirect)
+t_tree	*cmd_check(t_list *lexer, int num_tokens)
 {
 	t_tree	*node;
 
 	if (!lexer)
 		return (NULL);
-	if (redirect)
-		node = tree_node_new(FILE_ARG, lexer->content, NULL, NULL);
-	else
-		node = tree_node_new(COMMAND, lexer->content, NULL, NULL);
+	node = tree_node_new(COMMAND, lexer->content, NULL, NULL);
 	return (node);
 }
 

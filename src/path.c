@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 15:52:57 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/06/11 17:04:52 by lchew            ###   ########.fr       */
+/*   Updated: 2023/06/14 17:30:42 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,41 @@ char	**find_path(void)
 		return (path);
 	}
 	printf("Error: %s\n", strerror(errno));
+	return (NULL);
+}
+
+/**
+ * the_legit_path - Find the path for the command
+ * @param argv : the cmmand argument including flag
+ * 					option
+ * @returns 
+ * A string that contained the PATH of the command, 
+ * or NULL if PATH is not found or an error occurs.
+ */
+char	*the_legit_path(char *argv)
+{
+	char	*cmd;
+	char	**path;
+	char	*join;
+	int		i;
+
+	path = ft_split(argv, ' ');
+	cmd = path[0];
+	free_2D(path);
+	path = find_path();
+	i = -1;
+	while (path[++i])
+	{
+		join = ft_strjoin(path[i], cmd);
+		if (access(join, F_OK) == 0)
+		{
+			free (cmd);
+			free_2D(path);
+			return (join);
+		}
+		free(join);
+	}
+	free (cmd);
+	free_2D(path);
 	return (NULL);
 }

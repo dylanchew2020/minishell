@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:34:45 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/11 19:54:06 by lchew            ###   ########.fr       */
+/*   Updated: 2023/06/14 16:26:21 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ t_list	*lexer(char *cmd)
 	if (!head)
 		return (NULL);
 	node = head;
+	printf("node->content: %s\n", node->content);
 	while (*tokens)
 	{
 		node->next = ft_lstnew(ft_strtrim(*tokens++, " "));
@@ -51,6 +52,7 @@ t_list	*lexer(char *cmd)
 			return (NULL);
 		}
 		node = node->next;
+		printf("node->content: %s\n", node->content);
 	}
 	return (head);
 }
@@ -77,13 +79,26 @@ static void	cmd_modifier(char *cmd, char **tokens)
 	while (*cmd != '\0')
 	{
 		j = 0;
-		if (ft_strchr("|<>", *cmd) != NULL)
+		if (ft_strchr("|", *cmd) != NULL)
 		{
 			tokens[i] = ft_calloc(char_count(cmd, 1) + 1, sizeof(char));
 			tokens[i][j++] = *cmd++;
 			while (*cmd == *(cmd - 1))
 				tokens[i][j++] = *cmd++;
 			tokens[i++][j] = '\0';
+		}
+		else if (ft_strchr("<>", *cmd) != NULL)
+		{
+			tokens[i] = ft_calloc(char_count(cmd, 1) + 1, sizeof(char));
+			tokens[i][j++] = *cmd++;
+			while (*cmd == *(cmd - 1))
+				tokens[i][j++] = *cmd++;
+			if (*cmd != ' ')
+				tokens[i][j++] = ' ';
+			while (ft_strchr("|<>", *cmd) == NULL && *cmd != '\0')
+				tokens[i][j++] = *cmd++;
+			tokens[i][j] = '\0';
+			++i;
 		}
 		else
 		{
@@ -112,10 +127,18 @@ static int	token_count(char *cmd)
 	token_count = 0;
 	while (*cmd != '\0')
 	{
-		if (ft_strchr("|<>", *cmd++) != NULL)
+		if (ft_strchr("|", *cmd++) != NULL)
 		{
 			++token_count;
 			while (*cmd == *(cmd - 1) && *cmd != '\0')
+				++cmd;
+		}
+		else if (ft_strchr("<>", *cmd++) != NULL)
+		{
+			++token_count;
+			while (*cmd == *(cmd - 1) && *cmd != '\0')
+				++cmd;
+			while (ft_strchr("|<>", *cmd) == NULL && *cmd != '\0')
 				++cmd;
 		}
 		++token_count;
@@ -143,7 +166,17 @@ static int	char_count(char const *cmd, int special)
 	count = 0;
 	if (special == 1)
 	{
-		if (ft_strchr("|<>", *cmd++) != NULL)
+		if (ft_strchr("|", *cmd) != NULL)
+		{
+			++count;
+			++cmd;
+			while (*cmd == *(cmd - 1))
+			{
+				++count;
+				++cmd;
+			}
+		}
+		else if (ft_strchr("<>", *cmd++) != NULL)
 		{
 			++count;
 			while (*cmd == *(cmd - 1))
@@ -151,6 +184,10 @@ static int	char_count(char const *cmd, int special)
 				++count;
 				++cmd;
 			}
+			if (*cmd != ' ')
+				++count;
+			while (*cmd != '\0' && ft_strchr("|<>", *cmd++) == NULL)
+				++count;
 		}
 	}
 	else
