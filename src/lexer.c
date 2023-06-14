@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:34:45 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/14 15:00:06 by lchew            ###   ########.fr       */
+/*   Updated: 2023/06/14 15:58:33 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ static void	cmd_modifier(char *cmd, char **tokens)
 			tokens[i][j++] = *cmd++;
 			while (*cmd == *(cmd - 1))
 				tokens[i][j++] = *cmd++;
+			if (*cmd != ' ')
+				tokens[i][j++] = ' ';
 			while (ft_strchr("|<>", *cmd) == NULL && *cmd != '\0')
 				tokens[i][j++] = *cmd++;
 			tokens[i][j] = '\0';
@@ -182,6 +184,8 @@ static int	char_count(char const *cmd, int special)
 				++count;
 				++cmd;
 			}
+			if (*cmd != ' ')
+				++count;
 			while (*cmd != '\0' && ft_strchr("|<>", *cmd++) == NULL)
 				++count;
 		}
