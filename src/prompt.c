@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/06/11 20:10:57 by lchew            ###   ########.fr       */
+/*   Updated: 2023/06/14 15:58:10 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ void	prompt(t_root *root, char **envp)
 	char	**path;
 	t_list	*cmd_lexer;
 	t_tree	*head;
-	int		i = -1;
+	// int		i = -1;
 
 	path = find_path();
-	while (path[++i])
-		printf("%s\n", path[i]);
+	// while (path[++i])
+	// 	printf("%s\n", path[i]);
 	while (1)
 	{
 		cmd = readline("\033[1;32mminishell$\033[0m ");
