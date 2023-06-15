@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/06/14 16:05:24 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/06/15 14:19:49 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,10 @@ void	prompt(t_root *root, char **envp)
 	char	**path;
 	t_list	*cmd_lexer;
 	t_tree	*head;
-	// int		i = -1;
+	pid_t	child;
+	int		status;
 
 	path = find_path();
-	// while (path[++i])
-	// 	printf("%s\n", path[i]);
 	while (1)
 	{
 		cmd = readline("\033[1;32mminishell$\033[0m ");
@@ -35,7 +34,11 @@ void	prompt(t_root *root, char **envp)
 			history_print(root->history);
 		else
 			printf("output: %s\n", cmd);
-		exec_cmd(head, envp);
+		// exec_cmd(head, envp);
+		child = ft_fork();
+		if (child == 0)
+			recurse_bst(head, envp);
+		waitpid(-1, &status, 0);
 		free(cmd);
 	}
 	history_clear(&root->history);

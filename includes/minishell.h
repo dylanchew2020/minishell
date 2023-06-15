@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/14 19:31:08 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/06/15 14:17:24 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,10 @@ t_tree		*tree_node_new(t_token token, char *value, t_tree *left, t_tree *right);
 
 void		print_tree(t_tree *root, int b);
 
+/* EXECUTE */
 void		exec_cmd(t_tree *node, char **envp);
+void		recurse_bst(t_tree *node, char **envp);
+void		execution(char *argv, char **envp);
 
 /* FT_UTLIS */
 int			ft_pipe(int p[2]);
@@ -135,5 +138,10 @@ int			ft_dup2(int new_fd, int old_fd);
 
 /* PIPE */
 void		children(t_tree *node, char **envp);
+
+/* REDIRECTION */
+int			rdin_fd(char *node_value);
+int			rdout_fd(char *node_value);
+char		*find_file(char *node_value);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/14 19:29:48 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/06/15 15:06:49 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 // 	char	**argv;
 // 	pid_t	pid;
 // 	int		exec;
+// 	char	*file;
 
 // 	i = -1;
 // 	if (node == NULL)
@@ -47,6 +48,7 @@
 // 				exit(0);
 // 			}
 // 		}
+// 		printf("fd |%i|\n", rdin_fd(node->value));
 // 	}
 // 	else
 // 	{
@@ -58,16 +60,30 @@
 
 void	recurse_bst(t_tree *node, char **envp)
 {
-	if (node->left == NULL && node->right == NULL)
+	if (node->value == NULL)
 		return ;
 	if (node->token == PIPE_OP)
+	{
+		// printf("pipe\n");
 		children(node, envp);
+	}
 	else if (node->token == RDIN_OP)
-		ft_dup2(find_file_fd(node->value), 0);
+	{
+		printf("it enter here rdin\n");
+		ft_dup2(rdin_fd(node->value), STDIN_FILENO);
+		// printf("rdint safe\n");
+	}
 	else if (node->token == RDOUT_OP)
-		ft_dup2(find_file_fd(node->value), 1);
+	{
+		// printf("it enter e rdout\n");
+		ft_dup2(rdout_fd(node->value), STDOUT_FILENO);
+		// printf("rdout safe\n");
+	}
 	else if (node->token == COMMAND)
+	{
+		printf("executionnnnn \n");
 		execution(node->value, envp);
+	}
 	recurse_bst(node->left, envp);
 	recurse_bst(node->right, envp);
 }

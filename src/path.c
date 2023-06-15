@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 15:52:57 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/06/14 17:30:42 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/06/15 14:36:15 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	*the_legit_path(char *argv)
 	int		i;
 
 	path = ft_split(argv, ' ');
-	cmd = path[0];
+	cmd = ft_strdup(path[0]);
 	free_2D(path);
 	path = find_path();
 	i = -1;
