@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:03 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/15 14:49:06 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/06/19 17:08:03 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	rdout_fd(char *node_value)
 	int		fd;
 
 	file = find_file(node_value);
-	// printf("no problem here\n");
+	printf("out %s\n", file);
 	fd = ft_open(file, O_CREAT | O_RDWR | O_TRUNC, 0666);
 	return (fd);
 }

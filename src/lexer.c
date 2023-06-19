@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:34:45 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/14 16:26:21 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/06/15 18:53:18 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ static void	cmd_modifier(char *cmd, char **tokens)
 	while (*cmd != '\0')
 	{
 		j = 0;
+		while (*cmd == ' ')
+			++cmd;
 		if (ft_strchr("|", *cmd) != NULL)
 		{
 			tokens[i] = ft_calloc(char_count(cmd, 1) + 1, sizeof(char));
@@ -91,11 +93,11 @@ static void	cmd_modifier(char *cmd, char **tokens)
 		{
 			tokens[i] = ft_calloc(char_count(cmd, 1) + 1, sizeof(char));
 			tokens[i][j++] = *cmd++;
-			while (*cmd == *(cmd - 1))
+			while (*cmd == *(cmd - 1) || *cmd == ' ')
 				tokens[i][j++] = *cmd++;
-			if (*cmd != ' ')
+			if (ft_strchr("<>", *(cmd - 1)) != NULL && *cmd != ' ')
 				tokens[i][j++] = ' ';
-			while (ft_strchr("|<>", *cmd) == NULL && *cmd != '\0')
+			while (ft_strchr("|<> ", *cmd) == NULL && *cmd != '\0')
 				tokens[i][j++] = *cmd++;
 			tokens[i][j] = '\0';
 			++i;
@@ -127,37 +129,46 @@ static int	token_count(char *cmd)
 	token_count = 0;
 	while (*cmd != '\0')
 	{
-		if (ft_strchr("|", *cmd++) != NULL)
+		while (*cmd == ' ')
+				++cmd;
+		if (ft_strchr("|", *cmd) != NULL)
 		{
-			++token_count;
+			++cmd;
 			while (*cmd == *(cmd - 1) && *cmd != '\0')
 				++cmd;
+			++token_count;
 		}
 		else if (ft_strchr("<>", *cmd++) != NULL)
 		{
-			++token_count;
-			while (*cmd == *(cmd - 1) && *cmd != '\0')
+			while (*cmd == *(cmd - 1) || *cmd == ' ')
 				++cmd;
+			while (ft_strchr("|<> ", *cmd) == NULL && *cmd != '\0')
+				++cmd;
+			++token_count;
+		}
+		else
+		{
 			while (ft_strchr("|<>", *cmd) == NULL && *cmd != '\0')
 				++cmd;
+			++token_count;
 		}
-		++token_count;
-		while (ft_strchr("|<>", *cmd) == NULL && *cmd != '\0')
-			++cmd;
 	}
+	printf("token_count: %d\n", token_count);
 	return (token_count);
 }
 
 /**
  * char_count - Counts the number of consecutive identical special or 
- *               non-special characters at the beginning of a string.
- * @param cmd: The string to count characters in.
- * @param special: If set to 1, counts special characters. If set to 0, 
- *                 counts non-special characters.
+ *               non-special characters at the beginning of a string based
+ *               on the 'special' parameter.
+ * @param cmd: The string in which to count characters.
+ * @param special: If 1, the function counts consecutive identical special
+ *                 characters (i.e., '|', '<', '>'). If 0, it counts consecutive 
+ *                 non-special characters.
  *
  * @returns 
- * The number of consecutive identical characters at the beginning of the 
- * string that match the 'special' condition.
+ * The number of consecutive identical characters at the beginning of the string 
+ * that match the 'special' criterion.
  */
 static int	char_count(char const *cmd, int special)
 {
@@ -178,21 +189,19 @@ static int	char_count(char const *cmd, int special)
 		}
 		else if (ft_strchr("<>", *cmd++) != NULL)
 		{
-			++count;
-			while (*cmd == *(cmd - 1))
+			count += 2;
+			while (*cmd == *(cmd - 1) || *cmd == ' ')
 			{
 				++count;
 				++cmd;
 			}
-			if (*cmd != ' ')
-				++count;
-			while (*cmd != '\0' && ft_strchr("|<>", *cmd++) == NULL)
+			while (*cmd != '\0' && ft_strchr("|<> ", *cmd++) == NULL)
 				++count;
 		}
 	}
 	else
 	{
-		while (*cmd != '\0' && ft_strchr("|<>", *cmd++) == NULL)
+		while (ft_strchr("|<>", *cmd) == NULL && *cmd++ != '\0')
 			++count;
 	}
 	return (count);

@@ -10,7 +10,7 @@
 NAME		:= minishell
 CC			:= gcc
 FLAGS		:= #-Wall -Wextra -Werror 
-FSAN		:= -fsanitize=address
+FSAN		:= -fsanitize=address -g3
 # LDFLAGS		= -L/goinfre/tzi-qi/.brew/opt/readline/lib
 # CPPFLAGS	= -I/goinfre/tzi-qi/.brew/opt/readline/include
 

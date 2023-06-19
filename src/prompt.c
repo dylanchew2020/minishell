@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/06/15 14:19:49 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/06/19 16:51:28 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	prompt(t_root *root, char **envp)
 		exit_prompt(cmd);
 		history_add(&root->history, cmd);
 		cmd_lexer = lexer(cmd);
-		head = parser(cmd_lexer, ft_lstsize(cmd_lexer));
+		head = parser(cmd_lexer, ft_lstsize(cmd_lexer), root);
 		print_tree(head, 0);
 		if (!ft_strncmp(cmd, "history", 8))
 			history_print(root->history);
