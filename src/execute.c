@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/19 17:33:07 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/06/19 21:09:06 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,6 @@ void	recurse_bst(t_tree *node, char **envp)
 	pid_t	child;
 	int		status;
 
-	if (node->value == NULL)
-		return ;
 	if (node->token == PIPE)
 	{
 		printf("pipe\n");
@@ -80,15 +78,20 @@ void	recurse_bst(t_tree *node, char **envp)
 	{
 		printf("it enter e rdout\n");
 		ft_dup2(rdout_fd(node->value), STDOUT_FILENO);
-		// printf("rdout safe\n");
+		printf("rdout safe\n");
 	}
 	else if (node->token == COMMAND)
 	{
 		printf("executionnßnnn \n");
-		execution(node->value, envp);
+		child = ft_fork();
+		if (child == 0)
+			execution(node->value, envp);
+		waitpid(child, &status, 0);
 	}
-	recurse_bst(node->left, envp);
-	recurse_bst(node->right, envp);
+	if (node->left != NULL)
+		recurse_bst(node->left, envp);
+	if (node->right != NULL)
+		recurse_bst(node->right, envp);
 }
 
 void	execution(char *argv, char **envp)

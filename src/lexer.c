@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:34:45 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/15 18:53:18 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/06/19 20:58:16 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_list	*lexer(char *cmd)
 	if (!head)
 		return (NULL);
 	node = head;
-	printf("node->content: %s\n", node->content);
+	// printf("node->content: %s\n", node->content);
 	while (*tokens)
 	{
 		node->next = ft_lstnew(ft_strtrim(*tokens++, " "));
@@ -52,7 +52,7 @@ t_list	*lexer(char *cmd)
 			return (NULL);
 		}
 		node = node->next;
-		printf("node->content: %s\n", node->content);
+		// printf("node->content: %s\n", node->content);
 	}
 	return (head);
 }
@@ -153,7 +153,7 @@ static int	token_count(char *cmd)
 			++token_count;
 		}
 	}
-	printf("token_count: %d\n", token_count);
+	// printf("token_count: %d\n", token_count);
 	return (token_count);
 }
 
