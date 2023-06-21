@@ -16,7 +16,8 @@ int	ft_pipe(int p[2])
 {
 	if (pipe(p) < 0)
 	{
-		ft_putstr_fd("Error: can't create a pipe\n", 2);
+		printf("pipe: %d\n", getpid());
+		ft_putstr_fd("Error: can't create a pipe \n", 2);
 		exit (1);
 	}
 	return (*p);
@@ -29,6 +30,7 @@ int	ft_open(const char *file, int flags, int permission)
 	fd = open(file, flags, permission);
 	if (fd < 0)
 	{
+		printf("open: %d\n", getpid());
 		ft_putstr_fd("Error: Can't open file\n", 2);
 		exit (1);
 	}
@@ -42,6 +44,7 @@ int	ft_fork(void)
 	child = fork();
 	if (child < 0)
 	{
+		printf("fork: %d\n", getpid());
 		ft_putstr_fd("Error: Can't fork a child\n", 2);
 		exit (1);
 	}
@@ -52,6 +55,7 @@ int	ft_close(int fd)
 {
 	if (close(fd) < 0)
 	{
+		printf("close: %d\n", getpid());
 		ft_putstr_fd("Error: Can't close the fd\n", 2);
 		exit (1);
 	}

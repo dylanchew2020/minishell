@@ -71,8 +71,8 @@ CYAN 		:= \033[1;36m
 RM			:= rm -f
 
 $(NAME): $(LIBFT) $(OBJ) 
-	@ echo "\n$(GREEN)Compilation $(CLR_RMV)of $(BLUE)$(NAME) $(CLR_RMV)..."
-	@ $(CC) $(FLAGS) $(FSAN) $(LIB) $(READLINE) $(OBJ) -o $(NAME)  
+	@ echo "\n$(GREEN)Compilation $(CLR_RMV)of $(BLUE) $(NAME) $(CLR_RMV)..."
+	@ $(CC) $(FLAGS) $(FSAN) $(LIB) $(READLINE) $(OBJ)  $(LIBFT_DIR)/$(LIBFT) -o $(NAME)  
 	@ echo "$(GREEN)[Success] $(BLUE)$(NAME) $(CLR_RMV)created ✔️"
 
 $(LIBFT):

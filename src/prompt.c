@@ -35,10 +35,12 @@ void	prompt(t_root *root, char **envp)
 		// else
 		// 	printf("output: %s\n", cmd);
 		// exec_cmd(head, envp);
+		printf("before %d\n", getpid());
 		child = ft_fork();
 		if (child == 0)
 			recurse_bst(head, envp);
 		waitpid(-1, &status, 0);
+		printf("after %d\n", getpid());
 		free(cmd);
 	}
 	history_clear(&root->history);

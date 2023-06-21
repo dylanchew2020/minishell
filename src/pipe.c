@@ -20,37 +20,43 @@ void	children(t_tree *node, char **envp)
 
 	data = malloc(sizeof(t_pipe));
 	ft_pipe(data->p);
-	// printf("1 pipe[0]: %d\n", data->p[0]);
-	// printf("1 pipe[1]: %d\n", data->p[1]);
+	printf("parent %d \n", getpid());
+	printf("1 pipe[0]: %d\n", data->p[0]);
+	printf("1 pipe[1]: %d\n", data->p[1]);
 	children[0] = ft_fork();
 	if (children[0] == 0)
 	{
-		// printf("first child %d\n", getpid());
-		ft_close(data->p[0]);
-		ft_dup2(data->p[1], STDOUT_FILENO);
+		printf("first child %d\n", getpid());
+		printf("first data->pipe[0] %d && data->pipe[1] %d\n", data->p[0], data->p[1]);
+		dup2(data->p[1], 1);
 		ft_close(data->p[1]);
+		printf("close first child %d\n", getpid());
+		ft_close(data->p[0]);
+		printf("close first child %d\n", getpid());
 		recurse_bst(node->left, envp);
 	}
 	waitpid(children[0], &status, 0);
 	ft_close(data->p[1]);
+	printf("outside first child %d\n", getpid());
 	data->previous_fd = data->p[0];
 	ft_pipe(data->p);
-	// printf("2 pipe[0]: %d\n", data->p[0]);
-	// printf("2 pipe[1]: %d\n", data->p[1]);
-	// printf("parent %d \n", getpid());
+	printf("previous_fd %d\n", data->previous_fd);
+	printf("2 pipe[0]: %d\n", data->p[0]);
+	printf("2 pipe[1]: %d\n", data->p[1]);
 	children[1] = ft_fork();
 	if (children[1] == 0)
 	{
-		// printf("second child %d\n", getpid());
+		printf("second child %d\n", getpid());
 		ft_close(data->p[0]);
-		ft_dup2(data->previous_fd, STDIN_FILENO);
+		dup2(data->previous_fd, 0);
 		ft_close(data->previous_fd);
-		ft_dup2(data->p[1], STDOUT_FILENO);
+		printf("second child before recurse\n");
+		dup2(data->p[1], 1);
 		ft_close(data->p[1]);
-		recurse_bst(node->right, envp);
+		recurse_bst(node->right, envp); 
 	}
 	ft_close(data->p[0]);
 	ft_close(data->p[1]);
-	// waitpid(-1, &status, 0);
-	wait(NULL);
+	waitpid(-1, &status, 0);
+	free(data);
 }

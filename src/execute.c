@@ -65,24 +65,24 @@ void	recurse_bst(t_tree *node, char **envp)
 
 	if (node->token == PIPE)
 	{
-		printf("pipe\n");
+		printf("%d pipe\n", getpid());
 		children(node, envp);
 	}
 	else if (node->token == RDIN)
 	{
-		printf("it enter here rdin\n");
-		ft_dup2(rdin_fd(node->value), STDIN_FILENO);
+		printf("%d it enter here rdin\n", getpid());
+		dup2(rdin_fd(node->value), STDIN_FILENO);
 		// printf("rdint safe\n");
 	}
 	else if (node->token == RDOUT)
 	{
-		printf("it enter e rdout\n");
-		ft_dup2(rdout_fd(node->value), STDOUT_FILENO);
-		printf("rdout safe\n");
+		printf("%d it enter e rdout\n", getpid());
+		dup2(rdout_fd(node->value), STDOUT_FILENO);
+		printf("%d rdout safe\n", getpid());
 	}
 	else if (node->token == COMMAND)
 	{
-		printf("executionnßnnn \n");
+		printf("%d executionnßnnn \n", getpid());
 		child = ft_fork();
 		if (child == 0)
 			execution(node->value, envp);
