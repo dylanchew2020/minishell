@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:06 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/19 20:55:50 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/06/21 21:35:56 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,28 +35,24 @@ void	children(t_tree *node, char **envp)
 		printf("close first child %d\n", getpid());
 		recurse_bst(node->left, envp);
 	}
-	waitpid(children[0], &status, 0);
-	ft_close(data->p[1]);
-	printf("outside first child %d\n", getpid());
-	data->previous_fd = data->p[0];
-	ft_pipe(data->p);
-	printf("previous_fd %d\n", data->previous_fd);
-	printf("2 pipe[0]: %d\n", data->p[0]);
-	printf("2 pipe[1]: %d\n", data->p[1]);
+	// ft_close(data->p[1]);
+	// printf("outside first child %d\n", getpid());
+	// data->previous_fd = data->p[0];
+	// ft_pipe(data->p);
+	// printf("previous_fd %d\n", data->previous_fd);
+	// printf("2 pipe[0]: %d\n", data->p[0]);
+	// printf("2 pipe[1]: %d\n", data->p[1]);
 	children[1] = ft_fork();
 	if (children[1] == 0)
 	{
 		printf("second child %d\n", getpid());
+		dup2(data->p[0], 0);
 		ft_close(data->p[0]);
-		dup2(data->previous_fd, 0);
-		ft_close(data->previous_fd);
 		printf("second child before recurse\n");
-		dup2(data->p[1], 1);
-		ft_close(data->p[1]);
 		recurse_bst(node->right, envp); 
 	}
-	ft_close(data->p[0]);
-	ft_close(data->p[1]);
+	// ft_close(data->p[0]);
+	// ft_close(data->p[1]);
 	waitpid(-1, &status, 0);
 	free(data);
 }
