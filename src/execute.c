@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/19 21:09:06 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/06/21 17:35:23 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,20 @@ void	recurse_bst(t_tree *node, char **envp)
 {
 	pid_t	child;
 	int		status;
+	int		p[2];
 
+	printf("%d in exec\n", getpid());
+	print_tree(node, 0);
+	if (node->value == NULL)
+		return ;
 	if (node->token == PIPE)
 	{
 		printf("%d pipe\n", getpid());
-		children(node, envp);
+		// children(node, envp);
+		ft_pipe(p);
+		dup2(p[1], 1);
+		ft_close(p[1]);
+		printf("%d after pip\n", getpid());
 	}
 	else if (node->token == RDIN)
 	{
@@ -85,13 +94,30 @@ void	recurse_bst(t_tree *node, char **envp)
 		printf("%d executionnßnnn \n", getpid());
 		child = ft_fork();
 		if (child == 0)
+		{
+			printf("%d child exec\n", getpid());
 			execution(node->value, envp);
-		waitpid(child, &status, 0);
+		}
+		else
+		{
+			waitpid(child, &status, 0);
+		}
 	}
 	if (node->left != NULL)
+	{
+		printf("left %d\n", getpid());
 		recurse_bst(node->left, envp);
+	}
 	if (node->right != NULL)
+	{
+		printf("right %d\n", getpid());
+		if (node->token == PIPE)
+		{
+			dup2(p[0], 0);
+			ft_close(p[0]);
+		}
 		recurse_bst(node->right, envp);
+	}
 }
 
 void	execution(char *argv, char **envp)

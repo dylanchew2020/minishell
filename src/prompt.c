@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/06/19 21:05:54 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/06/21 17:42:52 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ void	prompt(t_root *root, char **envp)
 		printf("before %d\n", getpid());
 		child = ft_fork();
 		if (child == 0)
+		{
 			recurse_bst(head, envp);
+			exit(0);
+		}
 		waitpid(-1, &status, 0);
 		printf("after %d\n", getpid());
 		free(cmd);

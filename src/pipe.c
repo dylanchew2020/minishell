@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:06 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/19 20:55:50 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/06/21 15:04:08 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	children(t_tree *node, char **envp)
 	int		status;
 
 	data = malloc(sizeof(t_pipe));
+	if (!data)
+		return ;
 	ft_pipe(data->p);
 	printf("parent %d \n", getpid());
 	printf("1 pipe[0]: %d\n", data->p[0]);
@@ -35,7 +37,6 @@ void	children(t_tree *node, char **envp)
 		printf("close first child %d\n", getpid());
 		recurse_bst(node->left, envp);
 	}
-	waitpid(children[0], &status, 0);
 	ft_close(data->p[1]);
 	printf("outside first child %d\n", getpid());
 	data->previous_fd = data->p[0];
