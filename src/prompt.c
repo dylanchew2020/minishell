@@ -12,15 +12,55 @@
 
 #include "minishell.h"
 
+t_link	*lstnew(char *content)
+{
+	t_link	*list;
+
+	list = ft_calloc(1, sizeof(t_link));
+	if (!list)
+		return (NULL);
+	list->content = content;
+	list->next = NULL;
+	return (list);
+}
+
+t_link	*lstlast(t_link *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst->next)
+		lst = lst->next;
+	return (lst);
+}
+
+void	lstadd_back(t_link **lst, t_link *new)
+{
+	t_link	*temp;
+
+	if (!new)
+		return ;
+	if (!*lst)
+		*lst = new;
+	else
+	{
+		temp = *lst;
+		temp = lstlast(temp);
+		temp->next = new;
+	}
+}
+
 void	prompt(t_root *root, char **envp)
 {
 	char	*cmd;
 	char	**path;
 	t_list	*cmd_lexer;
 	t_list	*iter;
-	t_tree	*head;
+	t_link	*head;
+	t_link	*body;
+	t_link	*tmp;
 	pid_t	child;
 	int		status;
+	int		i;
 
 	path = find_path();
 	while (1)
@@ -28,26 +68,30 @@ void	prompt(t_root *root, char **envp)
 		cmd = readline("\033[1;32mminishell$\033[0m ");
 		exit_prompt(cmd);
 		history_add(&root->history, cmd);
+		if (!ft_strncmp(cmd, "history", 8))
+			history_print(root->history);
 		cmd_lexer = lexer(cmd);
 		iter = cmd_lexer;
-		while (iter->next != NULL)
+		head = NULL;
+		while (iter)
 		{
-			printf("%s\n", (char *)iter->content);
+			body = lstnew((char *)iter->content);
+			lstadd_back(&head, body);
 			iter = iter->next;
 		}
-		head = parser(cmd_lexer, ft_lstsize(cmd_lexer), root);
-		print_tree(head, 0);
-		// if (!ft_strncmp(cmd, "history", 8))
-		// 	history_print(root->history);
+		tmp = head;
+		while (tmp)
+		{
+			printf("lexer : |%s|\n", (char *)tmp->content);
+			tmp = tmp->next;
+		}
+		i = pipe_num(head);
+		printf("%i\n", i);
+		// if (i >= 1)
+		// 	pipe_exec(cmd_lexer, envp, i);
 		// else
-		// 	printf("output: %s\n", cmd);
-		// exec_cmd(head, envp);
-		printf("before %d\n", getpid());
-		child = ft_fork();
-		if (child == 0)
-			recurse_bst(head, envp);
-		waitpid(-1, &status, 0);
-		printf("after %d\n", getpid());
+		// 	execution((char *)cmd_lexer->content, envp);
+		// ft_lstclear(&cmd_lexer, free);
 		free(cmd);
 	}
 	history_clear(&root->history);

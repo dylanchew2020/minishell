@@ -89,11 +89,21 @@ typedef struct s_root
 	t_token_check	tkchk[NO_OF_TOKEN_TYPES];
 }	t_root;
 
-typedef struct s_pipe
+typedef struct s_link
 {
-	int	p[2];
-	int	previous_fd;
-}	t_pipe;
+	char			*content;
+	t_token			token;
+	struct s_link	*next;
+}	t_link;
+
+typedef struct s_data
+{
+	int		p[2];
+	int		prev_fd;
+	int 	rdin_fd;
+	int		rdout_fd;
+	char	*cmd;
+}	t_data;
 
 /* PROGRAM */
 
@@ -147,6 +157,7 @@ int			ft_dup2(int new_fd, int old_fd);
 
 /* PIPE */
 void		children(t_tree *node, char **envp);
+int			pipe_num(t_link *head);
 
 /* REDIRECTION */
 int			rdin_fd(char *node_value);

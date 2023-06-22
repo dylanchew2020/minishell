@@ -58,41 +58,41 @@
 // }
 
 
-void	recurse_bst(t_tree *node, char **envp)
-{
-	pid_t	child;
-	int		status;
+// void	recurse_bst(t_tree *node, char **envp)
+// {
+// 	pid_t	child;
+// 	int		status;
 
-	if (node->token == PIPE)
-	{
-		printf("%d pipe\n", getpid());
-		children(node, envp);
-	}
-	else if (node->token == RDIN)
-	{
-		printf("%d it enter here rdin\n", getpid());
-		dup2(rdin_fd(node->value), STDIN_FILENO);
-		// printf("rdint safe\n");
-	}
-	else if (node->token == RDOUT)
-	{
-		printf("%d it enter e rdout\n", getpid());
-		dup2(rdout_fd(node->value), STDOUT_FILENO);
-		printf("%d rdout safe\n", getpid());
-	}
-	else if (node->token == COMMAND)
-	{
-		printf("%d executionnßnnn \n", getpid());
-		child = ft_fork();
-		if (child == 0)
-			execution(node->value, envp);
-		waitpid(child, &status, 0);
-	}
-	if (node->left != NULL)
-		recurse_bst(node->left, envp);
-	if (node->right != NULL)
-		recurse_bst(node->right, envp);
-}
+// 	if (node->token == PIPE)
+// 	{
+// 		printf("%d pipe\n", getpid());
+// 		children(node, envp);
+// 	}
+// 	else if (node->token == RDIN)
+// 	{
+// 		printf("%d it enter here rdin\n", getpid());
+// 		dup2(rdin_fd(node->value), STDIN_FILENO);
+// 		// printf("rdint safe\n");
+// 	}
+// 	else if (node->token == RDOUT)
+// 	{
+// 		printf("%d it enter e rdout\n", getpid());
+// 		dup2(rdout_fd(node->value), STDOUT_FILENO);
+// 		printf("%d rdout safe\n", getpid());
+// 	}
+// 	else if (node->token == COMMAND)
+// 	{
+// 		printf("%d executionnßnnn \n", getpid());
+// 		child = ft_fork();
+// 		if (child == 0)
+// 			execution(node->value, envp);
+// 		waitpid(child, &status, 0);
+// 	}
+// 	if (node->left != NULL)
+// 		recurse_bst(node->left, envp);
+// 	if (node->right != NULL)
+// 		recurse_bst(node->right, envp);
+// }
 
 void	execution(char *argv, char **envp)
 {
