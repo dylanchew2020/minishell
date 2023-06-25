@@ -3,47 +3,62 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 15:52:57 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/05/31 19:21:28 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/06/25 11:48:10 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	complete_path(char **split)
+/**
+ * complete_path - Appends a slash at the end of each string in the path array.
+ * @param path: The array of strings.
+ */
+static void	complete_path(char **path)
 {
-	int i;
-	char *temp;
+	int		i;
+	char	*temp;
 
 	i = -1;
-	while(split[++i])
+	while (path[++i])
 	{
-		temp = ft_strjoin(split[i], "/");
-		free(split[i]);
-		split[i] = temp;
+		temp = ft_strjoin(path[i], "/");
+		if (temp != NULL)
+		{
+			free(path[i]);
+			path[i] = temp;
+		}
+		else
+		{
+			printf("Error: %s\n", strerror(errno));
+			return ;
+		}
 	}
 }
 
-char	**find_path(char **envp)
+/**
+ * find_path - Finds the system PATH, splits it into separate directories, 
+ *             and appends a slash at the end of each directory.
+ * @param void
+ *
+ * @returns 
+ * An array of strings, each string being a directory from the system PATH, 
+ * or NULL if PATH is not found or an error occurs.
+ */
+char	**find_path(void)
 {
-	char *path;
-	char **split;
-	(void)envp;
+	char	*tmp;
+	char	**path;
 
-	path = getenv("PATH");
-	if (path != NULL)
+	tmp = getenv("PATH");
+	if (tmp != NULL)
 	{
-		path = ft_substr(path, 5, ft_strlen(path));
-		split = ft_split(path, ':');
-		complete_path(split);
-		free(path);
-		return (split);
+		path = ft_split(tmp, ':');
+		complete_path(path);
+		return (path);
 	}
-	if (path == NULL)
-		printf("Error: %s\n", strerror(errno));
+	printf("Error: %s\n", strerror(errno));
 	return (NULL);
 }
-
-void check_path

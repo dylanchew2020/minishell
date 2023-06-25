@@ -12,12 +12,16 @@
 
 #include "libft.h"
 
-/*
-**	Deletes and frees the given node and every successor of that node, 
-**	using the function 'del' and free(3).
-**
-**	Finally, the pointer to the list must be set to NULL.
-*/
+/**
+ * ft_lstclear - Deletes and frees the given element and all successors
+ * from the list.
+ * @param lst: A double pointer to the first element of the list to be cleared.
+ * @param del: A pointer to a function that deletes the node's content.
+ *
+ * @returns 
+ * Nothing. After this function is called, all pointers to the elements
+ * of 'lst' and 'lst' itself are no longer valid and should not be used.
+ */
 void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
 	t_list	*temp;

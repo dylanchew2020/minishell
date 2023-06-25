@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/05 21:51:53 by lchew            ###   ########.fr       */
+/*   Updated: 2023/06/14 23:06:45 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,13 @@
 
 # define EXIT "exit"
 
-# define PIPE '|'
-# define REDIRECT_IN '<'
-# define REDIRECT_OUT '>'
-# define SINGLE_QUOTE '\''
-# define DOUBLE_QUOTE '\"'
+# define PIPE_OP "|"
+# define RDIN_OP "<"
+# define HEREDOC_OP "<<"
+# define RDOUT_OP ">"
+# define RDAPP_OP ">>"
+# define SINGLE_QUOTE "\'"
+# define DOUBLE_QUOTE "\""
 
 typedef struct s_history
 {
@@ -57,17 +59,21 @@ typedef struct s_history
 
 typedef enum e_token
 {
+	END,
+	RDAPP,
+	HEREDOC,
+	RDIN,
+	RDOUT,
+	PIPE,
 	COMMAND,
-	OPTION,
-	OPERATOR,
-	ARGUMENT
+	NO_OF_TOKEN_TYPES
 }	t_token;
 
-typedef struct s_lexer
+typedef struct s_token_check
 {
-	char			*input;
-	struct s_lexer	*next;
-}	t_lexer;
+	char	*op;
+	t_token	token;
+}	t_token_check;
 
 typedef struct s_tree
 {
@@ -79,38 +85,48 @@ typedef struct s_tree
 
 typedef struct s_root
 {
-	t_history	*history;
-	t_lexer		*lexer;
+	t_history		*history;
+	t_token_check	tkchk[NO_OF_TOKEN_TYPES];
 }	t_root;
 
 /* PROGRAM */
+
 void		init_root(t_root *root);
+void		free_2D(char **str);
 
 /* PROMPT */
+
 void		prompt(t_root *root, char **envp);
 void		exit_prompt(char *cmd);
 
 /* HISTORY */
+
 t_history	*history_node_new(int index, void *cmd);
 void		history_clear(t_history **history);
 void		history_add(t_history **history, char *cmd);
 void		history_print(t_history *history);
 
 /* PATH */
-char		**find_path(char **envp);
-void		complete_path(char **split);
+
+char		**find_path(void);
 
 /* LEXER */
-t_list		*lexer(char *cmd, char **envp);
+
+t_list		*lexer(char *cmd);
 t_tree		*tree_node_new(t_token token, char *value, t_tree *left, t_tree *right);
 
 /* PARSER */
-t_tree	*parser(t_list *lexer, int num_tokens, int redirect);
-t_tree	*op_check(t_list *lexer, char op, int num_tokens, int redirect);
-t_tree	*cmd_check(t_list *lexer, int num_tokens, int redirect);
-t_tree	*tree_node_new(t_token token, char *value, t_tree *left, t_tree *right);
+
+t_tree	*parser(t_list *lexer, int num_tokens, t_root *root);
+t_tree	*token_check(t_list *lexer, char *op, int num_tokens, t_root *root);
+// t_tree	*cmd_check(t_list *lexer, int num_tokens);
+t_tree	*tree_node_new(t_token type, char *value, t_tree *left, t_tree *right);
+t_token	type_assign(char	*value, t_tree *left, t_tree *right, t_root *root);
+void	init_token_check(t_token_check	*tkchk);
 
 void	print_tree(t_tree *root, int b);
+
+void	exec_cmd(t_tree *node, char **envp);
 #endif
 
 
