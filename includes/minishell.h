@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/14 23:06:45 by lchew            ###   ########.fr       */
+/*   Updated: 2023/06/25 11:57:15 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,12 @@ typedef struct s_root
 	t_token_check	tkchk[NO_OF_TOKEN_TYPES];
 }	t_root;
 
+typedef struct s_pipe
+{
+	int	p[2];
+	int	previous_fd;
+}	t_pipe;
+
 /* PROGRAM */
 
 void		init_root(t_root *root);
@@ -109,6 +115,7 @@ void		history_print(t_history *history);
 /* PATH */
 
 char		**find_path(void);
+char		*the_legit_path(char *argv);
 
 /* LEXER */
 
@@ -117,24 +124,33 @@ t_tree		*tree_node_new(t_token token, char *value, t_tree *left, t_tree *right);
 
 /* PARSER */
 
-t_tree	*parser(t_list *lexer, int num_tokens, t_root *root);
-t_tree	*token_check(t_list *lexer, char *op, int num_tokens, t_root *root);
-// t_tree	*cmd_check(t_list *lexer, int num_tokens);
-t_tree	*tree_node_new(t_token type, char *value, t_tree *left, t_tree *right);
-t_token	type_assign(char	*value, t_tree *left, t_tree *right, t_root *root);
-void	init_token_check(t_token_check	*tkchk);
+t_tree		*parser(t_list *lexer, int num_tokens, t_root *sh);
+t_tree		*token_check(t_list *lexer, char *op, int num_tokens, t_root *sh);
+// t_tree		*cmd_check(t_list *lexer, int num_tokens);
+t_tree		*tree_node_new(t_token type, char *value, t_tree *left, t_tree *right);
+t_token		type_assign(char	*value, t_tree *left, t_tree *right, t_root *sh);
+void		init_token_check(t_token_check	*tkchk);
 
-void	print_tree(t_tree *root, int b);
+void		print_tree(t_tree *root, int b);
 
-void	exec_cmd(t_tree *node, char **envp);
+/* EXECUTE */
+void		exec_cmd(t_tree *node, char **envp);
+void		recurse_bst(t_tree *node, char **envp);
+void		execution(char *argv, char **envp);
+
+/* FT_UTLIS */
+int			ft_pipe(int p[2]);
+int			ft_open(const char *file, int flags, int permission);
+int			ft_fork(void);
+int			ft_close(int fd);
+int			ft_dup2(int new_fd, int old_fd);
+
+/* PIPE */
+void		children(t_tree *node, char **envp);
+
+/* REDIRECTION */
+int			rdin_fd(char *node_value);
+int			rdout_fd(char *node_value);
+char		*find_file(char *node_value);
+
 #endif
-
-
-/* 
-
-		|
-		
-
-
-
- */

@@ -24,12 +24,10 @@ char	*ft_strtrim(char const *s1, char const *set)
 {
 	char			*array;
 	size_t			slen;
-	unsigned int	i;
 
 	if (s1 == NULL || set == NULL)
 		return (NULL);
 	slen = ft_strlen(s1);
-	i = 0;
 	while (*s1 != '\0' && ft_strchr(set, *s1) != NULL)
 	{
 		++s1;

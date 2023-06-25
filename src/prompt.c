@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/06/14 22:13:53 by lchew            ###   ########.fr       */
+/*   Updated: 2023/06/25 11:58:27 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,37 @@ void	prompt(t_root *root, char **envp)
 	char	*cmd;
 	char	**path;
 	t_list	*cmd_lexer;
+	t_list	*iter;
 	t_tree	*head;
-	int		i = -1;
+	pid_t	child;
+	int		status;
 
 	path = find_path();
-	while (path[++i])
-		printf("%s\n", path[i]);
 	while (1)
 	{
 		cmd = readline("\033[1;32mminishell$\033[0m ");
 		exit_prompt(cmd);
 		history_add(&root->history, cmd);
 		cmd_lexer = lexer(cmd);
+		iter = cmd_lexer;
+		while (iter->next != NULL)
+		{
+			printf("%s\n", (char *)iter->content);
+			iter = iter->next;
+		}
 		head = parser(cmd_lexer, ft_lstsize(cmd_lexer), root);
 		print_tree(head, 0);
-		if (!ft_strncmp(cmd, "history", 8))
-			history_print(root->history);
-		else
-			printf("output: %s\n", cmd);
-		exec_cmd(head, envp);
+		// if (!ft_strncmp(cmd, "history", 8))
+		// 	history_print(root->history);
+		// else
+		// 	printf("output: %s\n", cmd);
+		// exec_cmd(head, envp);
+		printf("before %d\n", getpid());
+		child = ft_fork();
+		if (child == 0)
+			recurse_bst(head, envp);
+		waitpid(-1, &status, 0);
+		printf("after %d\n", getpid());
 		free(cmd);
 	}
 	history_clear(&root->history);
