@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/22 21:31:46 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/06/25 18:56:46 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,33 +65,39 @@ void	recurse_bst(t_tree *node, char **envp)
 
 	if (node->token == PIPE)
 	{
-		printf("%d pipe\n", getpid());
+		// printf("%d pipe\n", getpid());
 		children(node, envp);
 	}
 	else if (node->token == RDIN)
 	{
-		printf("%d it enter here rdin\n", getpid());
+		// printf("%d it enter here rdin\n", getpid());
 		dup2(rdin_fd(node->value), STDIN_FILENO);
 		// printf("rdint safe\n");
+		if (node->right != NULL)
+			recurse_bst(node->right, envp);
+		if (node->left != NULL)
+			recurse_bst(node->left, envp);
 	}
 	else if (node->token == RDOUT)
 	{
-		printf("%d it enter e rdout\n", getpid());
+		// printf("%d it enter e rdout\n", getpid());
 		dup2(rdout_fd(node->value), STDOUT_FILENO);
-		printf("%d rdout safe\n", getpid());
+		// printf("%d rdout safe\n", getpid());
+		if (node->right != NULL)
+			recurse_bst(node->right, envp);
+		if (node->left != NULL)
+			recurse_bst(node->left, envp);
 	}
 	else if (node->token == COMMAND)
 	{
-		printf("%d executionnßnnn \n", getpid());
-		child = ft_fork();
-		if (child == 0)
+		// printf("COMMAND executed at PID %d \n", getpid());
+		// child = ft_fork();
+		// if (child == 0)
 			execution(node->value, envp);
+		// printf("This shouldn't be printed\n");
 		waitpid(child, &status, 0);
 	}
-	if (node->left != NULL)
-		recurse_bst(node->left, envp);
-	if (node->right != NULL)
-		recurse_bst(node->right, envp);
+	
 }
 
 void	execution(char *argv, char **envp)

@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/06/25 11:58:27 by lchew            ###   ########.fr       */
+/*   Updated: 2023/06/25 18:56:28 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,25 +29,34 @@ void	prompt(t_root *root, char **envp)
 		exit_prompt(cmd);
 		history_add(&root->history, cmd);
 		cmd_lexer = lexer(cmd);
-		iter = cmd_lexer;
-		while (iter->next != NULL)
-		{
-			printf("%s\n", (char *)iter->content);
-			iter = iter->next;
-		}
+		// iter = cmd_lexer;
+		// while (iter->next != NULL)
+		// {
+		// 	printf("%s\n", (char *)iter->content);
+		// 	iter = iter->next;
+		// }
 		head = parser(cmd_lexer, ft_lstsize(cmd_lexer), root);
-		print_tree(head, 0);
+		// print_tree(head, 0);
 		// if (!ft_strncmp(cmd, "history", 8))
 		// 	history_print(root->history);
 		// else
 		// 	printf("output: %s\n", cmd);
 		// exec_cmd(head, envp);
-		printf("before %d\n", getpid());
+		// printf("before %d\n", getpid());
 		child = ft_fork();
 		if (child == 0)
+		{
+			// printf("Prompt child, Fork = %d, PID = %d\n", child, getpid());
 			recurse_bst(head, envp);
-		waitpid(-1, &status, 0);
-		printf("after %d\n", getpid());
+			// printf("Check if this is printed\n");
+		}
+		else
+		{
+			// printf("Prompt parent, Fork = %d, PID = %d\n", child, getpid());
+			waitpid(-1, &status, 0);
+			// printf("Check parent wait finished\n");
+		}
+		// printf("after %d\n", getpid());
 		free(cmd);
 	}
 	history_clear(&root->history);
