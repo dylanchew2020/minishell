@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:34:45 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/14 23:38:02 by lchew            ###   ########.fr       */
+/*   Updated: 2023/06/15 18:50:53 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,6 @@ static int	token_count(char *cmd)
 			++token_count;
 		}
 	}
-	printf("token_count: %d\n", token_count);
 	return (token_count);
 }
 
@@ -190,7 +189,7 @@ static int	char_count(char const *cmd, int special)
 		else if (ft_strchr("<>", *cmd++) != NULL)
 		{
 			count += 2;
-			while (*cmd == *(cmd - 1) || *cmd++ == ' ')
+			while (*cmd == *(cmd - 1) || *cmd == ' ')
 			{
 				++count;
 				++cmd;
@@ -201,7 +200,7 @@ static int	char_count(char const *cmd, int special)
 	}
 	else
 	{
-		while (ft_strchr("|<>", *cmd++) == NULL && *cmd != '\0')
+		while (ft_strchr("|<>", *cmd) == NULL && *cmd++ != '\0')
 			++count;
 	}
 	return (count);
