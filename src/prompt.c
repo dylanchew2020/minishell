@@ -26,44 +26,52 @@ void	prompt(t_root *root, char **envp)
 	while (1)
 	{
 		cmd = readline("\033[1;32mminishell$\033[0m ");
-		exit_prompt(cmd);
-		history_add(&root->history, cmd);
-		cmd_lexer = lexer(cmd);
-		// iter = cmd_lexer;
-		// while (iter->next != NULL)
-		// {
-		// 	printf("%s\n", (char *)iter->content);
-		// 	iter = iter->next;
-		// }
-		head = parser(cmd_lexer, ft_lstsize(cmd_lexer), root);
-		// print_tree(head, 0);
-		// if (!ft_strncmp(cmd, "history", 8))
-		// 	history_print(root->history);
-		// else
-		// 	printf("output: %s\n", cmd);
-		// exec_cmd(head, envp);
-		// printf("before %d\n", getpid());
-		child = ft_fork();
-		if (child == 0)
+		if (exit_prompt(cmd) == 0)
 		{
-			// printf("Prompt child, Fork = %d, PID = %d\n", child, getpid());
-			recurse_bst(head, envp);
-			// printf("Check if this is printed\n");
+			history_add(&root->history, cmd);
+			if (!ft_strncmp(cmd, "history", 8))
+				history_print(root->history);
+			else
+			{
+				cmd_lexer = lexer(cmd);
+				// iter = cmd_lexer;
+				// while (iter->next != NULL)
+				// {
+				// 	printf("%s\n", (char *)iter->content);
+				// 	iter = iter->next;
+				// }
+				head = parser(cmd_lexer, ft_lstsize(cmd_lexer), root);
+				// print_tree(head, 0);
+				// exec_cmd(head, envp);
+				// printf("before %d\n", getpid());
+				if (head->token == PIPE)
+					recurse_bst(head, envp);
+				else
+				{
+					child = ft_fork();
+					if (child == 0)
+					{
+						// printf("Prompt child, Fork = %d, PID = %d\n", child, getpid());
+						recurse_bst(head, envp);
+						// printf("Check if this is printed\n");
+					}
+					else
+					{
+						// printf("Prompt parent, Fork = %d, PID = %d\n", child, getpid());
+						waitpid(-1, &status, 0);
+						// printf("Check parent wait finished\n");
+					}
+					// printf("after %d\n", getpid());
+					free(cmd);
+				}
+			}
 		}
-		else
-		{
-			// printf("Prompt parent, Fork = %d, PID = %d\n", child, getpid());
-			waitpid(-1, &status, 0);
-			// printf("Check parent wait finished\n");
-		}
-		// printf("after %d\n", getpid());
-		free(cmd);
 	}
 	history_clear(&root->history);
 	return ;
 }
 
-void	exit_prompt(char *cmd)
+int	exit_prompt(char *cmd)
 {
 	if (!cmd || !ft_strncmp(cmd, EXIT, 5))
 	{
@@ -71,6 +79,7 @@ void	exit_prompt(char *cmd)
 		clear_history();
 		exit(0);
 	}
+	return (0);
 }
 
 void	print_tree(t_tree *root, int b)

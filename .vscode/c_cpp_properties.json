@@ -1,19 +1,18 @@
 {
     "configurations": [
         {
-            "name": "Mac",
+            "name": "windows-gcc-x64",
             "includePath": [
-                "${workspaceFolder}/**",
-                "${workspaceFolder}/includes"
+                "${workspaceFolder}/**"
             ],
             "defines": [],
             "macFrameworkPath": [
                 "/Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/System/Library/Frameworks"
             ],
-            "compilerPath": "/usr/bin/clang",
-            "cStandard": "c17",
-            "cppStandard": "c++17",
-            "intelliSenseMode": "macos-clang-x64",
+            "compilerPath": "C:/msys64/mingw64/bin/gcc.exe",
+            "cStandard": "${default}",
+            "cppStandard": "${default}",
+            "intelliSenseMode": "windows-gcc-x64",
             "configurationProvider": "ms-vscode.makefile-tools"
         }
     ],

@@ -103,7 +103,7 @@ void		free_2D(char **str);
 /* PROMPT */
 
 void		prompt(t_root *root, char **envp);
-void		exit_prompt(char *cmd);
+int			exit_prompt(char *cmd);
 
 /* HISTORY */
 
