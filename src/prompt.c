@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+t_data	*data_init(t_link *head, int i);
+
 t_link	*lstnew(char *content)
 {
 	t_link	*list;
@@ -52,17 +54,20 @@ void	lstadd_back(t_link **lst, t_link *new)
 void	prompt(t_root *root, char **envp)
 {
 	char	*cmd;
-	char	**path;
 	t_list	*cmd_lexer;
 	t_list	*iter;
 	t_link	*head;
 	t_link	*body;
 	t_link	*tmp;
-	pid_t	child;
-	int		status;
+	t_tree	*left;
+	t_token	type;
+	t_tree	*right;
+	t_data	*data;
 	int		i;
 
-	path = find_path();
+	pid_t	child;
+	int	status;
+
 	while (1)
 	{
 		cmd = readline("\033[1;32mminishell$\033[0m ");
@@ -77,25 +82,84 @@ void	prompt(t_root *root, char **envp)
 		{
 			body = lstnew((char *)iter->content);
 			lstadd_back(&head, body);
+			type = type_assign(body->content, left, right, root);
+			if (type != PIPE && type != RDIN && type != RDOUT && type != HEREDOC)
+				type = COMMAND;
+			body->token = type;
 			iter = iter->next;
 		}
 		tmp = head;
 		while (tmp)
 		{
-			printf("lexer : |%s|\n", (char *)tmp->content);
+			printf("lexer : |%s| && |%i|\n", (char *)tmp->content, tmp->token);
 			tmp = tmp->next;
 		}
 		i = pipe_num(head);
 		printf("%i\n", i);
-		// if (i >= 1)
-		// 	pipe_exec(cmd_lexer, envp, i);
-		// else
-		// 	execution((char *)cmd_lexer->content, envp);
-		// ft_lstclear(&cmd_lexer, free);
+		data = data_init(head, i);
+		if (i >= 1)
+			pipe_exec(data, envp, i);
+		else
+		{
+			printf("it enter here\n");
+			child = ft_fork();
+			if (child == 0)
+			{
+				if (data[0].rdin_fd != 0)
+					dup2(data[0].rdin_fd, 0);
+				if (data[0].rdout_fd != 0)
+					dup2(data[0].rdout_fd, 1);
+				execution(data[0].cmd, envp);
+			}
+			waitpid(child, &status, 0);
+		}
+		free_data(data, i);
+		free(data);
+		ft_lstclear(&cmd_lexer, free);
 		free(cmd);
 	}
 	history_clear(&root->history);
 	return ;
+}
+
+t_data	*data_init(t_link *head, int i)
+{
+	t_data	*data;
+	t_link	*tmp;
+	int		j;
+
+	data = (t_data	*)ft_calloc(i + 1, sizeof(t_data));
+	j = 0;
+	tmp = head;
+	while (tmp != NULL)
+	{
+		while (tmp != NULL && tmp->token != PIPE)
+		{
+			printf("tmp : |%s| && |%i|\n", tmp->content, tmp->token);
+			if (tmp->token == RDIN)
+			{
+				printf("rdint\n");
+				data[j].rdin_fd = rdin_fd(tmp->content);
+			}
+			else if (tmp->token == RDOUT)
+			{
+				printf("rdout\n");
+				data[j].rdout_fd = rdout_fd(tmp->content);
+			}
+			else if (tmp->token == COMMAND)
+			{
+				printf("command\n");
+				data[j].cmd = ft_strdup(tmp->content);
+				printf("data : |%s|\n", data[j].cmd);
+			}
+			tmp = tmp->next;
+		}
+		if (tmp != NULL)
+			tmp = tmp->next;
+		printf("data : |%s| && rdint |%i| && rdout |%i|\n", data[j].cmd, data[j].rdin_fd, data[j].rdout_fd);
+		j++;
+	}
+	return (data);
 }
 
 void	exit_prompt(char *cmd)

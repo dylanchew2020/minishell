@@ -72,3 +72,74 @@ int	pipe_num(t_link *head)
 	}
 	return (i);
 }
+
+void	loop_middle_children(t_data	*data, char **envp, int num_pipe, pid_t *children)
+{
+	int i;
+	int	status;
+
+	i = 1;
+	while (i < num_pipe)
+	{
+		data->prev_fd = data->p[0];
+		ft_pipe(data->p);
+		children[i] = ft_fork();
+		if (children[i] == 0)
+		{
+			printf("middle child %d\n", getpid());
+			ft_dup2(data->p[0], 0);
+			ft_dup2(data->p[1], 1);
+			ft_close(data->p[0]);
+			ft_close(data->p[1]);
+			if (data[i].rdin_fd != 0)
+				ft_dup2(data[i].rdin_fd, 0);
+			if (data[i].rdout_fd != 0)
+				ft_dup2(data[i].rdout_fd, 1);
+			execution(data[i].cmd, envp);
+		}
+		ft_close(data->p[1]);
+		ft_close(data->prev_fd);
+		waitpid(-1, &status, 0);
+		i++;
+	}
+}
+
+void	pipe_exec(t_data	*data, char **envp, int num_pipe)
+{
+	int status;
+	pid_t children[num_pipe + 2];
+
+	children[num_pipe + 1] = '\0';
+	ft_pipe(data->p);
+	printf("pipe[0]: %d\n", data->p[0]);
+	printf("pipe[1]: %d\n", data->p[1]);
+	children[0] = ft_fork();
+	if (children[0] == 0)
+	{
+		printf("first child %d\n", getpid());
+		ft_dup2(data->p[1], 1);
+		ft_close(data->p[1]);
+		ft_close(data->p[0]);
+		if (data[0].rdin_fd != 0)
+			ft_dup2(data[0].rdin_fd, 0);
+		if (data[0].rdout_fd != 0)
+			ft_dup2(data[0].rdout_fd, 1);
+		execution(data[0].cmd, envp);
+	}
+	ft_close(data->p[1]);
+	loop_middle_children(data, envp, num_pipe, children);
+	children[num_pipe] = ft_fork();
+	if (children[num_pipe] == 0)
+	{
+		printf("last child %d\n", getpid());
+		ft_dup2(data->p[0], 0);
+		ft_close(data->p[0]);
+		if (data[num_pipe].rdin_fd != 0)
+			ft_dup2(data[num_pipe].rdin_fd, 0);
+		if (data[num_pipe].rdout_fd != 0)
+			ft_dup2(data[num_pipe].rdout_fd, 1);
+		execution(data[num_pipe].cmd, envp);
+	}
+	ft_close(data->p[0]);
+	waitpid(-1, &status, 0);
+}

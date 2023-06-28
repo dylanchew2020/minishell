@@ -156,12 +156,15 @@ int			ft_close(int fd);
 int			ft_dup2(int new_fd, int old_fd);
 
 /* PIPE */
-void		children(t_tree *node, char **envp);
+// void		children(t_tree *node, char **envp);
 int			pipe_num(t_link *head);
+void		pipe_exec(t_data	*data, char **envp, int num_pipe);
 
 /* REDIRECTION */
 int			rdin_fd(char *node_value);
 int			rdout_fd(char *node_value);
 char		*find_file(char *node_value);
 
+/* FREE */
+void    free_data(t_data	*data, int num_pipe);
 #endif
