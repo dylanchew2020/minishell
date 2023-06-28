@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/28 18:42:10 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/06/28 19:32:25 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ typedef struct s_pipe
 /* PROGRAM */
 
 void		init_root(t_root *root);
-void		free_2D(char **str);
+void		free_2d(char **str);
 
 /* PROMPT */
 
@@ -126,19 +126,19 @@ t_tree		*tree_node_new(t_token token, char *value, t_tree *left, t_tree *right);
 
 t_tree		*parser(t_list *lexer, int num_tokens, t_root *sh);
 t_tree		*token_check(t_list *lexer, char *op, int num_tokens, t_root *sh);
-// t_tree		*cmd_check(t_list *lexer, int num_tokens);
 t_tree		*tree_node_new(t_token type, char *value, t_tree *left, t_tree *right);
 t_token		type_assign(char	*value, t_tree *left, t_tree *right, t_root *sh);
 void		init_token_check(t_token_check	*tkchk);
-
 void		print_tree(t_tree *root, int b);
 
 /* EXECUTE */
-void		exec_cmd(t_tree *node, char **envp);
+
 void		recurse_bst(t_tree *node, char **envp);
-void		execution(char *argv, char **envp);
+void		exec_cmd(char *argv, char **envp);
+void		redir_arg(t_tree *node, char **envp);
 
 /* FT_UTLIS */
+
 int			ft_pipe(int p[2]);
 int			ft_open(const char *file, int flags, int permission);
 int			ft_fork(void);
@@ -146,9 +146,11 @@ int			ft_close(int fd);
 int			ft_dup2(int new_fd, int old_fd);
 
 /* PIPE */
+
 void		children(t_tree *node, char **envp);
 
 /* REDIRECTION */
+
 int			rdin_fd(char *node_value);
 int			rdout_fd(char *node_value);
 char		*find_file(char *node_value);

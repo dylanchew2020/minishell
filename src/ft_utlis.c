@@ -12,6 +12,18 @@
 
 #include "minishell.h"
 
+/**
+ * ft_pipe - Creates a pipe between two file descriptors. If the pipe cannot 
+ *           be created, it outputs an error message and terminates the 
+ *           process with an exit status of 1.
+ *
+ * @param p: A two-element array to hold the file descriptors for the input 
+ *           and output ends of the pipe.
+ *
+ * @returns
+ * The file descriptor for the input end of the pipe, or terminates the 
+ * process if the pipe could not be created.
+ */
 int	ft_pipe(int p[2])
 {
 	if (pipe(p) < 0)
@@ -23,6 +35,19 @@ int	ft_pipe(int p[2])
 	return (*p);
 }
 
+/**
+ * ft_open - Opens a file with the given flags and permissions. If the file 
+ *           cannot be opened, it outputs an error message and terminates the 
+ *           process with an exit status of 1.
+ *
+ * @param file: The name of the file to be opened.
+ * @param flags: The flags to use when opening the file.
+ * @param permission: The permissions to use when opening the file.
+ *
+ * @returns
+ * The file descriptor for the opened file, or terminates the process if 
+ * the file could not be opened.
+ */
 int	ft_open(const char *file, int flags, int permission)
 {
 	int	fd;
@@ -37,6 +62,15 @@ int	ft_open(const char *file, int flags, int permission)
 	return (fd);
 }
 
+/**
+ * ft_fork - Forks a new child process. If the fork cannot be completed, 
+ *           it outputs an error message and terminates the process 
+ *           with an exit status of 1.
+ *
+ * @returns
+ * The PID of the child process, or terminates the process if the 
+ * fork could not be completed.
+ */
 int	ft_fork(void)
 {
 	pid_t	child;
@@ -51,6 +85,17 @@ int	ft_fork(void)
 	return (child);
 }
 
+/**
+ * ft_close - Closes a file descriptor. If the file descriptor cannot be
+ * 			  closed, it outputs an error message and terminates the 
+ * 			  process with an exit status of 1.
+ *
+ * @param fd: The file descriptor to close.
+ *
+ * @returns 
+ * 0 on successful closure, or terminates the process if the closure could 
+ * not be completed.
+ */
 int	ft_close(int fd)
 {
 	if (close(fd) < 0)
@@ -62,9 +107,22 @@ int	ft_close(int fd)
 	return (0);
 }
 
+/**
+ * ft_dup2 - Duplicates a file descriptor, replacing an old file descriptor 
+ * 			 with a new one. If the file descriptor cannot be duplicated,
+ * 			 it outputs an error message and terminates the process with 
+ * 			 an exit status of 1.
+ *
+ * @param new_fd: The new file descriptor.
+ * @param old_fd: The old file descriptor to be replaced.
+ *
+ * @returns 
+ * The new file descriptor on successful duplication, or terminates the process 
+ * if the duplication could not be completed.
+ */
 int	ft_dup2(int new_fd, int old_fd)
 {
-	int i;
+	int	i;
 
 	i = dup2(new_fd, old_fd);
 	if (i < 0)

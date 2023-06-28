@@ -15,16 +15,9 @@
 int	main(int argc, char **argv, char **envp)
 {
 	t_root	root;
-	(void)argc;
-	(void)argv;
 
-	// printf("argc: %d\n", argc);
-	// printf("argv: %s\n", *argv);
-	// while (*envp)
-	// {
-	// 	printf("%s\n", *envp);
-	// 	envp++;
-	// }
+	(void) argv;
+	(void) argc;
 	init_root(&root);
 	prompt(&root, envp);
 	return (0);
@@ -36,7 +29,7 @@ void	init_root(t_root *root)
 	init_token_check(root->tkchk);
 }
 
-void	free_2D(char **str)
+void	free_2d(char **str)
 {
 	int	i;
 

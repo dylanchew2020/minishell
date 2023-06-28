@@ -3,165 +3,102 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/28 17:59:10 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/06/28 19:33:51 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void	exec_cmd(t_tree *node, char **envp)
-// {
-// 	char	**path;
-// 	int		i;
-// 	char	**argv;
-// 	pid_t	pid;
-// 	int		exec;
-// 	char	*file;
 
-// 	i = -1;
-// 	if (node == NULL)
-// 		return ;
-// 	path = find_path();
-// 	argv = ft_split(node->value, ' ');
-// 	int j = 0;
-// 	pid = fork();
-// 	if (pid < 0)
-// 		perror("Process creation failed");
-// 	else if (pid == 0)
-// 	{
-// 		printf("I am the child, PID = %d\n", getpid());
-// 		if (node->token == COMMAND)
-// 		{
-// 			// while (argv[j])
-// 			// 	printf("argv : %s\n", argv[j++]);
-// 			while (path[++i])
-// 			{
-// 				// printf("path : %s\n", path[i]);
-// 				exec = execve(ft_strjoin(path[i], argv[0]), argv, NULL);
-// 			}
-// 			if (exec == -1)
-// 			{
-// 				printf("Error: %s: %s\n", strerror(errno), *argv);
-// 				exit(0);
-// 			}
-// 		}
-// 		printf("fd |%i|\n", rdin_fd(node->value));
-// 	}
-// 	else
-// 	{
-// 		printf("I am the parent, PID = %d\n", getpid());
-// 		wait(NULL);
-// 	}
-// }
-
-
+/**
+ * recurse_bst - Traverses a binary syntax tree (BST) recursively, processing 
+ *               each node based on its token type. When a PIPE token is found, 
+ *               it forks new processes. When RDIN or RDOUT tokens are found, 
+ *               it changes the file descriptor of STDIN or STDOUT respectively, 
+ *               then handles redirection arguments. When a COMMAND token is 
+ *               found, it executes the command.
+ *
+ * @param node: A pointer to the current node in the BST.
+ * @param envp: The current environment variables.
+ *
+ * @returns 
+ * Void.
+ */
 void	recurse_bst(t_tree *node, char **envp)
 {
 	pid_t	child;
-	int		status;
 	int		p[2];
 
-	// printf("%d in exec\n", getpid());
-	// print_tree(node, 0);
 	if (node == NULL)
 		return ;
 	if (node->token == PIPE)
-	{
-		// printf("%d pipe\n", getpid());
 		children(node, envp);
-		// ft_pipe(p);
-		// dup2(p[1], 1);
-		// ft_close(p[1]);
-		// printf("%d after pip\n", getpid());
-	}
 	else if (node->token == RDIN)
 	{
-		// printf("%d it enter here rdin\n", getpid());
 		dup2(rdin_fd(node->value), STDIN_FILENO);
-		if (node->right != NULL)
-		{
-			// printf("right %d\n", getpid());
-			// if (node->token == PIPE)
-			// {
-			// 	dup2(p[0], 0);
-			// 	ft_close(p[0]);
-			// }
-			recurse_bst(node->right, envp);
-		}
-		if (node->left != NULL)
-		{
-			// printf("left %d\n", getpid());
-			recurse_bst(node->left, envp);
-		}
-		// printf("rdint safe\n");
+		redir_arg(node, envp);
 	}
 	else if (node->token == RDOUT)
 	{
-		// printf("%d it enter e rdout\n", getpid());
-		dup2(rdout_fd(node->value), STDOUT_FILENO);
-		if (node->right != NULL)
-		{
-			// printf("right %d\n", getpid());
-			// if (node->token == PIPE)
-			// {
-			// 	dup2(p[0], 0);
-			// 	ft_close(p[0]);
-			// }
-			recurse_bst(node->right, envp);
-		}
-		if (node->left != NULL)
-		{
-			// printf("left %d\n", getpid());
-			recurse_bst(node->left, envp);
-		}
-		// printf("%d rdout safe\n", getpid());
+		ft_dup2(rdout_fd(node->value), STDOUT_FILENO);
+		redir_arg(node, envp);
 	}
 	else if (node->token == COMMAND)
-	{
-		// printf("%d executionnßnnn \n", getpid());
-		child = ft_fork();
-		if (child == 0)
-		{
-			// printf("%d child exec\n", getpid());
-			execution(node->value, envp);
-		}
-		else
-		{
-			waitpid(child, &status, 0);
-		}
-	}
+		exec_cmd(node->value, envp);
 }
 
-void	execution(char *argv, char **envp)
+/**
+ * redir_arg - Calls the function recurse_bst for the right and left child 
+ *             of a node if they exist. This function is called when a 
+ *             redirection token (RDIN or RDOUT) is found in the 
+ *             binary syntax tree (BST) during traversal by recurse_bst.
+ *
+ * @param node
+ * A pointer to the current node in the BST.
+ *
+ * @param envp
+ * The current environment variables.
+ *
+ * @returns
+ * Void.
+ */
+void	redir_arg(t_tree *node, char **envp)
+{
+	if (node->right != NULL)
+		recurse_bst(node->right, envp);
+	if (node->left != NULL)
+		recurse_bst(node->left, envp);
+}
+
+/**
+ * exec_cmd - Executes a command by searching for its path, forking a 
+ * 			  child process, and using execve to run the command in the 
+ * 			  child process.
+ *
+ * @param argv: A string containing the command to be executed.
+ * @param envp: The current environment variables.
+ *
+ * @returns
+ *  void.
+ */
+void	exec_cmd(char *argv, char **envp)
 {
 	char	*path;
 	char	**cmd;
+	pid_t	child;
+	int		status;
 
 	path = the_legit_path(argv);
 	cmd = ft_split(argv, ' ');
-	if (execve(path, cmd, envp) == -1)
-		exit(printf("Error: %s: %c\n", strerror(errno), *argv));
+	child = ft_fork();
+	if (child == 0)
+	{
+		if (execve(path, cmd, envp) == -1)
+			exit(printf("Error: %s: %c\n", strerror(errno), *argv));
+	}
+	else
+		waitpid(child, &status, 0);
 }
-
-
-
-	// char	**tmp;
-	// char	**argv;
-	// tmp = ft_calloc(2, sizeof(char *));
-	// tmp[0] = ft_strjoin("PATH=", find_path(envp)[2]);
-	// argv = ft_calloc(5, sizeof(char *));
-	// int i = 0;
-	// t_list *node = head;
-	// while (i < 5 && node != NULL)
-	// {
-	// 	argv[i++] = node->content;
-	// 	node = node->next;
-	// }
-	// // argv[0] = head->content; //ft_strjoin("/bin/", head->content);
-	// // argv[1] = head->next->content;
-	// printf("argv : %s\n", argv[0]);
-	// execve("/usr/bin/touch", argv, tmp);
-

@@ -79,10 +79,14 @@ static void	cmd_modifier(char *cmd, char **tokens)
 	while (*cmd != '\0')
 	{
 		j = 0;
+		printf("cmd: %c\n", *cmd);
 		while (*cmd == ' ')
 			++cmd;
+		printf("strchr |: %p\n", ft_strchr("|", *cmd));
+		printf("strchr <>: %p\n", ft_strchr("<>", *cmd));
 		if (ft_strchr("|", *cmd) != NULL)
 		{
+			printf("entered |\n");
 			tokens[i] = ft_calloc(char_count(cmd, 1) + 1, sizeof(char));
 			tokens[i][j++] = *cmd++;
 			while (*cmd == *(cmd - 1))
@@ -91,6 +95,7 @@ static void	cmd_modifier(char *cmd, char **tokens)
 		}
 		else if (ft_strchr("<>", *cmd) != NULL)
 		{
+			printf("entered <>\n");
 			tokens[i] = ft_calloc(char_count(cmd, 1) + 1, sizeof(char));
 			tokens[i][j++] = *cmd++;
 			while (*cmd == *(cmd - 1) || *cmd == ' ')
@@ -104,6 +109,7 @@ static void	cmd_modifier(char *cmd, char **tokens)
 		}
 		else
 		{
+			printf("entered cmd\n");
 			tokens[i] = ft_calloc(char_count(cmd, 0) + 1, sizeof(char));
 			while (ft_strchr("|<>", *cmd) == NULL && *cmd != '\0')
 				tokens[i][j++] = *cmd++;
@@ -175,6 +181,7 @@ static int	char_count(char const *cmd, int special)
 	int	count;
 
 	count = 0;
+	printf("cmd in charcount: %s\n", cmd);
 	if (special == 1)
 	{
 		if (ft_strchr("|", *cmd) != NULL)
@@ -195,8 +202,11 @@ static int	char_count(char const *cmd, int special)
 				++count;
 				++cmd;
 			}
-			while (*cmd != '\0' && ft_strchr("|<> ", *cmd++) == NULL)
+			while (*cmd != '\0' && ft_strchr("|<> ", *cmd) == NULL)
+			{
 				++count;
+				++cmd;
+			}
 		}
 	}
 	else
@@ -204,96 +214,6 @@ static int	char_count(char const *cmd, int special)
 		while (ft_strchr("|<>", *cmd) == NULL && *cmd++ != '\0')
 			++count;
 	}
+	printf("count: %d\n", count);
 	return (count);
 }
-
-// /**
-//  * op_count - Counts the number of consecutive identical special characters at 
-//  *            the beginning of a string.
-//  * @param cmd: The string to count special characters in.
-//  *
-//  * @returns 
-//  * The number of consecutive identical special characters at the beginning of 
-//  * the string. Special characters are '|', '<', and '>'.
-//  */
-// static int	op_count(char const *cmd)
-// {
-// 	int	count;
-
-// 	count = 0;
-// 	if (ft_strchr("|<>", *cmd++) != NULL)
-// 	{
-// 		++count;
-// 		while (*cmd == *(cmd - 1))
-// 		{
-// 			++count;
-// 			++cmd;
-// 		}
-// 	}
-// 	return (count);
-// }
-
-// /**
-//  * char_count - Counts the number of non-special characters at the beginning of 
-//  *              a string.
-//  * @param cmd: The string to count characters in.
-//  *
-//  * @returns 
-//  * The number of non-special characters at the beginning of the string.
-//  * Non-special characters are all characters except for the special 
-//  * characters '|', '<', and '>'.
-//  */
-// static int	char_count(char const *cmd)
-// {
-// 	int	count;
-
-// 	count = 0;
-// 	while (*cmd != '\0' && ft_strchr("|<>", *cmd++) == NULL)
-// 		++count;
-// 	return (count);
-// }
-
-// t_list	*lexer(char *cmd)
-// {
-// 	char	**tokens;
-// 	char	*tmp;
-// 	t_list	*lexer;
-// 	t_list	*head;
-
-// 	tokens = cmd_modifier(cmd);
-// 	lexer = ft_lstnew((void *)ft_strdup(*tokens++));
-// 	head = lexer;
-// 	printf("Lexer-list: %s\n", lexer->content);
-// 	while (*tokens != NULL)
-// 	{
-// 		tmp = *tokens;
-// 		*tokens = ft_strtrim(*tokens, " ");
-// 		lexer->next = ft_lstnew((void *)ft_strdup(*tokens));
-// 		lexer = lexer->next;
-// 		printf("Lexer-list: %s\n", lexer->content);
-// 		++tokens;
-// 		free(tmp);
-// 	}
-// 	return (head);
-// }
-
-// static int	op_count(char *cmd)
-// {
-// 	int		count;
-
-// 	count = 0;
-// 	while (*cmd != '\0')
-// 	{
-// 		if (!ft_strncmp(cmd, PIPE, 1))
-// 			++count;
-// 		else if (!ft_strncmp(cmd, HEREDOC, 2) || !ft_strncmp(cmd, RDAPP, 2))
-// 		{
-// 			count += 2;
-// 			++cmd;
-// 		}
-// 		else if (!ft_strncmp(cmd, RDIN, 1) || !ft_strncmp(cmd, RDOUT, 1))
-// 			++count;
-// 		++cmd;
-// 	}
-// 	return (count);
-// }

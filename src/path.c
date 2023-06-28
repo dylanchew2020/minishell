@@ -80,7 +80,7 @@ char	*the_legit_path(char *argv)
 
 	path = ft_split(argv, ' ');
 	cmd = ft_strdup(path[0]);
-	free_2D(path);
+	free_2d(path);
 	path = find_path();
 	i = -1;
 	while (path[++i])
@@ -89,12 +89,12 @@ char	*the_legit_path(char *argv)
 		if (access(join, F_OK) == 0)
 		{
 			free (cmd);
-			free_2D(path);
+			free_2d(path);
 			return (join);
 		}
 		free(join);
 	}
 	free (cmd);
-	free_2D(path);
+	free_2d(path);
 	return (NULL);
 }
