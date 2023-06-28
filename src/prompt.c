@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/06/21 17:42:52 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/06/28 18:02:56 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,18 @@ void	prompt(t_root *root, char **envp)
 	while (1)
 	{
 		cmd = readline("\033[1;32mminishell$\033[0m ");
+		// printf("%d\n", (int)cmd[0]);
 		exit_prompt(cmd);
 		history_add(&root->history, cmd);
 		cmd_lexer = lexer(cmd);
 		head = parser(cmd_lexer, ft_lstsize(cmd_lexer), root);
-		print_tree(head, 0);
+		// print_tree(head, 0);
 		// if (!ft_strncmp(cmd, "history", 8))
 		// 	history_print(root->history);
 		// else
 		// 	printf("output: %s\n", cmd);
 		// exec_cmd(head, envp);
-		printf("before %d\n", getpid());
+		// printf("before %d\n", getpid());
 		child = ft_fork();
 		if (child == 0)
 		{
@@ -43,7 +44,7 @@ void	prompt(t_root *root, char **envp)
 			exit(0);
 		}
 		waitpid(-1, &status, 0);
-		printf("after %d\n", getpid());
+		// printf("after %d\n", getpid());
 		free(cmd);
 	}
 	history_clear(&root->history);

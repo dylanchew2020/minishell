@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/21 17:35:23 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/06/28 17:59:10 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,59 +64,74 @@ void	recurse_bst(t_tree *node, char **envp)
 	int		status;
 	int		p[2];
 
-	printf("%d in exec\n", getpid());
-	print_tree(node, 0);
-	if (node->value == NULL)
+	// printf("%d in exec\n", getpid());
+	// print_tree(node, 0);
+	if (node == NULL)
 		return ;
 	if (node->token == PIPE)
 	{
-		printf("%d pipe\n", getpid());
-		// children(node, envp);
-		ft_pipe(p);
-		dup2(p[1], 1);
-		ft_close(p[1]);
-		printf("%d after pip\n", getpid());
+		// printf("%d pipe\n", getpid());
+		children(node, envp);
+		// ft_pipe(p);
+		// dup2(p[1], 1);
+		// ft_close(p[1]);
+		// printf("%d after pip\n", getpid());
 	}
 	else if (node->token == RDIN)
 	{
-		printf("%d it enter here rdin\n", getpid());
+		// printf("%d it enter here rdin\n", getpid());
 		dup2(rdin_fd(node->value), STDIN_FILENO);
+		if (node->right != NULL)
+		{
+			// printf("right %d\n", getpid());
+			// if (node->token == PIPE)
+			// {
+			// 	dup2(p[0], 0);
+			// 	ft_close(p[0]);
+			// }
+			recurse_bst(node->right, envp);
+		}
+		if (node->left != NULL)
+		{
+			// printf("left %d\n", getpid());
+			recurse_bst(node->left, envp);
+		}
 		// printf("rdint safe\n");
 	}
 	else if (node->token == RDOUT)
 	{
-		printf("%d it enter e rdout\n", getpid());
+		// printf("%d it enter e rdout\n", getpid());
 		dup2(rdout_fd(node->value), STDOUT_FILENO);
-		printf("%d rdout safe\n", getpid());
+		if (node->right != NULL)
+		{
+			// printf("right %d\n", getpid());
+			// if (node->token == PIPE)
+			// {
+			// 	dup2(p[0], 0);
+			// 	ft_close(p[0]);
+			// }
+			recurse_bst(node->right, envp);
+		}
+		if (node->left != NULL)
+		{
+			// printf("left %d\n", getpid());
+			recurse_bst(node->left, envp);
+		}
+		// printf("%d rdout safe\n", getpid());
 	}
 	else if (node->token == COMMAND)
 	{
-		printf("%d executionnßnnn \n", getpid());
+		// printf("%d executionnßnnn \n", getpid());
 		child = ft_fork();
 		if (child == 0)
 		{
-			printf("%d child exec\n", getpid());
+			// printf("%d child exec\n", getpid());
 			execution(node->value, envp);
 		}
 		else
 		{
 			waitpid(child, &status, 0);
 		}
-	}
-	if (node->left != NULL)
-	{
-		printf("left %d\n", getpid());
-		recurse_bst(node->left, envp);
-	}
-	if (node->right != NULL)
-	{
-		printf("right %d\n", getpid());
-		if (node->token == PIPE)
-		{
-			dup2(p[0], 0);
-			ft_close(p[0]);
-		}
-		recurse_bst(node->right, envp);
 	}
 }
 
