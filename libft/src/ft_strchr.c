@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
 /**
  * ft_strchr - Locates the first occurrence of 'c' in string 's'.

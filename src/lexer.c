@@ -79,23 +79,18 @@ static void	cmd_modifier(char *cmd, char **tokens)
 	while (*cmd != '\0')
 	{
 		j = 0;
-		printf("cmd: %c\n", *cmd);
 		while (*cmd == ' ')
 			++cmd;
-		printf("strchr |: %p\n", ft_strchr("|", *cmd));
-		printf("strchr <>: %p\n", ft_strchr("<>", *cmd));
-		if (ft_strchr("|", *cmd) != NULL)
+		if (ft_strchr("|", *cmd) != NULL && *cmd != '\0')
 		{
-			printf("entered |\n");
 			tokens[i] = ft_calloc(char_count(cmd, 1) + 1, sizeof(char));
 			tokens[i][j++] = *cmd++;
 			while (*cmd == *(cmd - 1))
 				tokens[i][j++] = *cmd++;
 			tokens[i++][j] = '\0';
 		}
-		else if (ft_strchr("<>", *cmd) != NULL)
+		else if (ft_strchr("<>", *cmd) != NULL && *cmd != '\0')
 		{
-			printf("entered <>\n");
 			tokens[i] = ft_calloc(char_count(cmd, 1) + 1, sizeof(char));
 			tokens[i][j++] = *cmd++;
 			while (*cmd == *(cmd - 1) || *cmd == ' ')
@@ -107,9 +102,8 @@ static void	cmd_modifier(char *cmd, char **tokens)
 			tokens[i][j] = '\0';
 			++i;
 		}
-		else
+		else if (*cmd != '\0')
 		{
-			printf("entered cmd\n");
 			tokens[i] = ft_calloc(char_count(cmd, 0) + 1, sizeof(char));
 			while (ft_strchr("|<>", *cmd) == NULL && *cmd != '\0')
 				tokens[i][j++] = *cmd++;
@@ -181,7 +175,6 @@ static int	char_count(char const *cmd, int special)
 	int	count;
 
 	count = 0;
-	printf("cmd in charcount: %s\n", cmd);
 	if (special == 1)
 	{
 		if (ft_strchr("|", *cmd) != NULL)
@@ -202,11 +195,8 @@ static int	char_count(char const *cmd, int special)
 				++count;
 				++cmd;
 			}
-			while (*cmd != '\0' && ft_strchr("|<> ", *cmd) == NULL)
-			{
+			while (*cmd != '\0' && ft_strchr("|<> ", *cmd++) == NULL)
 				++count;
-				++cmd;
-			}
 		}
 	}
 	else
@@ -214,6 +204,5 @@ static int	char_count(char const *cmd, int special)
 		while (ft_strchr("|<>", *cmd) == NULL && *cmd++ != '\0')
 			++count;
 	}
-	printf("count: %d\n", count);
 	return (count);
 }

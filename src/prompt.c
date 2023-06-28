@@ -29,7 +29,7 @@ void	prompt(t_root *root, char **envp)
 		history_add(&root->history, cmd);
 		cmd_lexer = lexer(cmd);
 		head = parser(cmd_lexer, ft_lstsize(cmd_lexer), root);
-		print_tree(head, 0);
+		// print_tree(head, 0);
 		child = ft_fork();
 		if (child == 0)
 		{
