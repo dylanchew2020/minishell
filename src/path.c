@@ -83,7 +83,7 @@ char	**find_path(void)
  *              followed by other arguments, separated by spaces.
  *
  * @returns
- * A string representing the full path to the executable file of the 
+ * A string representing the full path to the executable file of the
  * command, if found. If the command cannot be found in the PATH, or
  * an error occurs during execution, NULL is returned. It is the
  * responsibility of the caller to free the returned string.
