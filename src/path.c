@@ -45,5 +45,3 @@ char	**find_path(char **envp)
 		printf("Error: %s\n", strerror(errno));
 	return (NULL);
 }
-
-void check_path
