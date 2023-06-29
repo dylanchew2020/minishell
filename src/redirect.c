@@ -32,6 +32,7 @@ int	rdin_fd(char *node_value)
 	if (access(file, F_OK & X_OK) != 0)
 		exit(printf("Error: %s: %s\n", strerror(errno), file));
 	fd = ft_open(file, O_RDONLY, 0666);
+	free(file);
 	return (fd);
 }
 
@@ -48,6 +49,7 @@ int	rdout_fd(char *node_value)
 
 	file = find_file(node_value);
 	fd = ft_open(file, O_CREAT | O_RDWR | O_TRUNC, 0666);
+	free(file);
 	return (fd);
 }
 

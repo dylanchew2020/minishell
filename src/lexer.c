@@ -17,26 +17,29 @@ static int	token_count(char *cmd);
 static int	char_count(char const *cmd, int special);
 
 /**
- * lexer - Converts a command string into a list of tokens, where a token can 
- *         be either a command or an operator ('|', '<', '>'). 
+ * lexer - Converts a command string into a list of tokens, where a token can
+ *         be either a command or an operator ('|', '<', '>').
  *         It trims leading and trailing spaces from each token.
  * @param cmd: The command string to tokenize.
  *
- * @returns 
- * A linked list where each node holds a token from the command string, 
+ * @returns
+ * A linked list where each node holds a token from the command string,
  * or NULL if there's an error during the process.
  */
 t_list	*lexer(char *cmd)
 {
 	char	**tokens;
+	char	**tokens_head;
 	t_list	*head;
 	t_list	*node;
-	char	*trimmed;
 
+	if (!cmd)
+		return (NULL);
 	tokens = ft_calloc(token_count(cmd) + 1, sizeof(char *));
 	cmd_modifier(cmd, tokens);
 	if (!tokens || !*tokens)
 		return (NULL);
+	tokens_head = tokens;
 	head = ft_lstnew(ft_strtrim(*tokens++, " "));
 	if (!head)
 		return (NULL);
@@ -47,13 +50,13 @@ t_list	*lexer(char *cmd)
 		node->next = ft_lstnew(ft_strtrim(*tokens++, " "));
 		if (!(node->next))
 		{
-			free(trimmed);
 			ft_lstclear(&head, free);
 			return (NULL);
 		}
 		node = node->next;
 		// printf("node->content: %s\n", node->content);
 	}
+	free_2d(tokens_head);
 	return (head);
 }
 
@@ -62,12 +65,12 @@ t_list	*lexer(char *cmd)
  *                ('|', '<', '>').
  * @param cmd: The command string to be tokenized.
  *
- * @returns 
+ * @returns
  * An array of tokens derived from the command string 'cmd'.
  * Each token can be a command or an operator ('|', '<', '>').
  * This array of tokens is dynamically allocated and hence should be freed
  * by the caller when it is no longer needed. If the command string 'cmd'
- * is empty or NULL, the function returns an array containing a single NULL 
+ * is empty or NULL, the function returns an array containing a single NULL
  * pointer.
  */
 static void	cmd_modifier(char *cmd, char **tokens)
@@ -95,7 +98,7 @@ static void	cmd_modifier(char *cmd, char **tokens)
 			tokens[i][j++] = *cmd++;
 			while (*cmd == *(cmd - 1) || *cmd == ' ')
 				tokens[i][j++] = *cmd++;
-			if (ft_strchr("<>", *(cmd - 1)) != NULL && *cmd != ' ')
+			if (ft_strchr("<>", *(cmd - 1)) != NULL && *cmd != ' ' && *cmd != '\0')
 				tokens[i][j++] = ' ';
 			while (ft_strchr("|<> ", *cmd) == NULL && *cmd != '\0')
 				tokens[i][j++] = *cmd++;
@@ -113,13 +116,13 @@ static void	cmd_modifier(char *cmd, char **tokens)
 }
 
 /**
- * token_count - Counts the number of tokens in a command string, where a token 
+ * token_count - Counts the number of tokens in a command string, where a token
  *               can be either a command or an operator ('|', '<', '>').
  * @param cmd: The command string to count tokens in.
  *
- * @returns 
- * The number of tokens in the command string. 
- * A token is either a command (a sequence of non-special characters) 
+ * @returns
+ * The number of tokens in the command string.
+ * A token is either a command (a sequence of non-special characters)
  * or an operator (a sequence of consecutive identical special characters).
  */
 static int	token_count(char *cmd)
@@ -131,14 +134,14 @@ static int	token_count(char *cmd)
 	{
 		while (*cmd == ' ')
 				++cmd;
-		if (ft_strchr("|", *cmd) != NULL)
+		if (ft_strchr("|", *cmd) != NULL && *cmd != '\0')
 		{
 			++cmd;
 			while (*cmd == *(cmd - 1) && *cmd != '\0')
 				++cmd;
 			++token_count;
 		}
-		else if (ft_strchr("<>", *cmd++) != NULL)
+		else if (*cmd != '\0' && ft_strchr("<>", *cmd++) != NULL)
 		{
 			while (*cmd == *(cmd - 1) || *cmd == ' ')
 				++cmd;
@@ -158,16 +161,16 @@ static int	token_count(char *cmd)
 }
 
 /**
- * char_count - Counts the number of consecutive identical special or 
+ * char_count - Counts the number of consecutive identical special or
  *               non-special characters at the beginning of a string based
  *               on the 'special' parameter.
  * @param cmd: The string in which to count characters.
  * @param special: If 1, the function counts consecutive identical special
- *                 characters (i.e., '|', '<', '>'). If 0, it counts consecutive 
+ *                 characters (i.e., '|', '<', '>'). If 0, it counts consecutive
  *                 non-special characters.
  *
- * @returns 
- * The number of consecutive identical characters at the beginning of the string 
+ * @returns
+ * The number of consecutive identical characters at the beginning of the string
  * that match the 'special' criterion.
  */
 static int	char_count(char const *cmd, int special)
@@ -177,7 +180,7 @@ static int	char_count(char const *cmd, int special)
 	count = 0;
 	if (special == 1)
 	{
-		if (ft_strchr("|", *cmd) != NULL)
+		if (ft_strchr("|", *cmd) != NULL && *cmd != '\0')
 		{
 			++count;
 			++cmd;
@@ -187,7 +190,7 @@ static int	char_count(char const *cmd, int special)
 				++cmd;
 			}
 		}
-		else if (ft_strchr("<>", *cmd++) != NULL)
+		else if (*cmd != '\0' && ft_strchr("<>", *cmd++) != NULL)
 		{
 			count += 2;
 			while (*cmd == *(cmd - 1) || *cmd == ' ')

@@ -57,5 +57,5 @@ dkms.conf
 
 # Program files
 minishell
-.tmp*
+*.tmp*
 tmp/

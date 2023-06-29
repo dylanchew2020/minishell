@@ -17,6 +17,7 @@ void	prompt(t_root *root, char **envp)
 	char	*cmd;
 	char	**path;
 	t_list	*cmd_lexer;
+	t_list	*tmp_lexer;
 	t_tree	*head;
 	pid_t	child;
 	int		status;
@@ -25,18 +26,28 @@ void	prompt(t_root *root, char **envp)
 	while (1)
 	{
 		cmd = readline("\033[1;32mminishell$\033[0m ");
-		exit_prompt(cmd);
-		history_add(&root->history, cmd);
-		cmd_lexer = lexer(cmd);
-		head = parser(cmd_lexer, ft_lstsize(cmd_lexer), root);
-		// print_tree(head, 0);
-		child = ft_fork();
-		if (child == 0)
+		if (*cmd)
 		{
-			recurse_bst(head, envp);
-			exit(0);
+			exit_prompt(cmd);
+			history_add(&root->history, cmd);
+			cmd_lexer = lexer(cmd);
+			head = parser(cmd_lexer, ft_lstsize(cmd_lexer), root);
+			// print_tree(head, 0);
+			child = ft_fork();
+			if (child == 0)
+			{
+				recurse_bst(head, envp, root);
+				exit(0);
+			}
+			waitpid(-1, &status, 0);
+			free_tree(head);
+			while (cmd_lexer)
+			{
+				tmp_lexer = cmd_lexer->next;
+				free(cmd_lexer);
+				cmd_lexer = tmp_lexer;
+			}
 		}
-		waitpid(-1, &status, 0);
 		free(cmd);
 	}
 	history_clear(&root->history);
@@ -72,4 +83,14 @@ void	print_tree(t_tree *root, int b)
 	printf("right %i  ", level);
 	print_tree(root->right, 0);
 	--level;
+}
+
+void	free_tree(t_tree *node)
+{
+	if (node == NULL)
+		return ;
+	free_tree(node->left);
+	free_tree(node->right);
+	free(node->value);
+	free(node);
 }

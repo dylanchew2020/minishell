@@ -130,12 +130,13 @@ t_tree		*tree_node_new(t_token type, char *value, t_tree *left, t_tree *right);
 t_token		type_assign(char	*value, t_tree *left, t_tree *right, t_root *sh);
 void		init_token_check(t_token_check	*tkchk);
 void		print_tree(t_tree *root, int b);
+void		free_tree(t_tree *node);
 
 /* EXECUTE */
 
-void		recurse_bst(t_tree *node, char **envp);
-void		exec_cmd(char *argv, char **envp);
-void		redir_arg(t_tree *node, char **envp);
+void		recurse_bst(t_tree *node, char **envp, t_root *sh);
+void		exec_cmd(char *argv, char **envp, t_root *sh);
+void		redir_arg(t_tree *node, char **envp, t_root *sh);
 
 /* FT_UTLIS */
 
