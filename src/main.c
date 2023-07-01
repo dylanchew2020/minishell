@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:26:51 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/14 23:12:08 by lchew            ###   ########.fr       */
+/*   Updated: 2023/06/28 18:42:22 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,9 @@
 int	main(int argc, char **argv, char **envp)
 {
 	t_root	root;
-	(void)argc;
-	(void)argv;
 
-	// printf("argc: %d\n", argc);
-	// printf("argv: %s\n", *argv);
-	// while (*envp)
-	// {
-	// 	printf("%s\n", *envp);
-	// 	envp++;
-	// }
+	(void) argv;
+	(void) argc;
 	init_root(&root);
 	prompt(&root, envp);
 	return (0);
@@ -36,7 +29,7 @@ void	init_root(t_root *root)
 	init_token_check(root->tkchk);
 }
 
-void	free_2D(char **str)
+void	free_2d(char **str)
 {
 	int	i;
 
