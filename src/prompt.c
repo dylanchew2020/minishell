@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/06/28 19:32:25 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/01 18:08:31 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "minishell.h"
 
@@ -32,14 +32,15 @@ void	prompt(t_root *root, char **envp)
 			history_add(&root->history, cmd);
 			cmd_lexer = lexer(cmd);
 			head = parser(cmd_lexer, ft_lstsize(cmd_lexer), root);
+			builtin(head, envp);
 			// print_tree(head, 0);
-			child = ft_fork();
-			if (child == 0)
-			{
-				recurse_bst(head, envp, root);
-				exit(0);
-			}
-			waitpid(-1, &status, 0);
+			// child = ft_fork();
+			// if (child == 0)
+			// {
+			// 	recurse_bst(head, envp, root);
+			// 	exit(0);
+			// }
+			// waitpid(-1, &status, 0);
 			free_tree(head);
 			while (cmd_lexer)
 			{

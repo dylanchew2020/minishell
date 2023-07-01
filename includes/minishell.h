@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/28 19:32:25 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/01 18:05:00 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -156,4 +156,10 @@ int			rdin_fd(char *node_value);
 int			rdout_fd(char *node_value);
 char		*find_file(char *node_value);
 
+/* ENV */
+void		env_link_list(char **envp, t_list **env_list);
+void		get_env(t_list *env_list);
+
+/* BUILT IN */
+void		builtin(t_tree *head, char **envp);
 #endif
