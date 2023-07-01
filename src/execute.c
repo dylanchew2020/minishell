@@ -35,7 +35,7 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 	if (node == NULL)
 		return ;
 	if (node->token == PIPE)
-		children(node, envp);
+		children(node, envp, sh);
 	else if (node->token == RDIN)
 	{
 		dup2(rdin_fd(node->value), STDIN_FILENO);
