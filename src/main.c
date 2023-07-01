@@ -14,19 +14,21 @@
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_root	root;
+	t_root	sh;
 
 	(void) argv;
 	(void) argc;
-	init_root(&root);
-	prompt(&root, envp);
+	init_root(&sh);
+	prompt(&sh, envp);
 	return (0);
 }
 
-void	init_root(t_root *root)
+void	init_root(t_root *sh)
 {
-	root->history = NULL;
-	init_token_check(root->tkchk);
+	sh->history = NULL;
+	init_token_check(sh->tkchk);
+	sh->stdin_tmp = dup(STDIN_FILENO);
+	sh->stdout_tmp = dup(STDOUT_FILENO);
 }
 
 void	free_2d(char **str)

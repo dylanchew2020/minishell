@@ -27,8 +27,8 @@
 void	left_child(t_pipe *data, t_tree *node, char **envp, t_root *sh)
 {
 	dup2(data->p[1], 1);
-	ft_close(data->p[1]);
-	ft_close(data->p[0]);
+	// ft_close(data->p[1]);
+	// ft_close(data->p[0]);
 	recurse_bst(node->left, envp, sh);
 }
 
@@ -47,8 +47,8 @@ void	left_child(t_pipe *data, t_tree *node, char **envp, t_root *sh)
 void	right_child(t_pipe *data, t_tree *node, char **envp, t_root *sh)
 {
 	dup2(data->p[0], 0);
-	ft_close(data->p[0]);
-	ft_close(data->p[1]);
+	// ft_close(data->p[0]);
+	// ft_close(data->p[1]);
 	recurse_bst(node->right, envp, sh);
 }
 

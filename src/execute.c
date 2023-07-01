@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 /**
  * recurse_bst - Traverses a binary syntax tree (BST) recursively, processing
  *               each node based on its token type. When a PIPE token is found,
@@ -31,6 +30,8 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 {
 	pid_t	child;
 	int		p[2];
+	int		__rdin_fd;
+	int		__rdout_fd;
 
 	if (node == NULL)
 		return ;
@@ -38,12 +39,16 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 		children(node, envp, sh);
 	else if (node->token == RDIN)
 	{
-		dup2(rdin_fd(node->value), STDIN_FILENO);
+		__rdin_fd = rdin_fd(node->value);
+		ft_dup2(__rdin_fd, STDIN_FILENO);
+		ft_close(__rdin_fd);
 		redir_arg(node, envp, sh);
 	}
 	else if (node->token == RDOUT)
 	{
-		ft_dup2(rdout_fd(node->value), STDOUT_FILENO);
+		__rdout_fd = rdout_fd(node->value);
+		ft_dup2(__rdout_fd, STDOUT_FILENO);
+		ft_close(__rdout_fd);
 		redir_arg(node, envp, sh);
 	}
 	else if (node->token == COMMAND)

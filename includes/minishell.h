@@ -87,6 +87,8 @@ typedef struct s_root
 {
 	t_history		*history;
 	t_token_check	tkchk[NO_OF_TOKEN_TYPES];
+	int				stdin_tmp;
+	int				stdout_tmp;
 }	t_root;
 
 typedef struct s_pipe
@@ -102,8 +104,8 @@ void		free_2d(char **str);
 
 /* PROMPT */
 
-void		prompt(t_root *root, char **envp);
-void		exit_prompt(char *cmd);
+void		prompt(t_root *sh, char **envp);
+void		exit_prompt(char *cmd, t_root *sh);
 
 /* HISTORY */
 
