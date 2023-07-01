@@ -148,7 +148,7 @@ int			ft_dup2(int new_fd, int old_fd);
 
 /* PIPE */
 
-void		children(t_tree *node, char **envp);
+void		children(t_tree *node, char **envp, t_root *sh);
 
 /* REDIRECTION */
 
