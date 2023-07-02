@@ -24,11 +24,11 @@
  * @returns void.
  */
 
-void	left_child(t_pipe *data, t_tree *node, char **envp, t_root *sh)
+void	left_child(int	*pipe, t_tree *node, char **envp, t_root *sh)
 {
-	dup2(data->p[1], 1);
-	ft_close(data->p[1]);
-	ft_close(data->p[0]);
+	dup2(pipe[1], 1);
+	ft_close(pipe[1]);
+	ft_close(pipe[0]);
 	recurse_bst(node->left, envp, sh);
 }
 
@@ -44,11 +44,11 @@ void	left_child(t_pipe *data, t_tree *node, char **envp, t_root *sh)
  *
  * @returns void.
  */
-void	right_child(t_pipe *data, t_tree *node, char **envp, t_root *sh)
+void	right_child(int *pipe, t_tree *node, char **envp, t_root *sh)
 {
-	dup2(data->p[0], 0);
-	ft_close(data->p[0]);
-	ft_close(data->p[1]);
+	dup2(pipe[0], 0);
+	ft_close(pipe[0]);
+	ft_close(pipe[1]);
 	recurse_bst(node->right, envp, sh);
 }
 
@@ -67,23 +67,24 @@ void	children(t_tree *node, char **envp, t_root *sh)
 	t_pipe	*data;
 	pid_t	children[2];
 	int		status;
+	int		pipe[2];
 
 	data = ft_calloc(1, sizeof(t_pipe));
-	ft_pipe(data->p);
+	ft_pipe(pipe);
 	children[0] = ft_fork();
 	if (children[0] == 0)
 	{
-		left_child(data, node, envp, sh);
+		left_child(pipe, node, envp, sh);
 		exit(0);
 	}
 	children[1] = ft_fork();
 	if (children[1] == 0)
 	{
-		right_child(data, node, envp, sh);
+		right_child(pipe, node, envp, sh);
 		exit(0);
 	}
-	ft_close(data->p[0]);
-	ft_close(data->p[1]);
+	ft_close(pipe[0]);
+	ft_close(pipe[1]);
 	waitpid(-1, &status, 0);
 	free(data);
 }

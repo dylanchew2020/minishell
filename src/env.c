@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+//error_code
+//store env in linked list using key=value format
+
 void	env_link_list(char **envp, t_list **env_list)
 {
 	int		i;
@@ -35,7 +38,7 @@ void	get_env(t_list *env_list)
 {
 	while (env_list)
 	{
-		printf("%s\n", env_list->content);
+		printf("%s\n", (char *)env_list->content);
 		env_list = env_list->next;
 	}
 }

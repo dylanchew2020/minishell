@@ -89,12 +89,6 @@ typedef struct s_root
 	t_token_check	tkchk[NO_OF_TOKEN_TYPES];
 }	t_root;
 
-typedef struct s_pipe
-{
-	int	p[2];
-	int	previous_fd;
-}	t_pipe;
-
 /* PROGRAM */
 
 void		init_root(t_root *root);

@@ -32,15 +32,15 @@ void	prompt(t_root *root, char **envp)
 			history_add(&root->history, cmd);
 			cmd_lexer = lexer(cmd);
 			head = parser(cmd_lexer, ft_lstsize(cmd_lexer), root);
-			builtin(head, envp);
-			// print_tree(head, 0);
-			// child = ft_fork();
-			// if (child == 0)
-			// {
-			// 	recurse_bst(head, envp, root);
-			// 	exit(0);
-			// }
-			// waitpid(-1, &status, 0);
+			// builtin(head, envp);
+			print_tree(head, 0);
+			child = ft_fork();
+			if (child == 0)
+			{
+				recurse_bst(head, envp, root);
+				exit(0);
+			}
+			waitpid(-1, &status, 0);
 			free_tree(head);
 			while (cmd_lexer)
 			{
