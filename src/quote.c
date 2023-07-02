@@ -12,9 +12,33 @@
 
 #include "minishell.h"
 
-int		is_quote(char c)
+int	is_quote(char c)
 {
-	if (c == '\'' || c == '\"')
+	if (c == '\'')
 		return (1);
+	else if (c == '\"')
+		return (2);
 	return (0);
+}
+
+int	quote_len(char *cmd)
+{
+	int	count;
+	int	quote_type;
+
+	count = 1;
+	quote_type = is_quote(*cmd++);
+	while (*cmd != '\0' && is_quote(*cmd) != quote_type)
+	{
+		count++;
+		cmd++;
+	}
+	if (is_quote(*cmd) != quote_type)
+	{
+		ft_putstr_fd("Error: unclosed quote.\n", STDERR_FILENO);
+		return (-1);
+	}
+	else
+		++count;
+	return (count);
 }

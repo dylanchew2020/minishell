@@ -21,9 +21,7 @@ void	prompt(t_root *sh, char **envp)
 	t_tree	*head;
 	pid_t	child;
 	int		status;
-	
 
-	
 	path = find_path();
 	while (1)
 	{
@@ -36,11 +34,11 @@ void	prompt(t_root *sh, char **envp)
 			history_add(&sh->history, cmd);
 			cmd_lexer = lexer(cmd);
 			head = parser(cmd_lexer, ft_lstsize(cmd_lexer), sh);
-			// print_tree(head, 0);
+			print_tree(head, 0);
 			// child = ft_fork();
 			// if (child == 0)
 			// {
-				recurse_bst(head, envp, sh);
+				// recurse_bst(head, envp, sh);
 				// free(sh->path);
 				// free_2d(sh->cmd);
 				// exit(0);

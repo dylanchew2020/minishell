@@ -134,28 +134,25 @@ static int	token_count(char *cmd)
 	{
 		while (*cmd == ' ')
 				++cmd;
-		if (*cmd == '|')
+		if (ft_strchr("|", *cmd) != NULL && *cmd != '\0')
 		{
-			while (*cmd == '|')
+			++cmd;
+			while (*cmd == *(cmd - 1) && *cmd != '\0')
 				++cmd;
 			++token_count;
 		}
-		else if (*cmd != '\0' && ft_strchr("<>", *cmd) != NULL)
+		else if (*cmd != '\0' && ft_strchr("<>", *cmd++) != NULL)
 		{
-			while (*cmd == *(cmd + 1) || *(cmd + 1) == ' ')
+			while (*cmd == *(cmd - 1) || *cmd == ' ')
 				++cmd;
-			while (*cmd != '\0' && ft_strchr("|<> ", *cmd) == NULL)
+			while (ft_strchr("|<> ", *cmd) == NULL && *cmd != '\0')
 				++cmd;
 			++token_count;
 		}
 		else
 		{
-			while (*cmd != '\0' && ft_strchr("|<>", *cmd) == NULL)
-			{
-				if (is_quote(*cmd))
-					cmd += quote_len(cmd);
+			while (ft_strchr("|<>", *cmd) == NULL && *cmd != '\0')
 				++cmd;
-			}
 			++token_count;
 		}
 	}
