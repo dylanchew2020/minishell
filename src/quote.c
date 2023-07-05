@@ -21,24 +21,24 @@ int	is_quote(char c)
 	return (0);
 }
 
-int	quote_len(char *cmd)
+int	quote_count(char *cmd)
 {
 	int	count;
 	int	quote_type;
 
-	count = 1;
 	quote_type = is_quote(*cmd++);
-	while (*cmd != '\0' && is_quote(*cmd) != quote_type)
+	if (!cmd || quote_type == 0)
+		return (0);
+	count = 1;
+	while (is_quote(*cmd) != quote_type)
 	{
+		if (*cmd == '\0')
+		{
+			ft_putstr_fd("Error: unclosed quote.\n", STDERR_FILENO);
+			return (-1);
+		}
 		count++;
 		cmd++;
 	}
-	if (is_quote(*cmd) != quote_type)
-	{
-		ft_putstr_fd("Error: unclosed quote.\n", STDERR_FILENO);
-		return (-1);
-	}
-	else
-		++count;
 	return (count);
 }

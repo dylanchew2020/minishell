@@ -158,4 +158,9 @@ int			rdin_fd(char *node_value);
 int			rdout_fd(char *node_value);
 char		*find_file(char *node_value);
 
+/* QUOTE */
+
+int			is_quote(char c);
+int			quote_count(char *cmd);
+
 #endif

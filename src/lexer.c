@@ -14,7 +14,9 @@
 
 static void	cmd_modifier(char *cmd, char **tokens);
 static int	token_count(char *cmd);
-static int	char_count(char const *cmd, int special);
+static int	sp_count(char *cmd);
+static int	char_count(char *cmd);
+static void	quote_char_mod(char **cmd, int *count);
 
 /**
  * lexer - Converts a command string into a list of tokens, where a token can
@@ -30,12 +32,17 @@ t_list	*lexer(char *cmd)
 {
 	char	**tokens;
 	char	**tokens_head;
+	int		token_num;
+	int		*value_len;
 	t_list	*head;
 	t_list	*node;
 
 	if (!cmd)
 		return (NULL);
-	tokens = ft_calloc(token_count(cmd) + 1, sizeof(char *));
+	token_num = token_count(cmd);
+	if (token_num == -1)
+		return (NULL);
+	tokens = ft_calloc(token_num + 1, sizeof(char *));
 	cmd_modifier(cmd, tokens);
 	if (!tokens || !*tokens)
 		return (NULL);
@@ -75,8 +82,9 @@ t_list	*lexer(char *cmd)
  */
 static void	cmd_modifier(char *cmd, char **tokens)
 {
-	int		i;
-	int		j;
+	int	i;
+	int	j;
+	int	quote_len;
 
 	i = 0;
 	while (*cmd != '\0')
@@ -86,7 +94,7 @@ static void	cmd_modifier(char *cmd, char **tokens)
 			++cmd;
 		if (ft_strchr("|", *cmd) != NULL && *cmd != '\0')
 		{
-			tokens[i] = ft_calloc(char_count(cmd, 1) + 1, sizeof(char));
+			tokens[i] = ft_calloc(sp_count(cmd) + 1, sizeof(char));
 			tokens[i][j++] = *cmd++;
 			while (*cmd == *(cmd - 1))
 				tokens[i][j++] = *cmd++;
@@ -94,22 +102,41 @@ static void	cmd_modifier(char *cmd, char **tokens)
 		}
 		else if (ft_strchr("<>", *cmd) != NULL && *cmd != '\0')
 		{
-			tokens[i] = ft_calloc(char_count(cmd, 1) + 1, sizeof(char));
+			printf("sp_count|%d\n", sp_count(cmd));
+			tokens[i] = ft_calloc(sp_count(cmd) + 1, sizeof(char));
 			tokens[i][j++] = *cmd++;
 			while (*cmd == *(cmd - 1) || *cmd == ' ')
 				tokens[i][j++] = *cmd++;
 			if (ft_strchr("<>", *(cmd - 1)) != NULL && *cmd != ' ' && *cmd != '\0')
 				tokens[i][j++] = ' ';
 			while (ft_strchr("|<> ", *cmd) == NULL && *cmd != '\0')
-				tokens[i][j++] = *cmd++;
+			{
+				quote_len = quote_count(cmd) + 1;
+				if (quote_len == 1)
+					tokens[i][j++] = *cmd++;
+				else
+				{
+					while (quote_len-- > 0)
+						tokens[i][j++] = *cmd++;
+				}
+			}
 			tokens[i][j] = '\0';
 			++i;
 		}
 		else if (*cmd != '\0')
 		{
-			tokens[i] = ft_calloc(char_count(cmd, 0) + 1, sizeof(char));
+			tokens[i] = ft_calloc(char_count(cmd) + 1, sizeof(char));
 			while (ft_strchr("|<>", *cmd) == NULL && *cmd != '\0')
-				tokens[i][j++] = *cmd++;
+			{
+				quote_len = quote_count(cmd) + 1;
+				if (quote_len == 1)
+					tokens[i][j++] = *cmd++;
+				else
+				{
+					while (quote_len-- > 0)
+						tokens[i][j++] = *cmd++;
+				}
+			}
 			tokens[i++][j] = '\0';
 		}
 	}
@@ -127,9 +154,11 @@ static void	cmd_modifier(char *cmd, char **tokens)
  */
 static int	token_count(char *cmd)
 {
-	int		token_count;
+	int	token_count;
+	int	quote_len;
 
 	token_count = 0;
+	quote_len = 0;
 	while (*cmd != '\0')
 	{
 		while (*cmd == ' ')
@@ -142,24 +171,30 @@ static int	token_count(char *cmd)
 		}
 		else if (*cmd != '\0' && ft_strchr("<>", *cmd) != NULL)
 		{
-			while (*cmd == *(cmd + 1) || *(cmd + 1) == ' ')
+			++cmd;
+			while (*cmd == *(cmd - 1) || *cmd == ' ')
 				++cmd;
 			while (*cmd != '\0' && ft_strchr("|<> ", *cmd) == NULL)
-				++cmd;
+			{
+				quote_len = quote_count(cmd++);
+				if (quote_len == -1)
+					return (-1);
+				cmd += quote_len;
+			}
 			++token_count;
 		}
 		else
 		{
 			while (*cmd != '\0' && ft_strchr("|<>", *cmd) == NULL)
 			{
-				if (is_quote(*cmd))
-					cmd += quote_len(cmd);
-				++cmd;
+				quote_len = quote_count(cmd++);
+				if (quote_len == -1)
+					return (-1);
+				cmd += quote_len;
 			}
 			++token_count;
 		}
 	}
-	// printf("token_count: %d\n", token_count);
 	return (token_count);
 }
 
@@ -176,39 +211,62 @@ static int	token_count(char *cmd)
  * The number of consecutive identical characters at the beginning of the string
  * that match the 'special' criterion.
  */
-static int	char_count(char const *cmd, int special)
+static int	sp_count(char *cmd)
 {
 	int	count;
 
 	count = 0;
-	if (special == 1)
+	if (*cmd == '|')
 	{
-		if (ft_strchr("|", *cmd) != NULL && *cmd != '\0')
+		while (*cmd == '|')
 		{
 			++count;
 			++cmd;
-			while (*cmd == *(cmd - 1))
-			{
-				++count;
-				++cmd;
-			}
 		}
-		else if (*cmd != '\0' && ft_strchr("<>", *cmd++) != NULL)
+	}
+	else if (*cmd != '\0' && ft_strchr("<>", *cmd++) != NULL)
+	{
+		++count;
+		while (*cmd == *(cmd - 1) || *cmd == ' ')
 		{
-			count += 2;
-			while (*cmd == *(cmd - 1) || *cmd == ' ')
-			{
-				++count;
-				++cmd;
-			}
-			while (*cmd != '\0' && ft_strchr("|<> ", *cmd++) == NULL)
-				++count;
+			++count;
+			++cmd;
 		}
+		if (ft_strchr("<>", *(cmd - 1)) != NULL && *cmd != ' ' && *cmd != '\0')
+			++count;
+		while (*cmd != '\0' && ft_strchr("|<> ", *cmd) == NULL)
+			quote_char_mod(&cmd, &count);
+	}
+	return (count);
+}
+
+static int	char_count(char *cmd)
+{
+	int	count;
+	int	quote_len;
+
+	count = 0;
+	while (ft_strchr("|<>", *cmd) == NULL && *cmd != '\0')
+		quote_char_mod(&cmd, &count);
+	return (count);
+}
+
+static void quote_char_mod(char **cmd, int *count)
+{
+	int	quote_len;
+
+	quote_len = quote_count(*cmd) + 1;
+	if (quote_len == 1)
+	{
+		++(*count);
+		++(*cmd);
 	}
 	else
 	{
-		while (ft_strchr("|<>", *cmd) == NULL && *cmd++ != '\0')
-			++count;
+		while (quote_len-- > 0)
+		{
+			++(*count);
+			++(*cmd);
+		}
 	}
-	return (count);
 }
