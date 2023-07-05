@@ -6,20 +6,16 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:11 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/01 18:11:52 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/05 17:46:41 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "minishell.h"
 
-void	free_env_list(t_list **env_list);
-int	builtin(t_tree *head, char **envp)
+int	builtin(t_tree *head, t_list **env_list)
 {
-	t_list	*env;
 
 	(void)head;
-	env = NULL;
-	env_link_list(envp, &env);
 	// while (tmp != NULL)
 	// {
 	// 	printf("%s\n", tmp->content);
@@ -32,36 +28,10 @@ int	builtin(t_tree *head, char **envp)
 	// if (ft_strnstr(head->value, "pwd", ft_strlen(head->value)) != NULL)
 	// 	pwd(head);
 	if (ft_strnstr(head->value, "export", ft_strlen(head->value)) != NULL)
-		export(head);
-	if (ft_strnstr(head->value, "env", ft_strlen(head->value)) != NULL)
-	{
-		get_env(env);
-		return (1);
-	}
+		export(head, env_list);
+	else if (ft_strnstr(head->value, "env", ft_strlen(head->value)) != NULL)
+		get_env(*env_list);
 	else
-	{
-		free_env_list(&env);
 		return (0);
-	}
-	free_env_list(&env);
-}
-
-void	free_env_list(t_list **env_list)
-{
-	t_list	*tmp;
-	t_env	*data;
-
-	tmp = *env_list;
-	while (tmp)
-	{
-		data = (t_env *)tmp->content;
-		if (!data)
-		{
-			free(data->key);
-			free(data->value);
-			free(data);
-		}
-		tmp = tmp->next;
-	}
-	ft_lstclear(env_list, free);
+	return (1);
 }

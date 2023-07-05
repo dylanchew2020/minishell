@@ -48,7 +48,8 @@ SRC			:= $(addsuffix .c, \
 					redirect\
 					signal\
 					ft_utlis\
-					export)
+					export\
+					free)
 
 OBJ_DIR		:= ./obj
 OBJ			:= $(SRC:%.c=$(OBJ_DIR)/%.o)

@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:10 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/01 18:11:38 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/05 19:18:54 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -28,11 +28,14 @@ void	env_link_list(char **envp, t_list **env_list)
 		if (!content)
 		{
 			free(content);
-			ft_lstclear((t_list **)env_list, free);
+			free_env_list(env_list);
 			return ;
 		}
 		content->key = ft_substr(envp[i], 0, ft_strchr(envp[i], '=') - envp[i]);
-		content->value = ft_substr(envp[i], ft_strchr(envp[i], '=') - envp[i] + 1, ft_strlen(envp[i]) - (ft_strchr(envp[i], '=') - envp[i]));
+		content->value = ft_substr(envp[i], \
+						ft_strchr(envp[i], '=') - envp[i] + 1, \
+						ft_strlen(envp[i]) - \
+						(ft_strchr(envp[i], '=') - envp[i]));
 		node = ft_lstnew(content);
 		ft_lstadd_back(env_list, node);
 		i++;

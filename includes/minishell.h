@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/01 18:05:00 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/05 17:55:29 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -93,7 +93,6 @@ typedef struct s_env
 {
 	char			*key;
 	char			*value;
-	struct s_env	*next;
 }	t_env;
 
 /* PROGRAM */
@@ -121,14 +120,17 @@ char		*the_legit_path(char *argv);
 /* LEXER */
 
 t_list		*lexer(char *cmd);
-t_tree		*tree_node_new(t_token token, char *value, t_tree *left, t_tree *right);
+t_tree		*tree_node_new(t_token token, char *value, t_tree *left,\
+							t_tree *right);
 
 /* PARSER */
 
 t_tree		*parser(t_list *lexer, int num_tokens, t_root *sh);
 t_tree		*token_check(t_list *lexer, char *op, int num_tokens, t_root *sh);
-t_tree		*tree_node_new(t_token type, char *value, t_tree *left, t_tree *right);
-t_token		type_assign(char	*value, t_tree *left, t_tree *right, t_root *sh);
+t_tree		*tree_node_new(t_token type, char *value, t_tree *left, \
+							t_tree *right);
+t_token		type_assign(char	*value, t_tree *left, t_tree *right, \
+						t_root *sh);
 void		init_token_check(t_token_check	*tkchk);
 void		print_tree(t_tree *root, int b);
 void		free_tree(t_tree *node);
@@ -162,5 +164,11 @@ void		env_link_list(char **envp, t_list **env_list);
 void		get_env(t_list *env_list);
 
 /* BUILT IN */
-int			builtin(t_tree *head, char **envp);
+int			builtin(t_tree *head, t_list **env_list);
+
+/* FREE */
+void		free_env_list(t_list **env_list);
+
+/* EXPORT */
+void		export(t_tree *head, t_list **env_list);
 #endif

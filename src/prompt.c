@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/01 18:08:31 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/05 17:47:06 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -15,14 +15,15 @@
 void	prompt(t_root *root, char **envp)
 {
 	char	*cmd;
-	char	**path;
 	t_list	*cmd_lexer;
 	t_list	*tmp_lexer;
 	t_tree	*head;
+	t_list	*env_list;
 	pid_t	child;
 	int		status;
 
-	path = find_path();
+	env_list = NULL;
+	env_link_list(envp, &env_list);
 	while (1)
 	{
 		cmd = readline("\033[1;32mminishell$\033[0m ");
@@ -32,16 +33,16 @@ void	prompt(t_root *root, char **envp)
 			history_add(&root->history, cmd);
 			cmd_lexer = lexer(cmd);
 			head = parser(cmd_lexer, ft_lstsize(cmd_lexer), root);
-			if (builtin(head, envp) == 1)
-				continue ;
 			print_tree(head, 0);
-			// child = ft_fork();
-			// if (child == 0)
-			// {
-			// 	recurse_bst(head, envp, root);
-			// 	exit(0);
-			// }
-			// waitpid(-1, &status, 0);
+			if (builtin(head, &env_list) == 1)
+				continue ;
+			child = ft_fork();
+			if (child == 0)
+			{
+				recurse_bst(head, envp, root);
+				exit(0);
+			}
+			waitpid(-1, &status, 0);
 			free_tree(head);
 			while (cmd_lexer)
 			{
@@ -53,6 +54,7 @@ void	prompt(t_root *root, char **envp)
 		free(cmd);
 	}
 	history_clear(&root->history);
+	free_env_list(&env_list);
 	return ;
 }
 
