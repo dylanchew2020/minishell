@@ -12,16 +12,14 @@
 
 #include "minishell.h"
 
-void    builtin(t_tree *head, char **envp)
+void	free_env_list(t_list **env_list);
+int	builtin(t_tree *head, char **envp)
 {
 	t_list	*env;
-	t_list	*tmp;
 
 	(void)head;
 	env = NULL;
 	env_link_list(envp, &env);
-	printf("\nsize %i\n\n", ft_lstsize(env));
-	tmp = env;
 	// while (tmp != NULL)
 	// {
 	// 	printf("%s\n", tmp->content);
@@ -33,8 +31,37 @@ void    builtin(t_tree *head, char **envp)
 	// 	export(head);
 	// if (ft_strnstr(head->value, "pwd", ft_strlen(head->value)) != NULL)
 	// 	pwd(head);
-	// if (ft_strnstr(head->value, "export", ft_strlen(head->value)) != NULL)
-	// 	export(head);
+	if (ft_strnstr(head->value, "export", ft_strlen(head->value)) != NULL)
+		export(head);
 	if (ft_strnstr(head->value, "env", ft_strlen(head->value)) != NULL)
+	{
 		get_env(env);
+		return (1);
+	}
+	else
+	{
+		free_env_list(&env);
+		return (0);
+	}
+	free_env_list(&env);
+}
+
+void	free_env_list(t_list **env_list)
+{
+	t_list	*tmp;
+	t_env	*data;
+
+	tmp = *env_list;
+	while (tmp)
+	{
+		data = (t_env *)tmp->content;
+		if (!data)
+		{
+			free(data->key);
+			free(data->value);
+			free(data);
+		}
+		tmp = tmp->next;
+	}
+	ft_lstclear(env_list, free);
 }

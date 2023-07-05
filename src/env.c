@@ -18,17 +18,22 @@
 void	env_link_list(char **envp, t_list **env_list)
 {
 	int		i;
+	t_env	*content;
 	t_list	*node;
 
 	i = 0;
 	while (envp[i])
 	{
-		node = ft_lstnew(envp[i]);
-		if (!node)
+		content = ft_calloc(1, sizeof(t_env));
+		if (!content)
 		{
-			ft_lstclear(env_list, free);
+			free(content);
+			ft_lstclear((t_list **)env_list, free);
 			return ;
 		}
+		content->key = ft_substr(envp[i], 0, ft_strchr(envp[i], '=') - envp[i]);
+		content->value = ft_substr(envp[i], ft_strchr(envp[i], '=') - envp[i] + 1, ft_strlen(envp[i]) - (ft_strchr(envp[i], '=') - envp[i]));
+		node = ft_lstnew(content);
 		ft_lstadd_back(env_list, node);
 		i++;
 	}
@@ -36,9 +41,12 @@ void	env_link_list(char **envp, t_list **env_list)
 
 void	get_env(t_list *env_list)
 {
+	t_env	*data;
+
 	while (env_list)
 	{
-		printf("%s\n", (char *)env_list->content);
+		data = (t_env *)env_list->content;
+		printf("%s=%s\n", data->key, data->value);
 		env_list = env_list->next;
 	}
 }

@@ -64,12 +64,10 @@ void	right_child(int *pipe, t_tree *node, char **envp, t_root *sh)
  */
 void	children(t_tree *node, char **envp, t_root *sh)
 {
-	t_pipe	*data;
 	pid_t	children[2];
 	int		status;
 	int		pipe[2];
 
-	data = ft_calloc(1, sizeof(t_pipe));
 	ft_pipe(pipe);
 	children[0] = ft_fork();
 	if (children[0] == 0)
@@ -86,5 +84,4 @@ void	children(t_tree *node, char **envp, t_root *sh)
 	ft_close(pipe[0]);
 	ft_close(pipe[1]);
 	waitpid(-1, &status, 0);
-	free(data);
 }

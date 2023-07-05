@@ -89,6 +89,13 @@ typedef struct s_root
 	t_token_check	tkchk[NO_OF_TOKEN_TYPES];
 }	t_root;
 
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
+
 /* PROGRAM */
 
 void		init_root(t_root *root);
@@ -155,5 +162,5 @@ void		env_link_list(char **envp, t_list **env_list);
 void		get_env(t_list *env_list);
 
 /* BUILT IN */
-void		builtin(t_tree *head, char **envp);
+int			builtin(t_tree *head, char **envp);
 #endif
