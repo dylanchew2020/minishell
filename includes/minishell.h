@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/05 17:55:29 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/06 18:27:22 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -119,7 +119,7 @@ char		*the_legit_path(char *argv);
 
 /* LEXER */
 
-t_list		*lexer(char *cmd);
+t_list		*lexer(char *cmd, t_list **env_list);
 t_tree		*tree_node_new(t_token token, char *value, t_tree *left,\
 							t_tree *right);
 
@@ -161,7 +161,7 @@ char		*find_file(char *node_value);
 
 /* ENV */
 void		env_link_list(char **envp, t_list **env_list);
-void		get_env(t_list *env_list);
+void		get_env(t_list **env_list);
 
 /* BUILT IN */
 int			builtin(t_tree *head, t_list **env_list);

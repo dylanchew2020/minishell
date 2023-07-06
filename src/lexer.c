@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:34:45 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/28 18:42:18 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/06 18:47:42 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "minishell.h"
 
@@ -26,12 +26,14 @@ static int	char_count(char const *cmd, int special);
  * A linked list where each node holds a token from the command string,
  * or NULL if there's an error during the process.
  */
-t_list	*lexer(char *cmd)
+t_list	*lexer(char *cmd, t_list **env_list)
 {
 	char	**tokens;
 	char	**tokens_head;
 	t_list	*head;
 	t_list	*node;
+	t_list	*tmp;
+	char	*key;
 
 	if (!cmd)
 		return (NULL);
@@ -57,6 +59,16 @@ t_list	*lexer(char *cmd)
 		// printf("node->content: %s\n", node->content);
 	}
 	free_2d(tokens_head);
+	tmp = head;
+	while (tmp)
+	{
+		if (ft_strchr((char *)tmp->content, '$') != NULL)
+		{
+			printf("expand yoo\n");
+			key = ft_substr((char *)tmp->content, ft_strchr((char *)tmp->content, '$') - (char *)tmp->content + 1, );
+		}
+		tmp = tmp->next;
+	}
 	return (head);
 }
 

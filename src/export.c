@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 17:26:43 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/05 20:27:22 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/06 18:14:08 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -19,7 +19,10 @@
 // put it into link list
 //ft_lstadd back
 
-int	 error_check(char *str);
+void	expand(t_tree *head, t_list **env_list, char *key, char *input);
+char	*key_check(char *input, t_list **env_list);
+void	add_link_list(char	*input, t_list	**env_list);
+t_list	**existed_env(char *key, t_list	**env_list);
 
 void	export(t_tree *head, t_list **env_list)
 {
@@ -46,35 +49,87 @@ void	export(t_tree *head, t_list **env_list)
 		i++;
 		while (split[i])
 		{
-			// if (error_check(split[i]) == 0)
-			// 	break ;
-			if (ft_isalpha(split[i][0]) == 0 && split[i][0] != '_')
+			printf("%s\n", split[i]);
+			if (split[i][0] == '$')
+			{
+				expand(head, env_list, key_check(split[i], env_list), split[i]);
+			}
+			else if (ft_isalpha(split[i][0]) == 0 && split[i][0] != '_')
 				printf("export: '%s': not a valid identifier\n", split[i]);
-			// printf("|%s|\n", split[i]);
+			if (ft_strchr(split[i], '=') != NULL)
+				add_link_list(split[i], env_list);
 			i++;
 		}
 	}
 }
 
-int	error_check(char *str)
+void	add_link_list(char	*input, t_list	**env_list)
 {
-	int	i;
+	char	*key;
+	t_env	*data;
+	t_env	*new_data;
+	t_list	*node;
+	t_list	*tmp;
+	int		i;
 
-	i = 0;
-	while (str[i])
+	key = key_check(input, env_list);
+	tmp = *env_list;
+	while (tmp)
 	{
-		printf("%c\n", str[i]);
-		if (str[i] == '=')
-			break ;
-		if (ft_isalpha(str[i]) == 0)
+		data = (t_env *)tmp->content;
+		i = ft_strncmp(data->key, key, ft_strlen(key));
+		if (i == 0)
 		{
-			printf("export: '%s': not a valid identifier\n", str);
+			printf("modified data here\n");
 			break ;
 		}
-		i++;
+		tmp = tmp->next;
 	}
-	if (str[i] == '=')
-		return (1);
-	else
-		return (0);
+	if (i != 0)
+	{
+		printf("creating new node\n");
+		new_data = ft_calloc(1, sizeof(t_env));
+		new_data->key = key;
+		new_data->value = ft_substr(input, ft_strchr(input, '=') \
+									- input + 1, ft_strlen(input) - \
+									(ft_strchr(input, '=') - input));
+		node = ft_lstnew(new_data);
+		ft_lstadd_back(env_list, node);
+	}
+}
+
+char	*key_check(char *input, t_list **env_list)
+{
+	char	*key;
+
+	if (input[0] == '$')
+		input++;
+	key = ft_substr(input, 0, ft_strchr(input, '=') - input);
+	if (ft_strchr(key, '-') != NULL)
+	{
+		printf("export: '%s': not a valid identifier\n", key);
+		return (NULL);
+	}
+	return (key);
+}
+
+// t_list	**existed_env(char *key, t_list	**env_list)
+// {
+// 	t_env	*data;
+// 	t_list	*tmp;
+
+// 	tmp = *env_list;
+// 	while (tmp)
+// 	{
+// 		data = (t_env *)tmp->content;
+// 		if (data->key == key)
+// 			return (&tmp);
+// 		tmp = tmp->next;
+// 	}
+// 	return (NULL);
+// }
+
+void	expand(t_tree *head, t_list **env_list, char *key, char *input)
+{
+	printf("head %s\n", head->value);
 }

@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:10 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/05 19:18:54 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/06 16:39:39 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -25,12 +25,6 @@ void	env_link_list(char **envp, t_list **env_list)
 	while (envp[i])
 	{
 		content = ft_calloc(1, sizeof(t_env));
-		if (!content)
-		{
-			free(content);
-			free_env_list(env_list);
-			return ;
-		}
 		content->key = ft_substr(envp[i], 0, ft_strchr(envp[i], '=') - envp[i]);
 		content->value = ft_substr(envp[i], \
 						ft_strchr(envp[i], '=') - envp[i] + 1, \
@@ -42,14 +36,16 @@ void	env_link_list(char **envp, t_list **env_list)
 	}
 }
 
-void	get_env(t_list *env_list)
+void	get_env(t_list **env_list)
 {
 	t_env	*data;
+	t_list	*tmp;
 
-	while (env_list)
+	tmp = *env_list;
+	while (tmp)
 	{
-		data = (t_env *)env_list->content;
+		data = (t_env *)tmp->content;
 		printf("%s=%s\n", data->key, data->value);
-		env_list = env_list->next;
+		tmp = tmp->next;
 	}
 }
