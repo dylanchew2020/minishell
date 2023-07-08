@@ -6,13 +6,13 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/08 17:04:21 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/08 19:45:05 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "minishell.h"
 
-void	prompt(t_root *root, char **envp)
+void	prompt(t_root *sh, char **envp)
 {
 	char	*cmd;
 	t_list	*cmd_lexer;
@@ -27,23 +27,19 @@ void	prompt(t_root *root, char **envp)
 	while (1)
 	{
 		cmd = readline("\033[1;32mminishell$\033[0m ");
+		if (!cmd)
+			continue ;
 		if (*cmd)
 		{
 			cmd = expand(cmd, &env_list);
-			exit_prompt(cmd);
-			history_add(&root->history, cmd);
-			cmd_lexer = lexer(cmd, &env_list);
-			head = parser(cmd_lexer, ft_lstsize(cmd_lexer), root);
+			exit_prompt(cmd, sh);
+			history_add(&sh->history, cmd);
+			cmd_lexer = lexer(cmd);
+			head = parser(cmd_lexer, ft_lstsize(cmd_lexer), sh);
 			print_tree(head, 0);
 			if (builtin(head, &env_list) == 1)
 				continue ;
-			child = ft_fork();
-			if (child == 0)
-			{
-				recurse_bst(head, envp, root);
-				exit(0);
-			}
-			waitpid(-1, &status, 0);
+			recurse_bst(head, envp, sh);
 			free_tree(head);
 			while (cmd_lexer)
 			{
@@ -53,18 +49,25 @@ void	prompt(t_root *root, char **envp)
 			}
 		}
 		free(cmd);
+		ft_dup2(sh->stdin_tmp, STDIN_FILENO);
+		ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
 	}
-	history_clear(&root->history);
+	history_clear(&sh->history);
 	free_env_list(&env_list);
 	return ;
 }
 
-void	exit_prompt(char *cmd)
+void	exit_prompt(char *cmd, t_root *sh)
 {
 	if (!cmd || !ft_strncmp(cmd, EXIT, 5))
 	{
 		free(cmd);
 		clear_history();
+		ft_close(sh->stdin_tmp);
+		ft_close(sh->stdout_tmp);
+		int fd = open("1.tmp", O_RDONLY);
+		dprintf(2, "fd = %d\n", fd);
+		close(fd);
 		exit(0);
 	}
 }

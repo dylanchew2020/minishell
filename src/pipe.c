@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:06 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/28 19:32:25 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/08 19:47:53 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "minishell.h"
 
@@ -27,8 +27,8 @@
 void	left_child(int	*pipe, t_tree *node, char **envp, t_root *sh)
 {
 	dup2(pipe[1], 1);
-	ft_close(pipe[1]);
-	ft_close(pipe[0]);
+	// ft_close(data->p[1]);
+	// ft_close(data->p[0]);
 	recurse_bst(node->left, envp, sh);
 }
 
@@ -47,8 +47,8 @@ void	left_child(int	*pipe, t_tree *node, char **envp, t_root *sh)
 void	right_child(int *pipe, t_tree *node, char **envp, t_root *sh)
 {
 	dup2(pipe[0], 0);
-	ft_close(pipe[0]);
-	ft_close(pipe[1]);
+	// ft_close(data->p[0]);
+	// ft_close(data->p[1]);
 	recurse_bst(node->right, envp, sh);
 }
 
@@ -75,13 +75,14 @@ void	children(t_tree *node, char **envp, t_root *sh)
 		left_child(pipe, node, envp, sh);
 		exit(0);
 	}
+	waitpid(children[0], &status, 0);
+	ft_close(pipe[1]);
 	children[1] = ft_fork();
 	if (children[1] == 0)
 	{
 		right_child(pipe, node, envp, sh);
 		exit(0);
 	}
+	waitpid(children[1], &status, 0);
 	ft_close(pipe[0]);
-	ft_close(pipe[1]);
-	waitpid(-1, &status, 0);
 }

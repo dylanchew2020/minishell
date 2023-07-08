@@ -40,6 +40,8 @@ SRC			:= $(addsuffix .c, \
 					execute\
 					history\
 					lexer\
+					lexer_token_count\
+					lexer_char_count\
 					parser\
 					path\
 					pipe\

@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/08 16:54:40 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/08 19:45:45 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -87,6 +87,8 @@ typedef struct s_root
 {
 	t_history		*history;
 	t_token_check	tkchk[NO_OF_TOKEN_TYPES];
+	int				stdin_tmp;
+	int				stdout_tmp;
 }	t_root;
 
 typedef struct s_env
@@ -102,8 +104,8 @@ void		free_2d(char **str);
 
 /* PROMPT */
 
-void		prompt(t_root *root, char **envp);
-void		exit_prompt(char *cmd);
+void		prompt(t_root *sh, char **envp);
+void		exit_prompt(char *cmd, t_root *sh);
 
 /* HISTORY */
 
@@ -119,9 +121,10 @@ char		*the_legit_path(char *argv);
 
 /* LEXER */
 
-t_list		*lexer(char *cmd, t_list **env_list);
-t_tree		*tree_node_new(t_token token, char *value, t_tree *left,\
-							t_tree *right);
+t_list		*lexer(char *cmd);
+int			count_token(char *cmd);
+int			count_sp_char(char *cmd);
+int			count_char(char *cmd);
 
 /* PARSER */
 
@@ -186,5 +189,9 @@ void		pwd(void);
 
 /* CD */
 void		cd(char *value);
+/* QUOTE */
+
+int			is_quote(char c);
+int			quote_count(char *cmd);
 
 #endif
