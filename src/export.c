@@ -6,19 +6,11 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 17:26:43 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/08 13:55:22 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/08 16:22:58 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "minishell.h"
-
-//detext for "="
-//else do nothing
-//get the key from the head node->value
-//get the value 
-// put it into link list
-//ft_lstadd back
-
 
 void	export(t_tree *head, t_list **env_list)
 {
@@ -27,8 +19,7 @@ void	export(t_tree *head, t_list **env_list)
 	t_env	*data;
 	id_t	i;
 
-	printf("|%s|\n", head->value);
-	i = 0;
+	i = 1;
 	tmp = *env_list;
 	split = ft_split(head->value, ' ');
 	if (split[1] == NULL)
@@ -42,11 +33,9 @@ void	export(t_tree *head, t_list **env_list)
 	}
 	else
 	{
-		i++;
 		while (split[i])
 		{
-			printf("%s\n", split[i]);
-			 if (ft_isalpha(split[i][0]) == 0 && split[i][0] != '_')
+			if (ft_isalpha(split[i][0]) == 0 && split[i][0] != '_')
 				printf("export: '%s': not a valid identifier\n", split[i]);
 			if (ft_strchr(split[i], '=') != NULL)
 				add_link_list(split[i], env_list);
@@ -55,12 +44,21 @@ void	export(t_tree *head, t_list **env_list)
 	}
 }
 
+void	modified_value(t_env *data_node, char *input)
+{
+	char	*value;
+	char	*tmp;
+
+	value = find_value(input);
+	tmp = data_node->value;
+	data_node->value = value;
+	free(tmp);
+}
+
 void	add_link_list(char	*input, t_list	**env_list)
 {
 	char	*key;
 	t_env	*data;
-	t_env	*new_data;
-	t_list	*node;
 	t_list	*tmp;
 	int		i;
 
@@ -72,20 +70,13 @@ void	add_link_list(char	*input, t_list	**env_list)
 		i = ft_strncmp(data->key, key, ft_strlen(key));
 		if (i == 0)
 		{
-			printf("modified data here\n");
+			modified_value(data, input);
 			break ;
 		}
 		tmp = tmp->next;
 	}
 	if (i != 0)
-	{
-		printf("creating new node\n");
-		new_data = ft_calloc(1, sizeof(t_env));
-		new_data->key = key;
-		new_data->value = find_value(input);
-		node = ft_lstnew(new_data);
-		ft_lstadd_back(env_list, node);
-	}
+		creat_new_env_node(key, input, env_list);
 }
 
 char	*key_check(char *input)

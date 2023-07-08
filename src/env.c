@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:10 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/08 15:28:08 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/08 16:22:15 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -69,4 +69,16 @@ char	*existed_env(char *key, t_list **env_list)
 		tmp = tmp->next;
 	}
 	return (value);
+}
+
+void	creat_new_env_node(char *key, char	*input, t_list **env_list)
+{
+	t_env	*data;
+	t_list	*node;
+
+	data = ft_calloc(1, sizeof(t_env));
+	data->key = key;
+	data->value = find_value(input);
+	node = ft_lstnew(data);
+	ft_lstadd_back(env_list, node);
 }

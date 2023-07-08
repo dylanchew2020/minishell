@@ -50,7 +50,9 @@ SRC			:= $(addsuffix .c, \
 					ft_utlis\
 					export\
 					free\
-					expand)
+					expand\
+					pwd\
+					cd)
 
 OBJ_DIR		:= ./obj
 OBJ			:= $(SRC:%.c=$(OBJ_DIR)/%.o)

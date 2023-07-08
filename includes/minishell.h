@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/08 13:54:28 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/08 16:54:40 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -163,6 +163,7 @@ char		*find_file(char *node_value);
 void		env_link_list(char **envp, t_list **env_list);
 void		get_env(t_list **env_list);
 char		*existed_env(char *key, t_list **env_list);
+void		creat_new_env_node(char *key, char	*input, t_list **env_list);
 
 /* BUILT IN */
 int			builtin(t_tree *head, t_list **env_list);
@@ -175,8 +176,15 @@ void		export(t_tree *head, t_list **env_list);
 char		*key_check(char *input);
 char		*find_value(char *input);
 void		add_link_list(char	*input, t_list	**env_list);
+void		modified_value(t_env *data_node, char *input);
 
 /* EXPAND */
 char		*expand(char *cmd, t_list **env_list);
+
+/* PWD */
+void		pwd(void);
+
+/* CD */
+void		cd(char *value);
 
 #endif

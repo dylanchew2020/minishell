@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 12:16:13 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/08 15:41:32 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/08 16:00:29 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -25,7 +25,6 @@ char	*join_2d(char **split)
 		tmp = ft_strjoin(result, split[i]);
 		result = ft_strjoin(tmp, " ");
 		free(tmp);
-		printf("result   |%s|\n", result);
 	}
 	return (result);
 }
