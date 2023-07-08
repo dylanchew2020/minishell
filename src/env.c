@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:10 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/06 16:39:39 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/08 15:28:08 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -48,4 +48,25 @@ void	get_env(t_list **env_list)
 		printf("%s=%s\n", data->key, data->value);
 		tmp = tmp->next;
 	}
+}
+
+char	*existed_env(char *key, t_list **env_list)
+{
+	char	*value;
+	t_env	*data;
+	t_list	*tmp;
+
+	value = "";
+	tmp = *env_list;
+	while (tmp)
+	{
+		data = (t_env *)tmp->content;
+		if (ft_strncmp(data->key, key, ft_strlen(key)) == 0)
+		{
+			value = data->value;
+			break ;
+		}
+		tmp = tmp->next;
+	}
+	return (value);
 }

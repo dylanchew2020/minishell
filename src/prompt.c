@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/06 19:08:55 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/08 13:34:55 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -29,9 +29,9 @@ void	prompt(t_root *root, char **envp)
 		cmd = readline("\033[1;32mminishell$\033[0m ");
 		if (*cmd)
 		{
+			cmd = expand(cmd, &env_list);
 			exit_prompt(cmd);
 			history_add(&root->history, cmd);
-			exoansion
 			cmd_lexer = lexer(cmd, &env_list);
 			head = parser(cmd_lexer, ft_lstsize(cmd_lexer), root);
 			print_tree(head, 0);

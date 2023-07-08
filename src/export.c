@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 17:26:43 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/06 18:14:08 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/08 13:55:22 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -19,10 +19,6 @@
 // put it into link list
 //ft_lstadd back
 
-void	expand(t_tree *head, t_list **env_list, char *key, char *input);
-char	*key_check(char *input, t_list **env_list);
-void	add_link_list(char	*input, t_list	**env_list);
-t_list	**existed_env(char *key, t_list	**env_list);
 
 void	export(t_tree *head, t_list **env_list)
 {
@@ -50,11 +46,7 @@ void	export(t_tree *head, t_list **env_list)
 		while (split[i])
 		{
 			printf("%s\n", split[i]);
-			if (split[i][0] == '$')
-			{
-				expand(head, env_list, key_check(split[i], env_list), split[i]);
-			}
-			else if (ft_isalpha(split[i][0]) == 0 && split[i][0] != '_')
+			 if (ft_isalpha(split[i][0]) == 0 && split[i][0] != '_')
 				printf("export: '%s': not a valid identifier\n", split[i]);
 			if (ft_strchr(split[i], '=') != NULL)
 				add_link_list(split[i], env_list);
@@ -72,7 +64,7 @@ void	add_link_list(char	*input, t_list	**env_list)
 	t_list	*tmp;
 	int		i;
 
-	key = key_check(input, env_list);
+	key = key_check(input);
 	tmp = *env_list;
 	while (tmp)
 	{
@@ -90,15 +82,13 @@ void	add_link_list(char	*input, t_list	**env_list)
 		printf("creating new node\n");
 		new_data = ft_calloc(1, sizeof(t_env));
 		new_data->key = key;
-		new_data->value = ft_substr(input, ft_strchr(input, '=') \
-									- input + 1, ft_strlen(input) - \
-									(ft_strchr(input, '=') - input));
+		new_data->value = find_value(input);
 		node = ft_lstnew(new_data);
 		ft_lstadd_back(env_list, node);
 	}
 }
 
-char	*key_check(char *input, t_list **env_list)
+char	*key_check(char *input)
 {
 	char	*key;
 
@@ -113,23 +103,9 @@ char	*key_check(char *input, t_list **env_list)
 	return (key);
 }
 
-// t_list	**existed_env(char *key, t_list	**env_list)
-// {
-// 	t_env	*data;
-// 	t_list	*tmp;
-
-// 	tmp = *env_list;
-// 	while (tmp)
-// 	{
-// 		data = (t_env *)tmp->content;
-// 		if (data->key == key)
-// 			return (&tmp);
-// 		tmp = tmp->next;
-// 	}
-// 	return (NULL);
-// }
-
-void	expand(t_tree *head, t_list **env_list, char *key, char *input)
+char	*find_value(char *input)
 {
-	printf("head %s\n", head->value);
+	return (ft_substr(input, ft_strchr(input, '=') \
+					- input + 1, ft_strlen(input) - \
+					(ft_strchr(input, '=') - input)));
 }

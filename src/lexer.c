@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:34:45 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/06 18:47:42 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/08 12:13:00 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -32,8 +32,6 @@ t_list	*lexer(char *cmd, t_list **env_list)
 	char	**tokens_head;
 	t_list	*head;
 	t_list	*node;
-	t_list	*tmp;
-	char	*key;
 
 	if (!cmd)
 		return (NULL);
@@ -59,16 +57,6 @@ t_list	*lexer(char *cmd, t_list **env_list)
 		// printf("node->content: %s\n", node->content);
 	}
 	free_2d(tokens_head);
-	tmp = head;
-	while (tmp)
-	{
-		if (ft_strchr((char *)tmp->content, '$') != NULL)
-		{
-			printf("expand yoo\n");
-			key = ft_substr((char *)tmp->content, ft_strchr((char *)tmp->content, '$') - (char *)tmp->content + 1, );
-		}
-		tmp = tmp->next;
-	}
 	return (head);
 }
 
