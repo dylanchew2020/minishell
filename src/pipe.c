@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:06 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/28 19:32:25 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/08 19:13:19 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,14 +76,15 @@ void	children(t_tree *node, char **envp, t_root *sh)
 		left_child(data, node, envp, sh);
 		exit(0);
 	}
+	waitpid(children[0], &status, 0);
+	ft_close(data->p[1]);
 	children[1] = ft_fork();
 	if (children[1] == 0)
 	{
 		right_child(data, node, envp, sh);
 		exit(0);
 	}
+	waitpid(children[1], &status, 0);
 	ft_close(data->p[0]);
-	ft_close(data->p[1]);
-	waitpid(-1, &status, 0);
 	free(data);
 }

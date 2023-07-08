@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/28 19:32:25 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/08 14:54:53 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,9 @@ char		*the_legit_path(char *argv);
 /* LEXER */
 
 t_list		*lexer(char *cmd);
-t_tree		*tree_node_new(t_token token, char *value, t_tree *left, t_tree *right);
+int			count_token(char *cmd);
+int			count_sp_char(char *cmd);
+int			count_char(char *cmd);
 
 /* PARSER */
 
