@@ -6,14 +6,21 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 14:19:41 by lchew             #+#    #+#             */
-/*   Updated: 2022/06/03 14:28:38 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/08 22:24:35 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*Count the number of strings separated by separators.
-Return the strings' count.*/
+/**
+ * @brief Counts the number of substrings separated by a character in a string.
+ *
+ * Substrings are sequences of characters not including the separator character.
+ *
+ * @param s The string to count substrings in.
+ * @param c The separator character.
+ * @return The number of substrings separated by 'c' in 's'.
+ */
 static int	countstr(char const *s, char c)
 {
 	int		count;
@@ -24,8 +31,9 @@ static int	countstr(char const *s, char c)
 		if (*s != c)
 		{
 			++count;
-			while (*s != '\0' && *s != c)
-				++s;
+			s = ft_strchr(s, c);
+			if (!s)
+				break ;
 		}
 		else
 			++s;
@@ -33,84 +41,71 @@ static int	countstr(char const *s, char c)
 	return (count);
 }
 
-/*Count number of characters of string seperated by separatr.
-Return the characters' count.*/
-static int	countchar(char const *s, char c)
+/**
+ * @brief Finds the next substring in a string separated by a character.
+ *
+ * The substring is the sequence of characters from the current position to 
+ * the next occurrence of the separator character.
+ * The function allocates memory for the substring and returns it.
+ * The source string pointer is updated to point to the end of the found 
+ * substring.
+ *
+ * @param s Pointer to the string pointer.
+ * @param c The separator character.
+ * @return Pointer to the found substring, or NULL if memory allocation fails.
+ */
+static char	*nextstr(char const **s, char c)
 {
-	int	countchar;
+	char	*start;
+	char	*end;
+	char	*str;
 
-	countchar = 0;
-	while (*s != '\0' && *s++ != c)
-		++countchar;
-	return (countchar);
+	while (**s == c)
+		++(*s);
+	start = (char *)*s;
+	end = ft_strchr(start, c);
+	if (!end)
+		end = ft_strchr(start, '\0');
+	*s = end;
+	str = ft_substr(start, 0, end - start);
+	return (str);
 }
 
-/*Allocate with ft_calloc memory for each strings.  
-Return i which is the last pointer in 'res' array for NULL terminating.*/
-static unsigned int	putstr(char const *s, char c, char **res)
-{
-	unsigned int	i;
-	unsigned int	j;
-
-	i = 0;
-	while (*s != '\0')
-	{
-		j = 0;
-		if (*s != c)
-		{
-			res[i] = ft_calloc((countchar(s, c) + 1), sizeof(char));
-			while (*s != c && *s)
-				res[i][j++] = *s++;
-			res[i++][j] = '\0';
-		}
-		else
-			++s;
-	}
-	return (i);
-}
-
-/*If failed Malloc to res, return NULL.
-If str argument is empty, return NULL res.
-Otherwise, duplicate str to first string in array res.
-Array res is then NULL terminated.*/
-static char	**emptyc(char const *str, char **res)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (*(str + i))
-		i++;
-	j = 0;
-	res[0] = ft_calloc((i + 1), sizeof(char));
-	while (*str)
-		res[0][j++] = *str++;
-	res[0][j] = '\0';
-	res[1] = 0;
-	return (res);
-}
-
-/*
-**	Allocates with ft_calloc and returns an array of strings obtained by
-**	splitting 's' using the character 'c' as a delimiter. The array must end
-**	with a NULL pointer
-**	
-**	The ft_split() returns the array of new strings resulting from the split.
-**	Returns NULL if the allocation fails.
-*/
+/**
+ * @brief Splits a string into an array of substrings separated by a character.
+ *
+ * The function allocates memory for the array and the substrings.
+ * If a memory allocation fails, all previously allocated memory is freed.
+ *
+ * @param s The source string.
+ * @param c The separator character.
+ * @return Pointer to the array of substrings, 
+ *         or NULL if the source string is NULL or memory allocation fails.
+ */
 char	**ft_split(char const *s, char c)
 {
 	char	**res;
+	int		i;
+	int		n;
 
 	if (s == NULL)
 		return (NULL);
-	res = ft_calloc((countstr(s, c) + 1), sizeof(char *));
+	n = countstr(s, c);
+	res = ft_calloc(n + 1, sizeof(char *));
 	if (!res)
 		return (NULL);
-	if (*s == '\0')
-		return (res);
-	if (c == '\0')
-		return (emptyc(s, res));
-	res[putstr(s, c, res)] = NULL;
+	i = 0;
+	while (i < n)
+	{
+		res[i] = nextstr(&s, c);
+		if (!res[i])
+		{
+			while (i > 0)
+				free(res[--i]);
+			free(res);
+			return (NULL);
+		}
+		++i;
+	}
 	return (res);
 }

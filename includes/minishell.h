@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/08 14:54:53 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/08 23:37:22 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,5 +164,6 @@ char		*find_file(char *node_value);
 
 int			is_quote(char c);
 int			quote_count(char *cmd);
+char		**cmd_quote_handler(char const *s, char c);
 
 #endif

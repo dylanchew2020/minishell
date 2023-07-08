@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 13:58:00 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/08 14:57:19 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/08 22:53:38 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ static void	count_quote_char(char **cmd, int *count)
 {
 	int	quote_len;
 
-	quote_len = quote_count(*cmd) + 1;
-	if (quote_len == 1)
+	quote_len = quote_count(*cmd);
+	if (quote_len == 0)
 	{
 		++(*count);
 		++(*cmd);

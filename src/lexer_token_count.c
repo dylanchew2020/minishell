@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 14:33:42 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/08 14:53:11 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/08 22:50:59 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,12 @@ static int	quotes_helper(char **cmd)
 {
 	int	quote_len;
 
-	quote_len = quote_count((*cmd)++);
+	quote_len = quote_count((*cmd));
 	if (quote_len == -1)
 		return (-1);
-	*cmd += quote_len;
+	else if (quote_len == 0)
+		++(*cmd);
+	else if (quote_len > 0)
+		*cmd += quote_len;
 	return (1);
 }
