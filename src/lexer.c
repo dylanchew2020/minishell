@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:34:45 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/08 14:58:16 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/08 22:54:26 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,13 +116,12 @@ static void	cmd_modifier(char *cmd, char **tokens)
 	}
 }
 
-
 static void	quote_cmd_mod(char **cmd, char **tokens, int *i, int *j)
 {
 	int	quote_len;
 
-	quote_len = quote_count(*cmd) + 1;
-	if (quote_len == 1)
+	quote_len = quote_count(*cmd);
+	if (quote_len == 0)
 	{
 		tokens[*i][(*j)++] = **cmd;
 		++(*cmd);

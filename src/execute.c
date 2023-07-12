@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/08 18:45:09 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/09 01:01:28 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,13 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 	if (ft_strncmp(argv, "history", 7) == 0)
 		return (history_print(sh->history));
 	path = the_legit_path(argv);
-	cmd = ft_split(argv, ' ');
+	cmd = cmd_quote_handler(argv, ' ');
+	// int	i = 0;
+	// while (cmd[i] != NULL)
+	// {
+	// 	printf("argv[%d]: %s\n", i, cmd[i]);
+	// 	i++;
+	// }
 	child = ft_fork();
 	if (child == 0)
 	{
