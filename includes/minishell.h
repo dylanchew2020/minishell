@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/08 19:45:45 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/12 16:52:27 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -175,6 +175,7 @@ int			builtin(t_tree *head, t_list **env_list);
 void		free_env_list(t_list **env_list);
 
 /* EXPORT */
+
 void		export(t_tree *head, t_list **env_list);
 char		*key_check(char *input);
 char		*find_value(char *input);
@@ -193,5 +194,6 @@ void		cd(char *value);
 
 int			is_quote(char c);
 int			quote_count(char *cmd);
+char		**cmd_quote_handler(char const *s, char c);
 
 #endif

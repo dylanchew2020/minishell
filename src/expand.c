@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 12:16:13 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/12 16:22:30 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/12 16:40:14 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ char	*join_2d(char **split)
 	result = "";
 	while (split[++i])
 	{
-		// printf("resultsplit |%s|\n", split[i]);
+		printf("split |%s|\n", split[i]);
 		tmp = ft_strjoin(result, split[i]);
 		// if (split[i + 1] != NULL)
 		result = ft_strjoin(tmp, " ");
 		free(tmp);
 	}
-	printf("|%s|\n", result);
+	printf("result |%s|\n", result);
 	return (result);
 }
 
@@ -51,6 +51,7 @@ char	*expand(char *cmd, t_list **env_list)
 			if (split[i][0] == '$')
 			{
 				key = key_check(split[i]);
+				printf("key |%s|\n", key);
 				value = existed_env(key, env_list);
 				cmd_value = find_value(split[i]);
 				if (value != NULL)
