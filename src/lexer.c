@@ -7,6 +7,8 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:34:45 by lchew             #+#    #+#             */
 /*   Updated: 2023/07/08 19:45:56 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/08 14:58:16 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/08 19:49:41 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -25,7 +27,7 @@ static void	quote_cmd_mod(char **cmd, char **tokens, int *i, int *j);
  * A linked list where each node holds a token from the command string,
  * or NULL if there's an error during the process.
  */
-t_list	*lexer(char *cmd, t_list **env_list)
+t_list	*lexer(char *cmd)
 {
 	char	**tokens;
 	char	**tokens_head;
