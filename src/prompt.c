@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/12 16:35:38 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/13 17:49:00 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,6 @@ void	exit_prompt(char *cmd, t_root *sh)
 		clear_history();
 		ft_close(sh->stdin_tmp);
 		ft_close(sh->stdout_tmp);
-		int fd = open("1.tmp", O_RDONLY);
-		dprintf(2, "fd = %d\n", fd);
-		close(fd);
 		exit(0);
 	}
 }

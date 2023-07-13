@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 12:16:13 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/12 16:40:14 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/13 18:40:50 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,51 +32,87 @@ char	*join_2d(char **split)
 	return (result);
 }
 
+char	*sub_or_join(char *tmp1, char *start, int len, char *tmp3)
+{
+	char	*tmp2;
+
+	if (tmp1 == NULL)
+		tmp1 = ft_substr(start, 0, len);
+	else
+	{
+		tmp2 = tmp1;
+		tmp1 = ft_strjoin(tmp1, tmp3);
+		free(tmp2);
+	}
+	return (tmp1);
+}
+
 char	*expand(char *cmd, t_list **env_list)
 {
+	char	*tmp1;
+	char	*tmp3;
+	char	*dollar;
+	char	*single_quote;
+	char	*start;
 	char	*key;
 	char	*value;
-	char	*tmp;
-	char	*cmd_value;
-	char	**split;
-	int		i;
+	int		count;
+	int		len;
 
-
-	if (ft_strchr(cmd, '$') != NULL)
+	tmp1 = NULL;
+	start = cmd;
+	dollar = ft_strchr(cmd, '$');
+	while (dollar)
 	{
-		split = ft_split(cmd, ' ');
-		i = 0;
-		while (split[i])
+		single_quote = ft_strchr(start, '\'');
+		if ((single_quote != NULL) && (single_quote - dollar < 0))
 		{
-			if (split[i][0] == '$')
+			count = quote_count(single_quote);
+			len = single_quote - start + count;
+			if (tmp1 == NULL)
 			{
-				key = key_check(split[i]);
-				printf("key |%s|\n", key);
-				value = existed_env(key, env_list);
-				cmd_value = find_value(split[i]);
-				if (value != NULL)
-				{
-					if (ft_strchr(split[i], '=') != NULL)
-					{
-						tmp = ft_strjoin(value, "=");
-						value = tmp;
-					}
-					tmp = ft_strjoin(value, cmd_value);
-				}
-				else
-					tmp = "";
-				free(split[i]);
-				split[i] = ft_strdup(tmp);
-				free(tmp);
-				free(key);
-				free(cmd_value);
-				break ;
+				tmp1 = ft_substr(start, 0, len);
 			}
-			i++;
+			else
+			{
+				free(tmp3);
+				tmp3 = ft_substr(start, 0, len);
+				tmp1 = sub_or_join(tmp1, start, len, tmp3);
+				free(tmp3);
+			}
+			dollar = start;
+			dollar += len;
 		}
-		free(cmd);
-		cmd = join_2d(split);
-		free_2d(split);
+		else
+		{
+			if (tmp1 == NULL)
+				tmp1 = ft_substr(start, 0, dollar - start);
+			else
+			{
+				free(tmp3);
+				tmp3 = ft_substr(start, 0, dollar - start);
+				tmp1 = sub_or_join(tmp1, start, dollar - start, tmp3);
+				free(tmp3);
+			}
+			dollar++;
+			key = key_check(dollar);
+			value = existed_env(key, env_list);
+			if (value != NULL)
+				tmp1 = sub_or_join(tmp1, start, 0, value);
+			if (key != NULL)
+			{
+				dollar += ft_strlen(key);
+				free(key);
+			}
+		}
+		start = dollar;
+		dollar = ft_strchr(start, '$');
+		if (dollar == NULL)
+			break ;
+		tmp3 = ft_substr(start, 0, dollar - start);
 	}
+	tmp3 = ft_substr(start, 0, ft_strlen(start));
+	cmd = sub_or_join(tmp1, start, ft_strlen(start), tmp3);
+	free(tmp3);
 	return (cmd);
 }

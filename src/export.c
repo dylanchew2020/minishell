@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 17:26:43 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/08 16:22:58 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/13 18:39:20 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -24,9 +24,9 @@ void	export(t_tree *head, t_list **env_list)
 	split = ft_split(head->value, ' ');
 	if (split[1] == NULL)
 	{
-		data = (t_env *)tmp->content;
 		while (tmp)
 		{
+			data = (t_env *)tmp->content;
 			printf("declare -x %s=\"%s\"\n", data->key, data->value);
 			tmp = tmp->next;
 		}
@@ -42,6 +42,7 @@ void	export(t_tree *head, t_list **env_list)
 			i++;
 		}
 	}
+	free_2d(split);
 }
 
 void	modified_value(t_env *data_node, char *input)
@@ -62,7 +63,11 @@ void	add_link_list(char	*input, t_list	**env_list)
 	t_list	*tmp;
 	int		i;
 
+	printf("input |%s|\n", input);
 	key = key_check(input);
+	printf("key |%s|\n", key);
+	if (key == NULL)
+		return ;
 	tmp = *env_list;
 	while (tmp)
 	{
@@ -79,18 +84,39 @@ void	add_link_list(char	*input, t_list	**env_list)
 		creat_new_env_node(key, input, env_list);
 }
 
+// char	*key_check(char *input)
+// {
+// 	char	*key;
+
+// 	if (input[0] == '$')
+// 		input++;
+// 	key = ft_substr(input, 0, ft_strchr(input, '=') - input);
+// 	if (ft_strchr(key, '-') != NULL)
+// 	{
+// 		printf("export: '%s': not a valid identifier\n", key);
+// 		return (NULL);
+// 	}
+// 	return (key);
+// }
+
 char	*key_check(char *input)
 {
+	int		i;
 	char	*key;
 
-	if (input[0] == '$')
-		input++;
-	key = ft_substr(input, 0, ft_strchr(input, '=') - input);
-	if (ft_strchr(key, '-') != NULL)
+	i = 0;
+	if (ft_isalpha(input[0]) == 0 && input[0] != '_')
 	{
-		printf("export: '%s': not a valid identifier\n", key);
+		printf("export: '%s': not a valid identifier\n", input);
 		return (NULL);
 	}
+	while (ft_isalnum(input[i]) || input[i] == '_')
+		i++;
+	if (input[i] == '=' || input[i] == '\0' || input[i] == ' ' \
+		|| input[i] == '"' || input[i] == '$')
+		key = ft_substr(input, 0, i);
+	else
+		key = NULL;
 	return (key);
 }
 

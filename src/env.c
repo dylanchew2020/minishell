@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:10 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/12 17:23:32 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/13 15:52:14 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ char	*existed_env(char *key, t_list **env_list)
 	t_env	*data;
 	t_list	*tmp;
 
+	if (key == NULL)
+		return (NULL);
 	value = NULL;
 	tmp = *env_list;
 	while (tmp)
