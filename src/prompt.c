@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/08 19:14:46 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/13 13:58:41 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	prompt(t_root *sh, char **envp)
 			history_add(&sh->history, cmd);
 			cmd_lexer = lexer(cmd);
 			head = parser(cmd_lexer, ft_lstsize(cmd_lexer), sh);
+			print_tree(head, 0);
 			recurse_bst(head, envp, sh);
 			free_tree(head);
 			while (cmd_lexer)
@@ -79,7 +80,7 @@ void	print_tree(t_tree *root, int b)
 			--level;
 		return ;
 	}
-	printf("%u : %s\n", root->token, root->value);
+	printf("token (%u): (%s)\n", root->token, root->value);
 	printf("left %i  ", level);
 	print_tree(root->left, 0);
 	printf("right %i  ", level);

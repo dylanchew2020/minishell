@@ -3,18 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:03 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/19 21:04:51 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/13 14:09:55 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int		rdin_fd(char *node_value);
-int		rdout_fd(char *node_value);
-char	*find_file(char *node_value);
 
 /**
  * rdin_fd - to check whether the redirect in file exists or not.
@@ -53,6 +49,28 @@ int	rdout_fd(char *node_value)
 	return (fd);
 }
 
+int	rdapp_fd(char *node_value)
+{
+	char	*file;
+	int		fd;
+
+	file = find_file(node_value);
+	fd = ft_open(file, O_CREAT | O_RDWR | O_APPEND, 0666);
+	free(file);
+	return (fd);
+}
+
+int	heredoc_fd(char *node_value)
+{
+	char	*file;
+	int		fd;
+
+	file = find_file(node_value);
+	fd = ft_open(file, O_CREAT | O_RDWR | O_TRUNC, 0666);
+	free(file);
+	return (fd);
+}
+
 /**
  * find_file - remove the redirection and spaces
  * @param path: the value that stored in node
@@ -61,7 +79,8 @@ int	rdout_fd(char *node_value)
 char	*find_file(char *value)
 {
 	while ((*value != '<' && *value != '>') && *value != '\0')
-		value++;
-	value++;
+		++value;
+	while ((*value == '<' || *value == '>') && *value != '\0')
+		++value;
 	return (ft_strtrim(value, " "));
 }

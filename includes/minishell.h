@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/08 23:37:22 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/13 13:21:41 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,8 @@ void		children(t_tree *node, char **envp, t_root *sh);
 
 int			rdin_fd(char *node_value);
 int			rdout_fd(char *node_value);
+int			rdapp_fd(char *node_value);
+int			heredoc_fd(char *node_value);
 char		*find_file(char *node_value);
 
 /* QUOTE */
