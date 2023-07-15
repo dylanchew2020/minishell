@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 17:26:43 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/15 16:35:29 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/15 20:10:47 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,11 +113,15 @@ char	*key_check(char *input)
 	}
 	while (ft_isalnum(input[i]) || input[i] == '_')
 		i++;
-	if (input[i] == '=' || input[i] == '\0' || input[i] == ' ' \
-		|| input[i] == '"' || input[i] == '$')
-		key = ft_substr(input, 0, i);
-	else
+	printf("i = %d\n", i);
+	// if (input[i] == '=' || input[i] == '\0' || input[i] == ' ' \
+	// 	|| input[i] == '"' || input[i] == '$')
+	if (i == 0)
 		key = NULL;
+	else
+		key = ft_substr(input, 0, i);
+	// else
+	// 	key = NULL;
 	return (key);
 }
 

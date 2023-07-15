@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:04 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/15 16:50:20 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/15 19:07:45 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,24 +62,6 @@ int	quote_count(char *cmd)
 	return (count);
 }
 
-// char	*cmd_quote_handler(char *cmd, int *i, int *j)
-// {
-// 	int		quote_type;
-// 	int		quote_len;
-// 	char	*quoted_str;
-
-// 	quote_type = is_quote(cmd[*i]);
-// 	quote_len = quote_count(&cmd[*i]);
-// 	if (quote_len == -1)
-// 		return (NULL);
-// 	quoted_str = ft_substr(cmd, *i + 1, quote_len - 1);
-// 	if (!quoted_str)
-// 		return (NULL);
-// 	*i += quote_len + 1;
-// 	*j += quote_len;
-// 	return (quoted_str);
-// }
-
 static int	countstr(char const *s, char c)
 {
 	int	count;
@@ -98,7 +80,7 @@ static int	countstr(char const *s, char c)
 				quote_len = 0;
 				if (is_quote(*s) != 0)
 					quote_len = quote_count((char *)s);
-				else if (*s != '\0')
+				else if (*s != ' ' && *s != '\0')
 					++s;
 			}
 		}
@@ -130,7 +112,7 @@ static char	*nextstr(char const **s, char c)
 		quote_len = 0;
 		if (is_quote(**s) != 0)
 			quote_len = quote_count((char *)*s);
-		else if (**s != '\0')
+		else if (**s != ' ' && **s != '\0')
 		{
 			++(*s);
 			++str_len;

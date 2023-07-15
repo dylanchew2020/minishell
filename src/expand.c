@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 12:16:13 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/13 19:14:52 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/15 20:06:01 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ char	*expand(char *cmd, t_list **env_list)
 		else
 		{
 			len = dollar - start;
+			printf("len |%d|\n", len);
 			if (tmp3 != NULL)
 			{
 				printf("no tmp3 |%s|\n", tmp3);
@@ -94,8 +95,11 @@ char	*expand(char *cmd, t_list **env_list)
 			tmp1 = sub_or_join(tmp1, start, len, tmp3);
 			printf("no tmp1 |%s|\n", tmp1);
 			dollar++;
+			printf("dollar |%s|\n", dollar);
 			key = key_check(dollar);
+			printf("key |%s|\n", key);
 			value = existed_env(key, env_list);
+			printf("value |%s|\n", value);
 			if (value != NULL)
 				tmp1 = sub_or_join(tmp1, start, 0, value);
 			if (key != NULL)
