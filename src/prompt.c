@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/08 19:14:46 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/15 17:00:59 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,32 @@
 void	prompt(t_root *sh, char **envp)
 {
 	char	*cmd;
-	char	**path;
 	t_list	*cmd_lexer;
 	t_list	*tmp_lexer;
 	t_tree	*head;
 	pid_t	child;
 	int		status;
+	char	cwd[256];
 
-	path = find_path();
+	env_link_list(envp, &sh->env_list);
 	while (1)
 	{
-		cmd = readline("\033[1;32mminishell$\033[0m ");
+		printf("\033[1;32m%s", getcwd(cwd, sizeof(cwd)));
+		cmd = readline("$\033[0m ");
 		if (!cmd)
 			continue ;
 		if (*cmd)
 		{
+			cmd = expand(cmd, &sh->env_list);
 			exit_prompt(cmd, sh);
 			history_add(&sh->history, cmd);
 			cmd_lexer = lexer(cmd);
+			if (cmd_lexer == NULL)
+				continue ;
 			head = parser(cmd_lexer, ft_lstsize(cmd_lexer), sh);
+			print_tree(head, 0);
+			// if (builtin(head, &sh->env_list) == 1)
+			// 	continue ;
 			recurse_bst(head, envp, sh);
 			free_tree(head);
 			while (cmd_lexer)
@@ -48,6 +55,7 @@ void	prompt(t_root *sh, char **envp)
 		ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
 	}
 	history_clear(&sh->history);
+	free_env_list(&sh->env_list);
 	return ;
 }
 
@@ -59,9 +67,6 @@ void	exit_prompt(char *cmd, t_root *sh)
 		clear_history();
 		ft_close(sh->stdin_tmp);
 		ft_close(sh->stdout_tmp);
-		int fd = open("1.tmp", O_RDONLY);
-		dprintf(2, "fd = %d\n", fd);
-		close(fd);
 		exit(0);
 	}
 }
@@ -79,7 +84,7 @@ void	print_tree(t_tree *root, int b)
 			--level;
 		return ;
 	}
-	printf("%u : %s\n", root->token, root->value);
+	printf("token (%u): (%s)\n", root->token, root->value);
 	printf("left %i  ", level);
 	print_tree(root->left, 0);
 	printf("right %i  ", level);

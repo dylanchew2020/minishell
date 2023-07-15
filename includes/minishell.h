@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/08 23:37:22 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/15 16:35:09 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,14 @@ typedef struct s_root
 	t_token_check	tkchk[NO_OF_TOKEN_TYPES];
 	int				stdin_tmp;
 	int				stdout_tmp;
+	t_list			*env_list;
 }	t_root;
 
-typedef struct s_pipe
+typedef struct s_env
 {
-	int	p[2];
-	int	previous_fd;
-}	t_pipe;
+	char			*key;
+	char			*value;
+}	t_env;
 
 /* PROGRAM */
 
@@ -130,8 +131,10 @@ int			count_char(char *cmd);
 
 t_tree		*parser(t_list *lexer, int num_tokens, t_root *sh);
 t_tree		*token_check(t_list *lexer, char *op, int num_tokens, t_root *sh);
-t_tree		*tree_node_new(t_token type, char *value, t_tree *left, t_tree *right);
-t_token		type_assign(char	*value, t_tree *left, t_tree *right, t_root *sh);
+t_tree		*tree_node_new(t_token type, char *value, t_tree *left, \
+							t_tree *right);
+t_token		type_assign(char	*value, t_tree *left, t_tree *right, \
+						t_root *sh);
 void		init_token_check(t_token_check	*tkchk);
 void		print_tree(t_tree *root, int b);
 void		free_tree(t_tree *node);
@@ -158,8 +161,43 @@ void		children(t_tree *node, char **envp, t_root *sh);
 
 int			rdin_fd(char *node_value);
 int			rdout_fd(char *node_value);
+int			rdapp_fd(char *node_value);
+int			heredoc_fd(char *node_value);
 char		*find_file(char *node_value);
 
+/* ENV */
+void		env_link_list(char **envp, t_list **env_list);
+void		get_env(t_list **env_list);
+char		*existed_env(char *key, t_list **env_list);
+void		creat_new_env_node(char *key, char	*input, t_list **env_list);
+
+/* BUILT IN */
+int			builtin(char **cmd, t_list **env_list);
+
+/* FREE */
+void		free_env_list(t_list **env_list);
+
+/* EXPORT */
+
+void		export(char **cmd, t_list **env_list);
+char		*key_check(char *input);
+char		*find_value(char *input);
+void		add_link_list(char	*input, t_list	**env_list);
+void		modified_value(t_env *data_node, char *input);
+
+/* EXPAND */
+char		*expand(char *cmd, t_list **env_list);
+
+/* PWD */
+
+void		pwd(void);
+
+/* UNSET */
+
+void		unset(t_list **env_list, char *key);
+
+/* CD */
+void		cd(char **value);
 /* QUOTE */
 
 int			is_quote(char c);

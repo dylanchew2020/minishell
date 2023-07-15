@@ -49,7 +49,13 @@ SRC			:= $(addsuffix .c, \
 					quote\
 					redirect\
 					signal\
-					ft_utlis)
+					ft_utlis\
+					export\
+					free\
+					expand\
+					pwd\
+					cd\
+					unset)
 
 OBJ_DIR		:= ./obj
 OBJ			:= $(SRC:%.c=$(OBJ_DIR)/%.o)
@@ -76,6 +82,7 @@ $(NAME): $(LIBFT) $(OBJ)
 	@ echo "\n$(GREEN)Compilation $(CLR_RMV)of $(BLUE) $(NAME) $(CLR_RMV)..."
 	@ $(CC) $(FLAGS) $(FSAN) $(LIB) $(READLINE) $(OBJ)  $(LIBFT_DIR)/$(LIBFT) -o $(NAME)  
 	@ echo "$(GREEN)[Success] $(BLUE)$(NAME) $(CLR_RMV)created ✔️"
+	@ ./$(NAME)
 
 $(LIBFT):
 	@ echo "$(GREEN)Making $(CYAN)Libft $(CLR_RMV) library..."
