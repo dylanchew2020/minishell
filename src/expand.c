@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 12:16:13 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/13 18:40:50 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/13 19:14:52 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ char	*expand(char *cmd, t_list **env_list)
 	int		len;
 
 	tmp1 = NULL;
+	tmp3 = NULL;
 	start = cmd;
 	dollar = ft_strchr(cmd, '$');
 	while (dollar)
@@ -69,31 +70,29 @@ char	*expand(char *cmd, t_list **env_list)
 		{
 			count = quote_count(single_quote);
 			len = single_quote - start + count;
-			if (tmp1 == NULL)
-			{
-				tmp1 = ft_substr(start, 0, len);
-			}
-			else
+			if (tmp3 != NULL)
 			{
 				free(tmp3);
 				tmp3 = ft_substr(start, 0, len);
-				tmp1 = sub_or_join(tmp1, start, len, tmp3);
-				free(tmp3);
+				printf("tmp3 |%s|\n", tmp3);
 			}
+			tmp1 = sub_or_join(tmp1, start, len, tmp3);
+			printf("tmp1 |%s|\n", tmp1);
 			dollar = start;
 			dollar += len;
 		}
 		else
 		{
-			if (tmp1 == NULL)
-				tmp1 = ft_substr(start, 0, dollar - start);
-			else
+			len = dollar - start;
+			if (tmp3 != NULL)
 			{
+				printf("no tmp3 |%s|\n", tmp3);
 				free(tmp3);
-				tmp3 = ft_substr(start, 0, dollar - start);
-				tmp1 = sub_or_join(tmp1, start, dollar - start, tmp3);
-				free(tmp3);
+				tmp3 = ft_substr(start, 0, len);
+				printf("no tmp3 |%s|\n", tmp3);
 			}
+			tmp1 = sub_or_join(tmp1, start, len, tmp3);
+			printf("no tmp1 |%s|\n", tmp1);
 			dollar++;
 			key = key_check(dollar);
 			value = existed_env(key, env_list);
@@ -110,9 +109,13 @@ char	*expand(char *cmd, t_list **env_list)
 		if (dollar == NULL)
 			break ;
 		tmp3 = ft_substr(start, 0, dollar - start);
+		printf("out if else tmp3 |%s|\n", tmp3);
 	}
+	if (tmp3 != NULL)
+		free(tmp3);
 	tmp3 = ft_substr(start, 0, ft_strlen(start));
 	cmd = sub_or_join(tmp1, start, ft_strlen(start), tmp3);
 	free(tmp3);
+	printf("cmd |%s|\n", cmd);
 	return (cmd);
 }

@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:11 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/08 16:57:04 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/15 15:29:12 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -24,7 +24,8 @@ int	builtin(t_tree *head, t_list **env_list)
 		pwd();
 	else if (ft_strnstr(head->value, "export", ft_strlen("export")) != NULL)
 		export(head, env_list);
-	else if (ft_strnstr(head->value, "env", ft_strlen("env")) != NULL)
+	else if ((ft_strnstr(head->value, "env", ft_strlen("env")) != NULL) \
+			|| (ft_strnstr(head->value, "env", ft_strlen("env")) != NULL))
 		get_env(env_list);
 	else
 		return (0);

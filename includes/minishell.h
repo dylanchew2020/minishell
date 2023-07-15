@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/12 16:52:27 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/15 15:36:57 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,6 +187,9 @@ char		*expand(char *cmd, t_list **env_list);
 
 /* PWD */
 void		pwd(void);
+
+/* UNSET */
+void	unset(t_list **env_list, char *key);
 
 /* CD */
 void		cd(char *value);

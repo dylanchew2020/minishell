@@ -54,7 +54,8 @@ SRC			:= $(addsuffix .c, \
 					free\
 					expand\
 					pwd\
-					cd)
+					cd\
+					unset)
 
 OBJ_DIR		:= ./obj
 OBJ			:= $(SRC:%.c=$(OBJ_DIR)/%.o)
