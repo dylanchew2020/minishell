@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/15 15:36:57 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/15 16:35:09 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ typedef struct s_root
 	t_token_check	tkchk[NO_OF_TOKEN_TYPES];
 	int				stdin_tmp;
 	int				stdout_tmp;
+	t_list			*env_list;
 }	t_root;
 
 typedef struct s_env
@@ -160,6 +161,8 @@ void		children(t_tree *node, char **envp, t_root *sh);
 
 int			rdin_fd(char *node_value);
 int			rdout_fd(char *node_value);
+int			rdapp_fd(char *node_value);
+int			heredoc_fd(char *node_value);
 char		*find_file(char *node_value);
 
 /* ENV */
@@ -169,14 +172,14 @@ char		*existed_env(char *key, t_list **env_list);
 void		creat_new_env_node(char *key, char	*input, t_list **env_list);
 
 /* BUILT IN */
-int			builtin(t_tree *head, t_list **env_list);
+int			builtin(char **cmd, t_list **env_list);
 
 /* FREE */
 void		free_env_list(t_list **env_list);
 
 /* EXPORT */
 
-void		export(t_tree *head, t_list **env_list);
+void		export(char **cmd, t_list **env_list);
 char		*key_check(char *input);
 char		*find_value(char *input);
 void		add_link_list(char	*input, t_list	**env_list);
@@ -186,13 +189,15 @@ void		modified_value(t_env *data_node, char *input);
 char		*expand(char *cmd, t_list **env_list);
 
 /* PWD */
+
 void		pwd(void);
 
 /* UNSET */
-void	unset(t_list **env_list, char *key);
+
+void		unset(t_list **env_list, char *key);
 
 /* CD */
-void		cd(char *value);
+void		cd(char **value);
 /* QUOTE */
 
 int			is_quote(char c);

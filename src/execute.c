@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/09 01:01:28 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/15 16:46:45 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,7 @@
  */
 void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 {
-	pid_t	child;
-	int		p[2];
-	int		__rdin_fd;
-	int		__rdout_fd;
+	int		fd;
 
 	if (node == NULL)
 		return ;
@@ -39,16 +36,23 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 		children(node, envp, sh);
 	else if (node->token == RDIN)
 	{
-		__rdin_fd = rdin_fd(node->value);
-		ft_dup2(__rdin_fd, STDIN_FILENO);
-		ft_close(__rdin_fd);
+		fd = rdin_fd(node->value);
+		ft_dup2(fd, STDIN_FILENO);
+		ft_close(fd);
 		redir_arg(node, envp, sh);
 	}
 	else if (node->token == RDOUT)
 	{
-		__rdout_fd = rdout_fd(node->value);
-		ft_dup2(__rdout_fd, STDOUT_FILENO);
-		ft_close(__rdout_fd);
+		fd = rdout_fd(node->value);
+		ft_dup2(fd, STDOUT_FILENO);
+		ft_close(fd);
+		redir_arg(node, envp, sh);
+	}
+	else if (node->token == RDAPP)
+	{
+		fd = rdapp_fd(node->value);
+		ft_dup2(fd, STDOUT_FILENO);
+		ft_close(fd);
 		redir_arg(node, envp, sh);
 	}
 	else if (node->token == COMMAND)
@@ -100,17 +104,19 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 		return (history_print(sh->history));
 	path = the_legit_path(argv);
 	cmd = cmd_quote_handler(argv, ' ');
-	// int	i = 0;
-	// while (cmd[i] != NULL)
-	// {
-	// 	printf("argv[%d]: %s\n", i, cmd[i]);
-	// 	i++;
-	// }
+	int	i = 0;
+	while (cmd[i] != NULL)
+	{
+		printf("argv[%d]: %s\n", i, cmd[i]);
+		i++;
+	}
 	child = ft_fork();
 	if (child == 0)
 	{
-		if (execve(path, cmd, envp) == -1)
-			exit(printf("Error: %s: %c\n", strerror(errno), *argv));
+		if (builtin(cmd, &sh->env_list) == 0)
+			if (execve(path, cmd, envp) == -1)
+				exit(printf("Error: Execve Failed %s: %c\n", strerror(errno), *argv));
+		exit(0);
 	}
 	else
 	{
