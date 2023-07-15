@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/13 15:19:34 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/15 16:46:45 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,17 +104,19 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 		return (history_print(sh->history));
 	path = the_legit_path(argv);
 	cmd = cmd_quote_handler(argv, ' ');
-	// int	i = 0;
-	// while (cmd[i] != NULL)
-	// {
-	// 	printf("argv[%d]: %s\n", i, cmd[i]);
-	// 	i++;
-	// }
+	int	i = 0;
+	while (cmd[i] != NULL)
+	{
+		printf("argv[%d]: %s\n", i, cmd[i]);
+		i++;
+	}
 	child = ft_fork();
 	if (child == 0)
 	{
-		if (execve(path, cmd, envp) == -1)
-			exit(printf("Error: Execve Failed %s: %c\n", strerror(errno), *argv));
+		if (builtin(cmd, &sh->env_list) == 0)
+			if (execve(path, cmd, envp) == -1)
+				exit(printf("Error: Execve Failed %s: %c\n", strerror(errno), *argv));
+		exit(0);
 	}
 	else
 	{
