@@ -78,9 +78,22 @@ void	creat_new_env_node(char *key, char	*input, t_list **env_list)
 	t_env	*data;
 	t_list	*node;
 
+	printf("creating new node\n");
 	data = ft_calloc(1, sizeof(t_env));
 	data->key = key;
 	data->value = find_value(input);
 	node = ft_lstnew(data);
 	ft_lstadd_back(env_list, node);
+}
+
+void loop_env(t_list **env_list)
+{
+	t_list *tmp;
+
+	tmp = *env_list;
+	while (tmp)
+	{
+		printf("%s=%s\n", ((t_env *)tmp->content)->key, ((t_env *)tmp->content)->value);
+		tmp = tmp->next;
+	}
 }

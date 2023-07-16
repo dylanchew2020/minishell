@@ -39,7 +39,7 @@ void	prompt(t_root *sh, char **envp)
 				continue ;
 			head = parser(cmd_lexer, ft_lstsize(cmd_lexer), sh);
 			print_tree(head, 0);
-			// if (builtin(head, &sh->env_list) == 1)
+			// if (builtin(head->value, &sh->env_list) == 1)
 			// 	continue ;
 			recurse_bst(head, envp, sh);
 			free_tree(head);
@@ -53,6 +53,7 @@ void	prompt(t_root *sh, char **envp)
 		free(cmd);
 		ft_dup2(sh->stdin_tmp, STDIN_FILENO);
 		ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
+		// loop_env(&sh->env_list);
 	}
 	history_clear(&sh->history);
 	free_env_list(&sh->env_list);

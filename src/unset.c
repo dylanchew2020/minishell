@@ -18,4 +18,5 @@ void	unset(t_list **env_list, char *key)
 	t_list	*tmp;
 
 	tmp_key = key_check(key);
+    printf("key: %s\n", tmp_key);
 }

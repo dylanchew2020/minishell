@@ -170,6 +170,7 @@ void		env_link_list(char **envp, t_list **env_list);
 void		get_env(t_list **env_list);
 char		*existed_env(char *key, t_list **env_list);
 void		creat_new_env_node(char *key, char	*input, t_list **env_list);
+void		loop_env(t_list **env_list);
 
 /* BUILT IN */
 int			builtin(char **cmd, t_list **env_list);
