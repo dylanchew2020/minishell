@@ -176,8 +176,7 @@ void		loop_env(t_list **env_list);
 int			builtin(char **cmd, t_list **env_list);
 
 /* FREE */
-void		free_env_list(t_list **env_list);
-
+void	del_data(void	*content);
 /* EXPORT */
 
 void		export(char **cmd, t_list **env_list);

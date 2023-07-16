@@ -104,26 +104,19 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 		return (history_print(sh->history));
 	path = the_legit_path(argv);
 	cmd = cmd_quote_handler(argv, ' ');
-	int	i = 0;
-	while (cmd[i] != NULL)
+	if (builtin(cmd, &sh->env_list) == 1)
+		return ;
+	child = ft_fork();
+	if (child == 0)
 	{
-		printf("argv[%d]: %s\n", i, cmd[i]);
-		i++;
+		if (execve(path, cmd, envp) == -1)
+			exit(printf("Error: Execve Failed %s: %c\n", strerror(errno), *argv));
+		exit(0);
 	}
-	if (builtin(cmd, &sh->env_list) == 0)
+	else
 	{
-		child = ft_fork();
-		if (child == 0)
-		{
-			if (execve(path, cmd, envp) == -1)
-				exit(printf("Error: Execve Failed %s: %c\n", strerror(errno), *argv));
-			exit(0);
-		}
-		else
-		{
-			waitpid(child, &status, 0);
-			free(path);
-			free_2d(cmd);
-		}
+		waitpid(child, &status, 0);
+		free(path);
+		free_2d(cmd);
 	}
 }

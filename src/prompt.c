@@ -56,7 +56,7 @@ void	prompt(t_root *sh, char **envp)
 		// loop_env(&sh->env_list);
 	}
 	history_clear(&sh->history);
-	free_env_list(&sh->env_list);
+	ft_lstclear(&sh->env_list, del_data);
 	return ;
 }
 

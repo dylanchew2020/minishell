@@ -14,9 +14,24 @@
 
 void	unset(t_list **env_list, char *key)
 {
-	char	*tmp_key;
 	t_list	*tmp;
+	t_list	*prev;
+	t_env	*data;
 
-	tmp_key = key_check(key);
-    printf("key: %s\n", tmp_key);
+
+	if (key == NULL)
+		return ;
+	tmp = *env_list;
+	while (tmp)
+	{
+		data = (t_env *)tmp->content;
+		if (ft_strnstr(data->key, key, ft_strlen(key)) != NULL)
+		{
+			prev->next = tmp->next;
+			ft_lstdelone(tmp, del_data);
+			break ;
+		}
+		prev = tmp;
+		tmp = tmp->next;
+	}
 }
