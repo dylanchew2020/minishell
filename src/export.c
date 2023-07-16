@@ -6,13 +6,13 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 17:26:43 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/13 18:39:20 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/15 16:35:29 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	export(t_tree *head, t_list **env_list)
+void	export(char **cmd, t_list **env_list)
 {
 	char	**split;
 	t_list	*tmp;
@@ -21,7 +21,8 @@ void	export(t_tree *head, t_list **env_list)
 
 	i = 1;
 	tmp = *env_list;
-	split = ft_split(head->value, ' ');
+	// split = ft_split(cmd, ' ');
+	split = cmd;
 	if (split[1] == NULL)
 	{
 		while (tmp)
