@@ -39,8 +39,6 @@ void	prompt(t_root *sh, char **envp)
 				continue ;
 			head = parser(cmd_lexer, ft_lstsize(cmd_lexer), sh);
 			print_tree(head, 0);
-			// if (builtin(head->value, &sh->env_list) == 1)
-			// 	continue ;
 			recurse_bst(head, envp, sh);
 			free_tree(head);
 			while (cmd_lexer)
@@ -68,6 +66,7 @@ void	exit_prompt(char *cmd, t_root *sh)
 		clear_history();
 		ft_close(sh->stdin_tmp);
 		ft_close(sh->stdout_tmp);
+		ft_lstclear(&sh->env_list, del_data);
 		exit(0);
 	}
 }

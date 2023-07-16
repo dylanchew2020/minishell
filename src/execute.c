@@ -104,6 +104,12 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 		return (history_print(sh->history));
 	path = the_legit_path(argv);
 	cmd = cmd_quote_handler(argv, ' ');
+	int	i = 0;
+	while (cmd[i] != NULL)
+	{
+		printf("argv[%d]: |%s|\n", i, cmd[i]);
+		i++;
+	}
 	if (builtin(cmd, &sh->env_list) == 1)
 		return ;
 	child = ft_fork();
