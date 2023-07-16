@@ -12,6 +12,12 @@
 
 #include "minishell.h"
 
+/**
+ * unset - Removes an environment variable from the linked list.
+ *
+ * @param env_list  Double pointer to the linked list of environment variables.
+ * @param key       The key of the environment variable to be removed.
+ */
 void	unset(t_list **env_list, char *key)
 {
 	t_list	*tmp;

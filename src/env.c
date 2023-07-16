@@ -12,8 +12,15 @@
 
 #include "minishell.h"
 
-//error_code
-//store env in linked list using key=value format
+/**
+ * env_link_list - Converts the environment variables array into a linked list.
+ *                 Each node in the linked list represents an environment variable.
+ *
+ * @param envp     Double pointer to an array of strings containing the environment variables.
+ *                 The environment variables are expected to be in the format "key=value".
+ * @param env_list Double pointer to a linked list where the environment variables will be stored.
+ *                 Assumes env_list is initially empty (NULL).
+ */
 
 void	env_link_list(char **envp, t_list **env_list)
 {
@@ -36,6 +43,12 @@ void	env_link_list(char **envp, t_list **env_list)
 	}
 }
 
+/**
+ * get_env - Prints the key-value pairs of the environment variables stored in the linked list.
+ *
+ * @param env_list Double pointer to the linked list containing the environment variables.
+ */
+
 void	get_env(t_list **env_list)
 {
 	t_env	*data;
@@ -50,6 +63,13 @@ void	get_env(t_list **env_list)
 	}
 }
 
+/**
+ * existed_env - Retrieves the value of an environment variable by its key.
+ *
+ * @param key       Key of the environment variable to search for.
+ * @param env_list  Double pointer to the linked list containing the environment variables.
+ * @return          Value of the environment variable if found, or NULL if not found.
+ */
 char	*existed_env(char *key, t_list **env_list)
 {
 	char	*value;
@@ -73,6 +93,13 @@ char	*existed_env(char *key, t_list **env_list)
 	return (value);
 }
 
+/**
+ * creat_new_env_node - Creates a new node for an environment variable and adds it to the linked list.
+ *
+ * @param key       Key of the new environment variable.
+ * @param input     Input string containing the value of the new environment variable.
+ * @param env_list  Double pointer to the linked list where the new environment variable will be added.
+ */
 void	creat_new_env_node(char *key, char	*input, t_list **env_list)
 {
 	t_env	*data;
@@ -84,16 +111,4 @@ void	creat_new_env_node(char *key, char	*input, t_list **env_list)
 	data->value = find_value(input);
 	node = ft_lstnew(data);
 	ft_lstadd_back(env_list, node);
-}
-
-void loop_env(t_list **env_list)
-{
-	t_list *tmp;
-
-	tmp = *env_list;
-	while (tmp)
-	{
-		printf("%s=%s\n", ((t_env *)tmp->content)->key, ((t_env *)tmp->content)->value);
-		tmp = tmp->next;
-	}
 }
