@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 17:26:43 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/15 20:10:47 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/18 15:54:04 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,9 @@ void	add_link_list(char	*input, t_list	**env_list)
 	t_list	*tmp;
 	int		i;
 
-	printf("input |%s|\n", input);
+	// printf("input |%s|\n", input);
 	key = key_check(input);
-	printf("key |%s|\n", key);
+	// printf("key |%s|\n", key);
 	if (key == NULL)
 		return ;
 	tmp = *env_list;
@@ -123,7 +123,7 @@ char	*key_check(char *input)
 	}
 	while (ft_isalnum(input[i]) || input[i] == '_')
 		i++;
-	printf("i = %d\n", i);
+	// printf("i = %d\n", i);
 	// if (input[i] == '=' || input[i] == '\0' || input[i] == ' ' \
 	// 	|| input[i] == '"' || input[i] == '$')
 	if (i == 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:10 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/13 15:52:14 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/18 15:54:21 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void	creat_new_env_node(char *key, char	*input, t_list **env_list)
 	t_env	*data;
 	t_list	*node;
 
-	printf("creating new node\n");
+	// printf("creating new node\n");
 	data = ft_calloc(1, sizeof(t_env));
 	data->key = key;
 	data->value = find_value(input);

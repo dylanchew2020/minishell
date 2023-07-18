@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/18 15:46:03 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/18 15:52:10 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	prompt(t_root *sh, char **envp)
 			if (cmd_lexer == NULL)
 				continue ;
 			head = parser(cmd_lexer, ft_lstsize(cmd_lexer), sh);
-			print_tree(head, 0);
+			// print_tree(head, 0);
 			recurse_bst(head, envp, sh);
 			free_tree(head);
 			while (cmd_lexer)
