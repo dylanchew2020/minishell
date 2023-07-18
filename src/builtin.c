@@ -12,13 +12,19 @@
 
 #include "minishell.h"
 
+/**
+ * builtin - Executes built-in commands based on the command array.
+ *           Supported built-in commands: unset, cd, pwd, export, env.
+ *
+ * @param cmd       Double pointer to the command array.
+ * @param env_list  Double pointer to the linked list containing environment variables.
+ * @return          1 if a built-in command is executed, 0 otherwise.
+ */
 int	builtin(char **cmd, t_list **env_list)
 {
-	char *value;
-
-	// if (ft_strnstr(head->value, "unset", ft_strlen(head->value)) != NULL)
-	// 	unset(head);
-	if (ft_strnstr(cmd[0], "cd", ft_strlen("cd")) != NULL)
+	if (ft_strnstr(cmd[0], "unset", ft_strlen("unset")) != NULL)
+		unset(env_list, cmd[1]);
+	else if (ft_strnstr(cmd[0], "cd", ft_strlen("cd")) != NULL)
 		cd(cmd);
 	else if (ft_strnstr(cmd[0], "pwd", ft_strlen("pwd")) != NULL)
 		pwd();

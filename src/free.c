@@ -12,22 +12,17 @@
 
 #include "minishell.h"
 
-void	free_env_list(t_list **env_list)
+/**
+ * del_data - Frees the memory associated with a t_env struct.
+ *
+ * @param content  Pointer to the t_env struct to be freed.
+ */
+void	del_data(void	*content)
 {
-	t_list	*tmp;
 	t_env	*data;
 
-	tmp = *env_list;
-	while (tmp)
-	{
-		data = (t_env *)tmp->content;
-		if (!data)
-		{
-			free(data->key);
-			free(data->value);
-			free(data);
-		}
-		tmp = tmp->next;
-	}
-	ft_lstclear(env_list, free);
+	data = (t_env *)content;
+	free(data->key);
+	free(data->value);
+	free(data);
 }

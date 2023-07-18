@@ -12,6 +12,13 @@
 
 #include "minishell.h"
 
+/**
+ * export - Handles the export command, which either displays the current environment variables
+ *          or adds new environment variables.
+ *
+ * @param cmd       Double pointer to the command array.
+ * @param env_list  Double pointer to the linked list containing environment variables.
+ */
 void	export(char **cmd, t_list **env_list)
 {
 	char	**split;
@@ -46,6 +53,12 @@ void	export(char **cmd, t_list **env_list)
 	free_2d(split);
 }
 
+/**
+ * modified_value - Modifies the value of an environment variable node.
+ *
+ * @param data_node  Pointer to the environment variable node.
+ * @param input      The new input value.
+ */
 void	modified_value(t_env *data_node, char *input)
 {
 	char	*value;
@@ -57,6 +70,12 @@ void	modified_value(t_env *data_node, char *input)
 	free(tmp);
 }
 
+/**
+ * modified_value - Modifies the value of an environment variable node.
+ *
+ * @param data_node  Pointer to the environment variable node.
+ * @param input      The new input value.
+ */
 void	add_link_list(char	*input, t_list	**env_list)
 {
 	char	*key;
@@ -85,21 +104,12 @@ void	add_link_list(char	*input, t_list	**env_list)
 		creat_new_env_node(key, input, env_list);
 }
 
-// char	*key_check(char *input)
-// {
-// 	char	*key;
-
-// 	if (input[0] == '$')
-// 		input++;
-// 	key = ft_substr(input, 0, ft_strchr(input, '=') - input);
-// 	if (ft_strchr(key, '-') != NULL)
-// 	{
-// 		printf("export: '%s': not a valid identifier\n", key);
-// 		return (NULL);
-// 	}
-// 	return (key);
-// }
-
+/**
+ * key_check - Checks if the input string is a valid identifier (environment variable key).
+ *
+ * @param input   The input string to check.
+ * @return        The extracted key if it's a valid identifier, or NULL otherwise.
+ */
 char	*key_check(char *input)
 {
 	int		i;
@@ -125,6 +135,12 @@ char	*key_check(char *input)
 	return (key);
 }
 
+/**
+ * find_value - Extracts the value from the input string (key-value pair).
+ *
+ * @param input   The input string containing the key-value pair.
+ * @return        The extracted value.
+ */
 char	*find_value(char *input)
 {
 	return (ft_substr(input, ft_strchr(input, '=') \

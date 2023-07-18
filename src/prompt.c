@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/15 20:15:50 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/18 15:46:03 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ void	prompt(t_root *sh, char **envp)
 				continue ;
 			head = parser(cmd_lexer, ft_lstsize(cmd_lexer), sh);
 			print_tree(head, 0);
-			// if (builtin(head, &sh->env_list) == 1)
-			// 	continue ;
 			recurse_bst(head, envp, sh);
 			free_tree(head);
 			while (cmd_lexer)
@@ -53,7 +51,7 @@ void	prompt(t_root *sh, char **envp)
 		free(cmd);
 	}
 	history_clear(&sh->history);
-	free_env_list(&sh->env_list);
+	ft_lstclear(&sh->env_list, del_data);
 	return ;
 }
 
@@ -69,6 +67,7 @@ void	exit_prompt(char *cmd, t_root *sh)
 		i = open("Makefile", O_RDONLY);
 		printf("i = %i\n", i);
 		close(i);
+		ft_lstclear(&sh->env_list, del_data);
 		exit(0);
 	}
 }
