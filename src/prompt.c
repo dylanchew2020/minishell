@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/15 17:00:59 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/18 15:52:10 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,14 @@ void	prompt(t_root *sh, char **envp)
 			continue ;
 		if (*cmd)
 		{
+			history_add(&sh->history, cmd);
 			cmd = expand(cmd, &sh->env_list);
 			exit_prompt(cmd, sh);
-			history_add(&sh->history, cmd);
 			cmd_lexer = lexer(cmd);
 			if (cmd_lexer == NULL)
 				continue ;
 			head = parser(cmd_lexer, ft_lstsize(cmd_lexer), sh);
-			print_tree(head, 0);
+			// print_tree(head, 0);
 			recurse_bst(head, envp, sh);
 			free_tree(head);
 			while (cmd_lexer)
@@ -49,9 +49,6 @@ void	prompt(t_root *sh, char **envp)
 			}
 		}
 		free(cmd);
-		ft_dup2(sh->stdin_tmp, STDIN_FILENO);
-		ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
-		// loop_env(&sh->env_list);
 	}
 	history_clear(&sh->history);
 	ft_lstclear(&sh->env_list, del_data);
@@ -60,12 +57,16 @@ void	prompt(t_root *sh, char **envp)
 
 void	exit_prompt(char *cmd, t_root *sh)
 {
+	int	i;
 	if (!cmd || !ft_strncmp(cmd, EXIT, 5))
 	{
 		free(cmd);
 		clear_history();
 		ft_close(sh->stdin_tmp);
 		ft_close(sh->stdout_tmp);
+		i = open("Makefile", O_RDONLY);
+		printf("i = %i\n", i);
+		close(i);
 		ft_lstclear(&sh->env_list, del_data);
 		exit(0);
 	}

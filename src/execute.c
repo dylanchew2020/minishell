@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/15 16:46:45 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/18 15:51:58 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 		ft_dup2(fd, STDIN_FILENO);
 		ft_close(fd);
 		redir_arg(node, envp, sh);
+		ft_dup2(sh->stdin_tmp, STDIN_FILENO);
 	}
 	else if (node->token == RDOUT)
 	{
@@ -47,6 +48,7 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 		ft_dup2(fd, STDOUT_FILENO);
 		ft_close(fd);
 		redir_arg(node, envp, sh);
+		ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
 	}
 	else if (node->token == RDAPP)
 	{
@@ -54,6 +56,7 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 		ft_dup2(fd, STDOUT_FILENO);
 		ft_close(fd);
 		redir_arg(node, envp, sh);
+		ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
 	}
 	else if (node->token == COMMAND)
 		exec_cmd(node->value, envp, sh);
@@ -105,11 +108,11 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 	path = the_legit_path(argv);
 	cmd = cmd_quote_handler(argv, ' ');
 	int	i = 0;
-	while (cmd[i] != NULL)
-	{
-		printf("argv[%d]: |%s|\n", i, cmd[i]);
-		i++;
-	}
+	// while (cmd[i] != NULL)
+	// {
+	// 	printf("argv[%d]: %s\n", i, cmd[i]);
+	// 	i++;
+	// }
 	if (builtin(cmd, &sh->env_list) == 1)
 		return ;
 	child = ft_fork();
@@ -117,7 +120,7 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 	{
 		if (execve(path, cmd, envp) == -1)
 			exit(printf("Error: Execve Failed %s: %c\n", strerror(errno), *argv));
-		exit(0);
+		// exit(0);
 	}
 	else
 	{
