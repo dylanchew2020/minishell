@@ -107,15 +107,16 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 	int	i = 0;
 	while (cmd[i] != NULL)
 	{
-		printf("argv[%d]: %s\n", i, cmd[i]);
+		printf("argv[%d]: |%s|\n", i, cmd[i]);
 		i++;
 	}
+	if (builtin(cmd, &sh->env_list) == 1)
+		return ;
 	child = ft_fork();
 	if (child == 0)
 	{
-		if (builtin(cmd, &sh->env_list) == 0)
-			if (execve(path, cmd, envp) == -1)
-				exit(printf("Error: Execve Failed %s: %c\n", strerror(errno), *argv));
+		if (execve(path, cmd, envp) == -1)
+			exit(printf("Error: Execve Failed %s: %c\n", strerror(errno), *argv));
 		exit(0);
 	}
 	else

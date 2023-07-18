@@ -12,12 +12,20 @@
 
 #include "minishell.h"
 
+/**
+ * cd - Changes the current working directory to the specified directory.
+ *
+ * @param value Double pointer to a character array containing the directory path.
+ *              The directory path is stored in value[1].
+ *              Assumes value[0] is the command itself.
+ */
+
+
 void	cd(char **value)
 {
 	char	**split;
 	int		i;
 
-	// split = ft_split(value, ' ');
 	split = value;
 	printf("split[1] = %s\n", split[1]);
 	i = chdir(split[1]);

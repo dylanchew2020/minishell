@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+/**
+ * pwd - Prints the current working directory.
+ */
 void	pwd(void)
 {
 	char	cwd[256];
