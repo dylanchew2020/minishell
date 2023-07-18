@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:03 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/13 14:09:55 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/18 16:30:19 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ int	rdin_fd(char *node_value)
 
 	file = find_file(node_value);
 	if (access(file, F_OK & X_OK) != 0)
-		exit(printf("Error: %s: %s\n", strerror(errno), file));
+	{
+		printf("Error: %s: %s\n", strerror(errno), file);
+		return (-1);
+	}
 	fd = ft_open(file, O_RDONLY, 0666);
 	free(file);
 	return (fd);

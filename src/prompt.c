@@ -6,11 +6,13 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/18 15:52:10 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/18 18:27:08 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	*context_prompt(void);
 
 void	prompt(t_root *sh, char **envp)
 {
@@ -25,8 +27,7 @@ void	prompt(t_root *sh, char **envp)
 	env_link_list(envp, &sh->env_list);
 	while (1)
 	{
-		printf("\033[1;32m%s", getcwd(cwd, sizeof(cwd)));
-		cmd = readline("$\033[0m ");
+		cmd = readline((const char *)context_prompt());
 		if (!cmd)
 			continue ;
 		if (*cmd)
@@ -53,6 +54,32 @@ void	prompt(t_root *sh, char **envp)
 	history_clear(&sh->history);
 	ft_lstclear(&sh->env_list, del_data);
 	return ;
+}
+
+static char	*context_prompt(void)
+{
+	char	*cwd;
+	char	*p;
+	size_t	cwd_size;
+	size_t	p_size;
+
+	cwd_size = 1024;
+	cwd = (char *)malloc(cwd_size * sizeof(char));
+	getcwd(cwd, cwd_size);
+	p_size = ft_strlen(cwd) + ft_strlen(GREEN) + ft_strlen(RESET) + 3;
+	p = (char *)ft_calloc(p_size, sizeof(char));
+	if (p == NULL)
+	{
+		free(cwd);
+		return (NULL);
+	}
+	ft_strlcpy(p, GREEN, p_size);
+	ft_strlcat(p, cwd, p_size);
+	ft_strlcat(p, "$", p_size);
+	ft_strlcat(p, RESET, p_size);
+	ft_strlcat(p, " ", p_size);
+	free(cwd);
+	return (p);
 }
 
 void	exit_prompt(char *cmd, t_root *sh)

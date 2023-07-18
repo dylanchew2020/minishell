@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/18 15:51:58 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/18 16:31:11 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 	else if (node->token == RDIN)
 	{
 		fd = rdin_fd(node->value);
+		if (fd == -1)
+			return ;
 		ft_dup2(fd, STDIN_FILENO);
 		ft_close(fd);
 		redir_arg(node, envp, sh);
@@ -45,6 +47,8 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 	else if (node->token == RDOUT)
 	{
 		fd = rdout_fd(node->value);
+		if (fd == -1)
+			return ;
 		ft_dup2(fd, STDOUT_FILENO);
 		ft_close(fd);
 		redir_arg(node, envp, sh);
@@ -53,6 +57,8 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 	else if (node->token == RDAPP)
 	{
 		fd = rdapp_fd(node->value);
+		if (fd == -1)
+			return ;
 		ft_dup2(fd, STDOUT_FILENO);
 		ft_close(fd);
 		redir_arg(node, envp, sh);
