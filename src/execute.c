@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/15 16:46:45 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/19 14:00:09 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,12 +104,6 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 		return (history_print(sh->history));
 	path = the_legit_path(argv);
 	cmd = cmd_quote_handler(argv, ' ');
-	int	i = 0;
-	while (cmd[i] != NULL)
-	{
-		printf("argv[%d]: |%s|\n", i, cmd[i]);
-		i++;
-	}
 	if (builtin(cmd, &sh->env_list) == 1)
 		return ;
 	child = ft_fork();

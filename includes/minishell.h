@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/15 16:35:09 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/19 15:49:44 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,8 @@ void		creat_new_env_node(char *key, char	*input, t_list **env_list);
 int			builtin(char **cmd, t_list **env_list);
 
 /* FREE */
-void	del_data(void	*content);
+void		del_data(void	*content);
+
 /* EXPORT */
 
 void		export(char **cmd, t_list **env_list);
@@ -203,4 +204,6 @@ int			is_quote(char c);
 int			quote_count(char *cmd);
 char		**cmd_quote_handler(char const *s, char c);
 
+/*	SIGNAL */
+void		signal_handler(int signum);
 #endif

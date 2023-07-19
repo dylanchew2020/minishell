@@ -6,12 +6,13 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/15 17:00:59 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/19 18:41:22 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+ 
 void	prompt(t_root *sh, char **envp)
 {
 	char	*cmd;
@@ -26,13 +27,15 @@ void	prompt(t_root *sh, char **envp)
 	while (1)
 	{
 		printf("\033[1;32m%s", getcwd(cwd, sizeof(cwd)));
+		signal(SIGINT, signal_handler);
+		// signal(SIGQUIT, signal_handler);
 		cmd = readline("$\033[0m ");
 		if (!cmd)
-			continue ;
+			exit_prompt(cmd, sh);
 		if (*cmd)
 		{
-			cmd = expand(cmd, &sh->env_list);
 			exit_prompt(cmd, sh);
+			cmd = expand(cmd, &sh->env_list);
 			history_add(&sh->history, cmd);
 			cmd_lexer = lexer(cmd);
 			if (cmd_lexer == NULL)
@@ -51,7 +54,6 @@ void	prompt(t_root *sh, char **envp)
 		free(cmd);
 		ft_dup2(sh->stdin_tmp, STDIN_FILENO);
 		ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
-		// loop_env(&sh->env_list);
 	}
 	history_clear(&sh->history);
 	ft_lstclear(&sh->env_list, del_data);
