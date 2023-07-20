@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/18 18:27:08 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/20 15:11:22 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static char	*get_prompt_str(void)
 
 	getcwd(cwd, 1024);
 	p_size = ft_strlen(cwd) + ft_strlen(GREEN) + ft_strlen(BLUE)\
-			 + ft_strlen(RESET) + 13;
+			+ ft_strlen(RESET) + 13;
 	p = (char *)ft_calloc(p_size, sizeof(char));
 	if (p == NULL)
 	{

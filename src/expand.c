@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 12:16:13 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/18 15:53:11 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/20 14:59:48 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char	*expand(char *cmd, t_list **env_list)
 			}
 			expanded_cmd = sub_or_join(expanded_cmd, start, len, substring);
 			dollar_ptr++;
-			key = key_check(dollar_ptr + 1);
+			key = key_check(dollar_ptr);
 			value = existed_env(key, env_list);
 			if (value != NULL)
 				expanded_cmd = sub_or_join(expanded_cmd, start, 0, value);

@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:03 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/18 16:30:19 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/20 15:08:39 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,17 +76,18 @@ int	heredoc_fd(char *node_value, t_root *sh)
 	fd = ft_open(".here_doc_tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	while (TRUE)
 	{
-		write(1, "> ", 2);
+		// write(1, "> ", 2);
 		// printf("debug\n");
-		line = get_next_line(STDIN_FILENO);
+		// line = get_next_line(STDIN_FILENO);
 		// printf("debug2\n");
+		line = readline("> ");
 		if (line == NULL)
 		{
 			free(delim);
 			free(line);
 			exit (1);
 		}
-		if ((ft_strlen(line) == ft_strlen(delim) + 1) \
+		if ((ft_strlen(line) == ft_strlen(delim)) \
 		&& ft_strncmp(line, delim, ft_strlen(delim)) == 0)
 		{
 			free(line);
@@ -97,6 +98,7 @@ int	heredoc_fd(char *node_value, t_root *sh)
 		line = expand(line, &sh->env_list);
 		free(tmp);
 		ft_putstr_fd(line, fd);
+		ft_putstr_fd("\n", fd);
 		free(line);
 	}
 	if (access(".here_doc_tmp", F_OK & X_OK) != 0)
