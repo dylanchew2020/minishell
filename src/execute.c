@@ -42,7 +42,6 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 		ft_dup2(fd, STDIN_FILENO);
 		ft_close(fd);
 		redir_arg(node, envp, sh);
-		ft_dup2(sh->stdin_tmp, STDIN_FILENO);
 	}
 	else if (node->token == RDOUT)
 	{
@@ -52,7 +51,6 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 		ft_dup2(fd, STDOUT_FILENO);
 		ft_close(fd);
 		redir_arg(node, envp, sh);
-		ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
 	}
 	else if (node->token == RDAPP)
 	{
@@ -62,7 +60,16 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 		ft_dup2(fd, STDOUT_FILENO);
 		ft_close(fd);
 		redir_arg(node, envp, sh);
-		ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
+	}
+	else if (node->token == HEREDOC)
+	{
+		fd = heredoc_fd(node->value, sh);
+		if (fd == -1)
+			return ;
+		if (node->right == NULL || node->right->token != HEREDOC)
+			ft_dup2(fd, STDIN_FILENO);
+		ft_close(fd);
+		redir_arg(node, envp, sh);
 	}
 	else if (node->token == COMMAND)
 		exec_cmd(node->value, envp, sh);
@@ -113,7 +120,7 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 		return (history_print(sh->history));
 	path = the_legit_path(argv);
 	cmd = cmd_quote_handler(argv, ' ');
-	int	i = 0;
+	// int	i = 0;
 	// while (cmd[i] != NULL)
 	// {
 	// 	printf("argv[%d]: %s\n", i, cmd[i]);
@@ -124,7 +131,8 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 	child = ft_fork();
 	if (child == 0)
 	{
-		if (execve(path, cmd, envp) == -1)
+		int test = execve(path, cmd, envp);
+		if (test == -1)
 			exit(printf("Error: Execve Failed %s: %c\n", strerror(errno), *argv));
 		// exit(0);
 	}

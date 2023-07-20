@@ -39,18 +39,20 @@
 # include <string.h>
 # include <errno.h>
 
-# define GREEN "\033[1;32m"
-# define RESET "\033[0m"
+# define GREEN	"\033[1;32m"
+# define BLUE	"\033[1;34m"
+# define RESET	"\033[0m"
 
-# define EXIT "exit"
+# define EXIT	"exit"
 
-# define PIPE_OP "|"
-# define RDIN_OP "<"
-# define HEREDOC_OP "<<"
-# define RDOUT_OP ">"
-# define RDAPP_OP ">>"
-# define SINGLE_QUOTE "\'"
-# define DOUBLE_QUOTE "\""
+# define PIPE_OP	"|"
+# define RDIN_OP	"<"
+# define HEREDOC_OP	"<<"
+# define RDOUT_OP	">"
+# define RDAPP_OP	">>"
+
+# define SINGLE_QUOTE	"\'"
+# define DOUBLE_QUOTE	"\""
 
 typedef struct s_history
 {
@@ -136,8 +138,7 @@ t_tree		*parser(t_list *lexer, int num_tokens, t_root *sh);
 t_tree		*token_check(t_list *lexer, char *op, int num_tokens, t_root *sh);
 t_tree		*tree_node_new(t_token type, char *value, t_tree *left, \
 							t_tree *right);
-t_token		type_assign(char	*value, t_tree *left, t_tree *right, \
-						t_root *sh);
+t_token		type_assign(char *value, t_root *sh);
 void		init_token_check(t_token_check	*tkchk);
 void		print_tree(t_tree *root, int b);
 void		free_tree(t_tree *node);
@@ -165,7 +166,7 @@ void		children(t_tree *node, char **envp, t_root *sh);
 int			rdin_fd(char *node_value);
 int			rdout_fd(char *node_value);
 int			rdapp_fd(char *node_value);
-int			heredoc_fd(char *node_value);
+int			heredoc_fd(char *node_value, t_root *sh);
 char		*find_file(char *node_value);
 
 /* ENV */
