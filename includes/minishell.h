@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/19 15:49:44 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/20 20:08:54 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,20 @@
 # include <string.h>
 # include <errno.h>
 
-# define EXIT "exit"
+# define GREEN	"\033[1;32m"
+# define BLUE	"\033[1;34m"
+# define RESET	"\033[0m"
 
-# define PIPE_OP "|"
-# define RDIN_OP "<"
-# define HEREDOC_OP "<<"
-# define RDOUT_OP ">"
-# define RDAPP_OP ">>"
-# define SINGLE_QUOTE "\'"
-# define DOUBLE_QUOTE "\""
+# define EXIT	"exit"
+
+# define PIPE_OP	"|"
+# define RDIN_OP	"<"
+# define HEREDOC_OP	"<<"
+# define RDOUT_OP	">"
+# define RDAPP_OP	">>"
+
+# define SINGLE_QUOTE	"\'"
+# define DOUBLE_QUOTE	"\""
 
 typedef struct s_history
 {
@@ -90,6 +95,8 @@ typedef struct s_root
 	int				stdin_tmp;
 	int				stdout_tmp;
 	t_list			*env_list;
+	struct termios	previous;
+	struct termios	current;
 }	t_root;
 
 typedef struct s_env
@@ -133,8 +140,7 @@ t_tree		*parser(t_list *lexer, int num_tokens, t_root *sh);
 t_tree		*token_check(t_list *lexer, char *op, int num_tokens, t_root *sh);
 t_tree		*tree_node_new(t_token type, char *value, t_tree *left, \
 							t_tree *right);
-t_token		type_assign(char	*value, t_tree *left, t_tree *right, \
-						t_root *sh);
+t_token		type_assign(char *value, t_root *sh);
 void		init_token_check(t_token_check	*tkchk);
 void		print_tree(t_tree *root, int b);
 void		free_tree(t_tree *node);
@@ -153,6 +159,11 @@ int			ft_fork(void);
 int			ft_close(int fd);
 int			ft_dup2(int new_fd, int old_fd);
 
+/* FT_UTLIS2 */
+void		ft_tcgetattr(int fd, struct termios *termios_p);
+void		ft_tcsetattr(int fd, int optional_actions, \
+						struct termios *termios_p);
+
 /* PIPE */
 
 void		children(t_tree *node, char **envp, t_root *sh);
@@ -162,7 +173,7 @@ void		children(t_tree *node, char **envp, t_root *sh);
 int			rdin_fd(char *node_value);
 int			rdout_fd(char *node_value);
 int			rdapp_fd(char *node_value);
-int			heredoc_fd(char *node_value);
+int			heredoc_fd(char *node_value, t_root *sh);
 char		*find_file(char *node_value);
 
 /* ENV */
@@ -206,4 +217,5 @@ char		**cmd_quote_handler(char const *s, char c);
 
 /*	SIGNAL */
 void		signal_handler(int signum);
+void		signals(t_root	*sh);
 #endif

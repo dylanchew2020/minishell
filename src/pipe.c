@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:06 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/08 19:47:53 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/15 19:42:13 by lchew            ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -26,10 +26,9 @@
 
 void	left_child(int	*pipe, t_tree *node, char **envp, t_root *sh)
 {
-	dup2(pipe[1], 1);
-	// ft_close(data->p[1]);
-	// ft_close(data->p[0]);
+	dup2(pipe[1], STDOUT_FILENO);
 	recurse_bst(node->left, envp, sh);
+	ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
 }
 
 /**
@@ -46,10 +45,9 @@ void	left_child(int	*pipe, t_tree *node, char **envp, t_root *sh)
  */
 void	right_child(int *pipe, t_tree *node, char **envp, t_root *sh)
 {
-	dup2(pipe[0], 0);
-	// ft_close(data->p[0]);
-	// ft_close(data->p[1]);
+	dup2(pipe[0], STDIN_FILENO);
 	recurse_bst(node->right, envp, sh);
+	ft_dup2(sh->stdout_tmp, STDIN_FILENO);
 }
 
 /**

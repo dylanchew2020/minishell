@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/19 14:00:09 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/20 18:24:38 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 	else if (node->token == RDIN)
 	{
 		fd = rdin_fd(node->value);
+		if (fd == -1)
+			return ;
 		ft_dup2(fd, STDIN_FILENO);
 		ft_close(fd);
 		redir_arg(node, envp, sh);
@@ -44,6 +46,8 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 	else if (node->token == RDOUT)
 	{
 		fd = rdout_fd(node->value);
+		if (fd == -1)
+			return ;
 		ft_dup2(fd, STDOUT_FILENO);
 		ft_close(fd);
 		redir_arg(node, envp, sh);
@@ -51,7 +55,19 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 	else if (node->token == RDAPP)
 	{
 		fd = rdapp_fd(node->value);
+		if (fd == -1)
+			return ;
 		ft_dup2(fd, STDOUT_FILENO);
+		ft_close(fd);
+		redir_arg(node, envp, sh);
+	}
+	else if (node->token == HEREDOC)
+	{
+		fd = heredoc_fd(node->value, sh);
+		if (fd == -1)
+			return ;
+		if (node->right == NULL || node->right->token != HEREDOC)
+			ft_dup2(fd, STDIN_FILENO);
 		ft_close(fd);
 		redir_arg(node, envp, sh);
 	}
@@ -104,14 +120,21 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 		return (history_print(sh->history));
 	path = the_legit_path(argv);
 	cmd = cmd_quote_handler(argv, ' ');
+	// int	i = 0;
+	// while (cmd[i] != NULL)
+	// {
+	// 	printf("argv[%d]: %s\n", i, cmd[i]);
+	// 	i++;
+	// }
 	if (builtin(cmd, &sh->env_list) == 1)
 		return ;
 	child = ft_fork();
 	if (child == 0)
 	{
-		if (execve(path, cmd, envp) == -1)
+		int test = execve(path, cmd, envp);
+		if (test == -1)
 			exit(printf("Error: Execve Failed %s: %c\n", strerror(errno), *argv));
-		exit(0);
+		// exit(0);
 	}
 	else
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 17:26:43 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/15 16:35:29 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/18 15:54:04 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,9 @@ void	add_link_list(char	*input, t_list	**env_list)
 	t_list	*tmp;
 	int		i;
 
-	printf("input |%s|\n", input);
+	// printf("input |%s|\n", input);
 	key = key_check(input);
-	printf("key |%s|\n", key);
+	// printf("key |%s|\n", key);
 	if (key == NULL)
 		return ;
 	tmp = *env_list;
@@ -123,11 +123,15 @@ char	*key_check(char *input)
 	}
 	while (ft_isalnum(input[i]) || input[i] == '_')
 		i++;
-	if (input[i] == '=' || input[i] == '\0' || input[i] == ' ' \
-		|| input[i] == '"' || input[i] == '$')
-		key = ft_substr(input, 0, i);
-	else
+	// printf("i = %d\n", i);
+	// if (input[i] == '=' || input[i] == '\0' || input[i] == ' ' \
+	// 	|| input[i] == '"' || input[i] == '$')
+	if (i == 0)
 		key = NULL;
+	else
+		key = ft_substr(input, 0, i);
+	// else
+	// 	key = NULL;
 	return (key);
 }
 

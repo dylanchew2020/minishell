@@ -1,6 +1,6 @@
 #  |  |  ___ \    \  |         |
-#  |  |     ) |  |\/ |   _  |  |  /   _ 
-# ___ __|  __/   |   |  (   |    <    __/ 
+#  |  |     ) |  |\/ |   _  |  |  /   _
+# ___ __|  __/   |   |  (   |    <    __/
 #    _|  _____| _|  _| \__,_| _|\_\ \___|
 #                              by jcluzet
 ################################################################################
@@ -8,11 +8,10 @@
 ################################################################################
 
 NAME		:= minishell
-CC			:= gcc
-FLAGS		:= #-Wall -Wextra -Werror 
+CC			:= clang
+# CC			:= gcc
+FLAGS		:= -Wall -Wextra -Werror
 FSAN		:= -fsanitize=address -g3
-# LDFLAGS		= -L/goinfre/tzi-qi/.brew/opt/readline/lib
-# CPPFLAGS	= -I/goinfre/tzi-qi/.brew/opt/readline/include
 
 ################################################################################
 #                               PROGRAM'S INCLUDES                             #
@@ -22,11 +21,12 @@ LIBFT_DIR = libft/
 LIBFT = libft.a
 
 LIB := -lft -L./$(LIBFT_DIR)
-READLINE = -lreadline
+READLINE = -lreadline -L/usr/local/opt/readline/lib
 
 INC_DIR		= includes
 INC			= -I./$(INC_DIR)
 INC_LIBFT	= -I./$(LIBFT_DIR)$(INC_DIR)
+INC_RL		= -I/usr/local/opt/readline/include/readline
 
 ################################################################################
 #                                 PROGRAM'S SRCS                               #
@@ -55,14 +55,15 @@ SRC			:= $(addsuffix .c, \
 					expand\
 					pwd\
 					cd\
-					unset)
+					unset\
+					ft_utlis2)
 
 OBJ_DIR		:= ./obj
 OBJ			:= $(SRC:%.c=$(OBJ_DIR)/%.o)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
-	@ $(CC) $(FLAGS) $(FSAN) $(INC) $(INC_LIBFT) -c $< -o $@
+	 $(CC) $(FLAGS) $(FSAN) $(INC) $(INC_LIBFT) $(INC_RL) -c $< -o $@
 	@ printf "$(YELLOW)$<$(CLR_RMV)... "
 
 ################################################################################
@@ -78,9 +79,9 @@ BLUE		:= \033[1;34m
 CYAN 		:= \033[1;36m
 RM			:= rm -f
 
-$(NAME): $(LIBFT) $(OBJ) 
+$(NAME): $(LIBFT) $(OBJ)
 	@ echo "\n$(GREEN)Compilation $(CLR_RMV)of $(BLUE) $(NAME) $(CLR_RMV)..."
-	@ $(CC) $(FLAGS) $(FSAN) $(LIB) $(READLINE) $(OBJ)  $(LIBFT_DIR)/$(LIBFT) -o $(NAME)  
+	 $(CC) $(FLAGS) $(FSAN) $(LIB) $(READLINE) $(OBJ) $(LIBFT_DIR)/$(LIBFT) -o $(NAME)
 	@ echo "$(GREEN)[Success] $(BLUE)$(NAME) $(CLR_RMV)created ✔️"
 	@ ./$(NAME)
 
@@ -97,7 +98,7 @@ run:
 	@ ./$(NAME)
 
 clean:
-	@ $(RM) *.o */*.o */*/*.o 
+	@ $(RM) *.o */*.o */*/*.o
 	@ $(RM) -r $(OBJ_DIR)
 	@ echo "$(RED)Deleting $(BLUE)$(NAME) $(CLR_RMV)objs ✔️"
 
