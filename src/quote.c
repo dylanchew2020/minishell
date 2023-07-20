@@ -14,7 +14,7 @@
 
 /**
  * @brief Checks if a character is a quote.
- * 
+ *
  * @param c The character to check.
  * @return 1 if it's a single quote, 2 if it's a double quote,
  * or 0 otherwise.
@@ -30,14 +30,14 @@ int	is_quote(char c)
 
 /**
  * @brief Counts the length of the quoted string in a command.
- * 
- * Checks the type of quote at the start and counts characters 
- * until the closing quote. If a null character is encountered 
+ *
+ * Checks the type of quote at the start and counts characters
+ * until the closing quote. If a null character is encountered
  * before finding a closing quote, an error message is output.
  *
  * @param cmd The command string.
- * @return The length of the quoted string, or 0 if no quote at 
- * the start. -1 if an unclosed quote is found.
+ * @return The length of the quoted string, including quotes,
+ * or 0 if no quote at the start. -1 if an unclosed quote is found.
  */
 int	quote_count(char *cmd)
 {

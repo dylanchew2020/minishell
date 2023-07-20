@@ -12,35 +12,41 @@
 
 #include "minishell.h"
 
-static char	*context_prompt(void);
+static char	*get_prompt_str(void);
 
 void	prompt(t_root *sh, char **envp)
 {
 	char	*cmd;
+	char	*tmp;
 	t_list	*cmd_lexer;
 	t_list	*tmp_lexer;
 	t_tree	*head;
-	pid_t	child;
-	int		status;
-	char	cwd[256];
+	char	*prompt_str;
 
 	env_link_list(envp, &sh->env_list);
 	while (1)
 	{
-		cmd = readline((const char *)context_prompt());
+		prompt_str = get_prompt_str();
+		cmd = readline(prompt_str);
 		if (!cmd)
 			continue ;
 		if (*cmd)
 		{
 			history_add(&sh->history, cmd);
+			tmp = cmd;
 			cmd = expand(cmd, &sh->env_list);
+			free(tmp);
 			exit_prompt(cmd, sh);
 			cmd_lexer = lexer(cmd);
 			if (cmd_lexer == NULL)
 				continue ;
 			head = parser(cmd_lexer, ft_lstsize(cmd_lexer), sh);
-			// print_tree(head, 0);
+			print_tree(head, 0);
 			recurse_bst(head, envp, sh);
+			ft_dup2(sh->stdin_tmp, STDIN_FILENO);
+			ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
+			if (access(".here_doc_tmp", F_OK & X_OK) == 0)
+				unlink(".here_doc_tmp");
 			free_tree(head);
 			while (cmd_lexer)
 			{
@@ -49,6 +55,7 @@ void	prompt(t_root *sh, char **envp)
 				cmd_lexer = tmp_lexer;
 			}
 		}
+		free(prompt_str);
 		free(cmd);
 	}
 	history_clear(&sh->history);
@@ -56,17 +63,15 @@ void	prompt(t_root *sh, char **envp)
 	return ;
 }
 
-static char	*context_prompt(void)
+static char	*get_prompt_str(void)
 {
-	char	*cwd;
+	char	cwd[1024];
 	char	*p;
-	size_t	cwd_size;
 	size_t	p_size;
 
-	cwd_size = 1024;
-	cwd = (char *)malloc(cwd_size * sizeof(char));
-	getcwd(cwd, cwd_size);
-	p_size = ft_strlen(cwd) + ft_strlen(GREEN) + ft_strlen(RESET) + 3;
+	getcwd(cwd, 1024);
+	p_size = ft_strlen(cwd) + ft_strlen(GREEN) + ft_strlen(BLUE)\
+			 + ft_strlen(RESET) + 13;
 	p = (char *)ft_calloc(p_size, sizeof(char));
 	if (p == NULL)
 	{
@@ -74,11 +79,11 @@ static char	*context_prompt(void)
 		return (NULL);
 	}
 	ft_strlcpy(p, GREEN, p_size);
+	ft_strlcat(p, "Minishell:", p_size);
+	ft_strlcat(p, BLUE, p_size);
 	ft_strlcat(p, cwd, p_size);
-	ft_strlcat(p, "$", p_size);
 	ft_strlcat(p, RESET, p_size);
-	ft_strlcat(p, " ", p_size);
-	free(cwd);
+	ft_strlcat(p, "$ ", p_size);
 	return (p);
 }
 

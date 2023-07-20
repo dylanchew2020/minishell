@@ -17,7 +17,7 @@ static void	count_quote_char(char **cmd, int *count);
 /**
  * @brief Counts the special characters in a given command string.
  *
- * Special characters are '|', '<', '>', and any character in quotes. 
+ * Special characters are '|', '<', '>', and any character in quotes.
  * If '<' or '>' is followed by a non-space, non-null character, that character
  * is also counted as a special character.
  *
@@ -54,10 +54,10 @@ int	count_sp_char(char *cmd)
 }
 
 /**
- * @brief Counts the characters in a given command string excluding special 
+ * @brief Counts the characters in a given command string excluding special
  * characters '|', '<', and '>'.
  *
- * Special characters within quotes are counted. Uses `count_quote_char` 
+ * Special characters within quotes are counted. Uses `count_quote_char`
  * function to handle quoted characters.
  *
  * @param cmd The command string.
@@ -66,7 +66,6 @@ int	count_sp_char(char *cmd)
 int	count_char(char *cmd)
 {
 	int	count;
-	int	quote_len;
 
 	count = 0;
 	while (ft_strchr("|<>", *cmd) == NULL && *cmd != '\0')
@@ -75,7 +74,7 @@ int	count_char(char *cmd)
 }
 
 /**
- * @brief Counts the characters in a given command string, taking into 
+ * @brief Counts the characters in a given command string, taking into
  * account quoted sequences.
  *
  * Uses the `quote_count` function to find the length of the quoted string.

@@ -1,6 +1,6 @@
 #  |  |  ___ \    \  |         |
-#  |  |     ) |  |\/ |   _  |  |  /   _ 
-# ___ __|  __/   |   |  (   |    <    __/ 
+#  |  |     ) |  |\/ |   _  |  |  /   _
+# ___ __|  __/   |   |  (   |    <    __/
 #    _|  _____| _|  _| \__,_| _|\_\ \___|
 #                              by jcluzet
 ################################################################################
@@ -8,8 +8,8 @@
 ################################################################################
 
 NAME		:= minishell
-CC			:= gcc
-FLAGS		:= #-Wall -Wextra -Werror 
+CC			:= clang
+FLAGS		:= -Wall -Wextra -Werror
 FSAN		:= -fsanitize=address -g3
 # LDFLAGS		= -L/goinfre/tzi-qi/.brew/opt/readline/lib
 # CPPFLAGS	= -I/goinfre/tzi-qi/.brew/opt/readline/include
@@ -78,9 +78,9 @@ BLUE		:= \033[1;34m
 CYAN 		:= \033[1;36m
 RM			:= rm -f
 
-$(NAME): $(LIBFT) $(OBJ) 
+$(NAME): $(LIBFT) $(OBJ)
 	@ echo "\n$(GREEN)Compilation $(CLR_RMV)of $(BLUE) $(NAME) $(CLR_RMV)..."
-	@ $(CC) $(FLAGS) $(FSAN) $(LIB) $(READLINE) $(OBJ)  $(LIBFT_DIR)/$(LIBFT) -o $(NAME)  
+	@ $(CC) $(FLAGS) $(FSAN) $(LIB) $(READLINE) $(OBJ)  $(LIBFT_DIR)/$(LIBFT) -o $(NAME)
 	@ echo "$(GREEN)[Success] $(BLUE)$(NAME) $(CLR_RMV)created ✔️"
 	@ ./$(NAME)
 
@@ -97,7 +97,7 @@ run:
 	@ ./$(NAME)
 
 clean:
-	@ $(RM) *.o */*.o */*/*.o 
+	@ $(RM) *.o */*.o */*/*.o
 	@ $(RM) -r $(OBJ_DIR)
 	@ echo "$(RED)Deleting $(BLUE)$(NAME) $(CLR_RMV)objs ✔️"
 
