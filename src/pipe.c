@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:06 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/15 19:42:13 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/20 19:30:16 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 
 void	left_child(int	*pipe, t_tree *node, char **envp, t_root *sh)
 {
-	dup2(pipe[1], STDOUT_FILENO);
+	ft_dup2(pipe[1], STDOUT_FILENO);
 	recurse_bst(node->left, envp, sh);
 	ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
 }
@@ -45,7 +45,7 @@ void	left_child(int	*pipe, t_tree *node, char **envp, t_root *sh)
  */
 void	right_child(int *pipe, t_tree *node, char **envp, t_root *sh)
 {
-	dup2(pipe[0], STDIN_FILENO);
+	ft_dup2(pipe[0], STDIN_FILENO);
 	recurse_bst(node->right, envp, sh);
 	ft_dup2(sh->stdout_tmp, STDIN_FILENO);
 }
@@ -64,23 +64,23 @@ void	children(t_tree *node, char **envp, t_root *sh)
 {
 	pid_t	children[2];
 	int		status;
-	int		pipe[2];
+	// int		pipe[2];
 
-	ft_pipe(pipe);
+	ft_pipe(sh->pipe);
 	children[0] = ft_fork();
 	if (children[0] == 0)
 	{
-		left_child(pipe, node, envp, sh);
+		left_child(sh->pipe, node, envp, sh);
 		exit(0);
 	}
 	waitpid(children[0], &status, 0);
-	ft_close(pipe[1]);
+	ft_close(sh->pipe[1]);
 	children[1] = ft_fork();
 	if (children[1] == 0)
 	{
-		right_child(pipe, node, envp, sh);
+		right_child(sh->pipe, node, envp, sh);
 		exit(0);
 	}
 	waitpid(children[1], &status, 0);
-	ft_close(pipe[0]);
+	ft_close(sh->pipe[0]);
 }

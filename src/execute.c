@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/18 16:31:11 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/20 20:57:56 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 	{
 		fd = rdin_fd(node->value);
 		if (fd == -1)
+		{
+			printf("bash: syntax error near unexpected token `newline'\n");
 			return ;
+		}
 		ft_dup2(fd, STDIN_FILENO);
 		ft_close(fd);
 		redir_arg(node, envp, sh);
@@ -47,7 +50,10 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 	{
 		fd = rdout_fd(node->value);
 		if (fd == -1)
+		{
+			printf("bash: syntax error near unexpected token `newline'\n");
 			return ;
+		}
 		ft_dup2(fd, STDOUT_FILENO);
 		ft_close(fd);
 		redir_arg(node, envp, sh);
@@ -56,7 +62,10 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 	{
 		fd = rdapp_fd(node->value);
 		if (fd == -1)
+		{
+			printf("bash: syntax error near unexpected token `newline'\n");
 			return ;
+		}
 		ft_dup2(fd, STDOUT_FILENO);
 		ft_close(fd);
 		redir_arg(node, envp, sh);
@@ -65,7 +74,10 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 	{
 		fd = heredoc_fd(node->value, sh);
 		if (fd == -1)
+		{
+			printf("bash: syntax error near unexpected token `newline'\n");
 			return ;
+		}
 		if (node->right == NULL || node->right->token != HEREDOC)
 			ft_dup2(fd, STDIN_FILENO);
 		ft_close(fd);

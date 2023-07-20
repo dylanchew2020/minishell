@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/18 16:43:04 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/20 19:16:30 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct s_root
 	int				stdin_tmp;
 	int				stdout_tmp;
 	t_list			*env_list;
+	int				*pipe;
 }	t_root;
 
 typedef struct s_env

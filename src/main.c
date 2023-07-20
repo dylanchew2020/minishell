@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:26:51 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/15 16:24:47 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/20 20:25:41 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	init_root(t_root *sh)
 	sh->stdin_tmp = dup(STDIN_FILENO);
 	sh->stdout_tmp = dup(STDOUT_FILENO);
 	sh->env_list = NULL;
+	sh->pipe = ft_calloc(2, sizeof(int));
 }
 
 void	free_2d(char **str)

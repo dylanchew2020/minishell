@@ -11,8 +11,6 @@ NAME		:= minishell
 CC			:= clang
 FLAGS		:= -Wall -Wextra -Werror
 FSAN		:= -fsanitize=address -g3
-# LDFLAGS		= -L/goinfre/tzi-qi/.brew/opt/readline/lib
-# CPPFLAGS	= -I/goinfre/tzi-qi/.brew/opt/readline/include
 
 ################################################################################
 #                               PROGRAM'S INCLUDES                             #
@@ -22,11 +20,12 @@ LIBFT_DIR = libft/
 LIBFT = libft.a
 
 LIB := -lft -L./$(LIBFT_DIR)
-READLINE = -lreadline
+READLINE = -lreadline -L/usr/local/opt/readline/lib
 
 INC_DIR		= includes
 INC			= -I./$(INC_DIR)
 INC_LIBFT	= -I./$(LIBFT_DIR)$(INC_DIR)
+INC_RL		= -I/usr/local/opt/readline/include
 
 ################################################################################
 #                                 PROGRAM'S SRCS                               #
@@ -62,7 +61,7 @@ OBJ			:= $(SRC:%.c=$(OBJ_DIR)/%.o)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
-	@ $(CC) $(FLAGS) $(FSAN) $(INC) $(INC_LIBFT) -c $< -o $@
+	@ $(CC) $(FLAGS) $(FSAN) $(INC) $(INC_LIBFT) $(INC_RL) -c $< -o $@
 	@ printf "$(YELLOW)$<$(CLR_RMV)... "
 
 ################################################################################
