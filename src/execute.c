@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/20 20:57:56 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/22 17:50:53 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,28 +130,35 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 
 	if (ft_strncmp(argv, "history", 7) == 0)
 		return (history_print(sh->history));
-	path = the_legit_path(argv);
+	printf("argv: %s\n", argv);
+	path = get_exe_path(argv);
+	printf("path: %s\n", path);
 	cmd = cmd_quote_handler(argv, ' ');
-	// int	i = 0;
-	// while (cmd[i] != NULL)
-	// {
-	// 	printf("argv[%d]: %s\n", i, cmd[i]);
-	// 	i++;
-	// }
+	print_exec_cmd(cmd);
 	if (builtin(cmd, &sh->env_list) == 1)
 		return ;
 	child = ft_fork();
 	if (child == 0)
 	{
-		int test = execve(path, cmd, envp);
-		if (test == -1)
-			exit(printf("Error: Execve Failed %s: %c\n", strerror(errno), *argv));
-		// exit(0);
+		if (execve(path, cmd, envp) == -1)
+			exit(printf("Error: Command not found: %s\n", *cmd));
 	}
 	else
 	{
 		waitpid(child, &status, 0);
 		free(path);
 		free_2d(cmd);
+	}
+}
+
+void	print_exec_cmd(char **cmd)
+{
+	int	i;
+
+	i = 0;
+	while (cmd[i] != NULL)
+	{
+		printf("argv[%d]: %s\n", i, cmd[i]);
+		i++;
 	}
 }

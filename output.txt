@@ -1,0 +1,2 @@
+-rw-r--r--   1 lchew  2022_kuala-lumpur     200 22 Jul 16:48 file.txt
+-rw-r--r--   1 lchew  2022_kuala-lumpur     142 22 Jul 16:50 output.txt

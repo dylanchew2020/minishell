@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/22 15:45:08 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/22 17:31:03 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ void		history_print(t_history *history);
 /* PATH */
 
 char		**find_path(void);
-char		*the_legit_path(char *argv);
+char		*get_exe_path(char *argv);
 
 /* LEXER */
 
@@ -149,6 +149,7 @@ void		free_tree(t_tree *node);
 void		recurse_bst(t_tree *node, char **envp, t_root *sh);
 void		exec_cmd(char *argv, char **envp, t_root *sh);
 void		redir_arg(t_tree *node, char **envp, t_root *sh);
+void		print_exec_cmd(char **cmd);
 
 /* FT_UTLIS */
 
@@ -171,16 +172,20 @@ int			heredoc_fd(char *node_value, t_root *sh);
 char		*find_file(char *node_value);
 
 /* ENV */
+
 void		env_link_list(char **envp, t_list **env_list);
 void		get_env(t_list **env_list);
 char		*existed_env(char *key, t_list **env_list);
 void		creat_new_env_node(char *key, char	*input, t_list **env_list);
 
 /* BUILT IN */
+
 int			builtin(char **cmd, t_list **env_list);
 
 /* FREE */
+
 void	del_data(void	*content);
+
 /* EXPORT */
 
 void		export(char **cmd, t_list **env_list);
@@ -190,6 +195,7 @@ void		add_link_list(char	*input, t_list	**env_list);
 void		modified_value(t_env *data_node, char *input);
 
 /* EXPAND */
+
 char		*expand(char *cmd, t_list **env_list);
 
 /* PWD */
