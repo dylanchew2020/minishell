@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/20 20:51:40 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/22 15:26:30 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,18 +71,18 @@ static char	*get_prompt_str(void)
 
 	getcwd(cwd, 1024);
 	p_size = ft_strlen(cwd) + ft_strlen(GREEN) + ft_strlen(BLUE)\
-			+ ft_strlen(RESET) + 13;
+			+ ft_strlen(RESET) + 13 + 8;
 	p = (char *)ft_calloc(p_size, sizeof(char));
 	if (p == NULL)
 	{
 		free(cwd);
 		return (NULL);
 	}
-	ft_strlcpy(p, GREEN, p_size);
+	ft_strlcpy(p, "\001" GREEN "\002", p_size);
 	ft_strlcat(p, "Minishell:", p_size);
-	ft_strlcat(p, BLUE, p_size);
+	ft_strlcat(p, "\001" BLUE "\002", p_size);
 	ft_strlcat(p, cwd, p_size);
-	ft_strlcat(p, RESET, p_size);
+	ft_strlcat(p, "\001" RESET "\002", p_size);
 	ft_strlcat(p, "$ ", p_size);
 	return (p);
 }
