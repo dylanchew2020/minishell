@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/20 18:24:38 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/22 20:42:05 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 	{
 		fd = rdin_fd(node->value);
 		if (fd == -1)
+		{
+			printf("bash: syntax error near unexpected token `newline'\n");
 			return ;
+		}
 		ft_dup2(fd, STDIN_FILENO);
 		ft_close(fd);
 		redir_arg(node, envp, sh);
@@ -47,7 +50,10 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 	{
 		fd = rdout_fd(node->value);
 		if (fd == -1)
+		{
+			printf("bash: syntax error near unexpected token `newline'\n");
 			return ;
+		}
 		ft_dup2(fd, STDOUT_FILENO);
 		ft_close(fd);
 		redir_arg(node, envp, sh);
@@ -56,7 +62,10 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 	{
 		fd = rdapp_fd(node->value);
 		if (fd == -1)
+		{
+			printf("bash: syntax error near unexpected token `newline'\n");
 			return ;
+		}
 		ft_dup2(fd, STDOUT_FILENO);
 		ft_close(fd);
 		redir_arg(node, envp, sh);
@@ -65,6 +74,11 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 	{
 		fd = heredoc_fd(node->value, sh);
 		if (fd == -1)
+		{
+			printf("bash: syntax error near unexpected token `newline'\n");
+			return ;
+		}
+		if (fd == -2)
 			return ;
 		if (node->right == NULL || node->right->token != HEREDOC)
 			ft_dup2(fd, STDIN_FILENO);
@@ -118,28 +132,33 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 
 	if (ft_strncmp(argv, "history", 7) == 0)
 		return (history_print(sh->history));
-	path = the_legit_path(argv);
+	path = get_exe_path(argv, &sh->env_list);
 	cmd = cmd_quote_handler(argv, ' ');
-	// int	i = 0;
-	// while (cmd[i] != NULL)
-	// {
-	// 	printf("argv[%d]: %s\n", i, cmd[i]);
-	// 	i++;
-	// }
+	// print_exec_cmd(cmd);
 	if (builtin(cmd, &sh->env_list) == 1)
 		return ;
 	child = ft_fork();
 	if (child == 0)
 	{
-		int test = execve(path, cmd, envp);
-		if (test == -1)
-			exit(printf("Error: Execve Failed %s: %c\n", strerror(errno), *argv));
-		// exit(0);
+		if (execve(path, cmd, envp) == -1)
+			exit(printf("Error: Command not found: %s\n", *cmd));
 	}
 	else
 	{
 		waitpid(child, &status, 0);
 		free(path);
 		free_2d(cmd);
+	}
+}
+
+void	print_exec_cmd(char **cmd)
+{
+	int	i;
+
+	i = 0;
+	while (cmd[i] != NULL)
+	{
+		printf("argv[%d]: %s\n", i, cmd[i]);
+		i++;
 	}
 }

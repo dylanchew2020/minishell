@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:03 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/20 15:08:39 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/20 20:55:44 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	rdin_fd(char *node_value)
 	int		fd;
 
 	file = find_file(node_value);
+	if (file == NULL)
+		return (-1);
 	if (access(file, F_OK & X_OK) != 0)
 	{
 		printf("Error: %s: %s\n", strerror(errno), file);
@@ -47,6 +49,8 @@ int	rdout_fd(char *node_value)
 	int		fd;
 
 	file = find_file(node_value);
+	if (file == NULL)
+		return (-1);
 	fd = ft_open(file, O_CREAT | O_RDWR | O_TRUNC, 0666);
 	free(file);
 	return (fd);
@@ -58,6 +62,8 @@ int	rdapp_fd(char *node_value)
 	int		fd;
 
 	file = find_file(node_value);
+	if (file == NULL)
+		return (-1);
 	fd = ft_open(file, O_CREAT | O_RDWR | O_APPEND, 0666);
 	free(file);
 	return (fd);
@@ -71,6 +77,8 @@ int	heredoc_fd(char *node_value, t_root *sh)
 	char	*tmp;
 
 	delim = find_file(node_value);
+	if (delim == NULL)
+		return (-1);
 	if (access(".here_doc_tmp", F_OK & X_OK) == 0)
 		unlink(".here_doc_tmp");
 	fd = ft_open(".here_doc_tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -80,12 +88,19 @@ int	heredoc_fd(char *node_value, t_root *sh)
 		// printf("debug\n");
 		// line = get_next_line(STDIN_FILENO);
 		// printf("debug2\n");
-		line = readline("> ");
+		if (sh->pipe[1] != 0)
+		{
+			ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
+			line = readline("> ");
+			ft_dup2(sh->pipe[1], STDOUT_FILENO);
+		}
+		else
+			line = readline("> ");
 		if (line == NULL)
 		{
 			free(delim);
 			free(line);
-			exit (1);
+			return (-2);
 		}
 		if ((ft_strlen(line) == ft_strlen(delim)) \
 		&& ft_strncmp(line, delim, ft_strlen(delim)) == 0)
@@ -118,9 +133,17 @@ int	heredoc_fd(char *node_value, t_root *sh)
  */
 char	*find_file(char *value)
 {
-	while ((*value != '<' && *value != '>') && *value != '\0')
+	char	**result;
+	char	*file;
+
+	if ((*value != '<' && *value != '>') && *value != '\0')
+		return (NULL); // change to if statement, check for correct redir token
+	while ((*value == '<' || *value == '>' || *value == ' ') && *value != '\0')
 		++value;
-	while ((*value == '<' || *value == '>') && *value != '\0')
-		++value;
-	return (ft_strtrim(value, " "));
+	if (*value == '\0')
+		return (NULL);
+	result = cmd_quote_handler(value, ' ');
+	file = ft_strdup(result[0]);
+	free_2d(result);
+	return (file);
 }

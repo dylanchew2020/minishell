@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:26:51 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/20 19:52:11 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/22 20:46:19 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,12 @@ void	init_root(t_root *sh)
 	sh->stdin_tmp = dup(STDIN_FILENO);
 	sh->stdout_tmp = dup(STDOUT_FILENO);
 	sh->env_list = NULL;
+	sh->pipe = ft_calloc(2, sizeof(int));
+	ft_tcgetattr(STDIN_FILENO, &sh->previous);
+	ft_tcgetattr(STDIN_FILENO, &sh->current);
+	sh->current.c_lflag &= ~ECHOCTL;
+	ft_tcsetattr(STDIN_FILENO, TCSAFLUSH, &sh->current);
+	ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->current);
 }
 
 void	free_2d(char **str)

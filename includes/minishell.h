@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/20 20:08:54 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/22 20:30:57 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct s_root
 	int				stdin_tmp;
 	int				stdout_tmp;
 	t_list			*env_list;
+	int				*pipe;
 	struct termios	previous;
 	struct termios	current;
 }	t_root;
@@ -124,8 +125,8 @@ void		history_print(t_history *history);
 
 /* PATH */
 
-char		**find_path(void);
-char		*the_legit_path(char *argv);
+char		**find_path(t_list **env_list);
+char		*get_exe_path(char *argv, t_list **env_list);
 
 /* LEXER */
 
@@ -150,6 +151,7 @@ void		free_tree(t_tree *node);
 void		recurse_bst(t_tree *node, char **envp, t_root *sh);
 void		exec_cmd(char *argv, char **envp, t_root *sh);
 void		redir_arg(t_tree *node, char **envp, t_root *sh);
+void		print_exec_cmd(char **cmd);
 
 /* FT_UTLIS */
 
@@ -177,15 +179,18 @@ int			heredoc_fd(char *node_value, t_root *sh);
 char		*find_file(char *node_value);
 
 /* ENV */
+
 void		env_link_list(char **envp, t_list **env_list);
 void		get_env(t_list **env_list);
 char		*existed_env(char *key, t_list **env_list);
 void		creat_new_env_node(char *key, char	*input, t_list **env_list);
 
 /* BUILT IN */
+
 int			builtin(char **cmd, t_list **env_list);
 
 /* FREE */
+
 void		del_data(void	*content);
 
 /* EXPORT */
@@ -197,6 +202,7 @@ void		add_link_list(char	*input, t_list	**env_list);
 void		modified_value(t_env *data_node, char *input);
 
 /* EXPAND */
+
 char		*expand(char *cmd, t_list **env_list);
 
 /* PWD */
@@ -205,10 +211,12 @@ void		pwd(void);
 
 /* UNSET */
 
-void		unset(t_list **env_list, char *key);
+void		unset(char *key, t_list **env_list);
 
 /* CD */
-void		cd(char **value);
+
+void		cd(char **value, t_list **env_list);
+
 /* QUOTE */
 
 int			is_quote(char c);

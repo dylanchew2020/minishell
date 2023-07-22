@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:00 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/20 20:00:29 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/22 17:50:52 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,17 @@
 
 void	signals(t_root	*sh, int mode)
 {
+	(void) sh;
 	if (mode == 1)
 	{
-		ft_tcgetattr(STDIN_FILENO, &sh->previous);
-		sh->current = sh->previous;
-		sh->current.c_lflag &= ~ECHOCTL;
-		ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->current);
 		signal(SIGINT, signal_handler);
 		signal(SIGQUIT, signal_handler);
 	}
-	// else if (mode == 0)
-	// {
-	// 	printf("it enter here\n");
-	// 	ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->previous);
-	// 	signal(SIGINT, signal_handler2);
-	// 	signal(SIGQUIT, signal_handler2);
-	// }
+	else if (mode == 0)
+	{
+		signal(SIGINT, signal_handler2);
+		signal(SIGQUIT, signal_handler2);
+	}
 	return ;
 }
 
@@ -44,7 +39,7 @@ void	signal_handler(int signum)
 {
 	if (signum == SIGQUIT)
 	{
-		rl_on_new_line();		
+		rl_on_new_line();
 		rl_redisplay();
 		return ;
 	}

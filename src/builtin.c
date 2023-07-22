@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:11 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/15 19:18:29 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/22 15:45:26 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@
 int	builtin(char **cmd, t_list **env_list)
 {
 	if (ft_strnstr(cmd[0], "unset", ft_strlen("unset")) != NULL)
-		unset(env_list, cmd[1]);
+		unset(cmd[1], env_list);
 	else if (ft_strnstr(cmd[0], "cd", ft_strlen("cd")) != NULL)
-		cd(cmd);
+		cd(cmd, env_list);
 	else if (ft_strnstr(cmd[0], "pwd", ft_strlen("pwd")) != NULL)
 		pwd();
 	else if (ft_strnstr(cmd[0], "export", ft_strlen("export")) != NULL)

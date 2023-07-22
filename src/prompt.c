@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/20 19:53:04 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/22 20:45:37 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,13 @@ void	prompt(t_root *sh, char **envp)
 			if (cmd_lexer == NULL)
 				continue ;
 			head = parser(cmd_lexer, ft_lstsize(cmd_lexer), sh);
-			print_tree(head, 0);
+			// print_tree(head, 0);
+			ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->previous);
+			signals(sh, 0);
 			recurse_bst(head, envp, sh);
-			// ft_tcsetattr(0, 0, &sh->previous);
-			// signals(sh, 0);
 			ft_dup2(sh->stdin_tmp, STDIN_FILENO);
 			ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
+			ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->current);
 			if (access(".here_doc_tmp", F_OK & X_OK) == 0)
 				unlink(".here_doc_tmp");
 			free_tree(head);
@@ -73,20 +74,24 @@ static char	*get_prompt_str(void)
 	char	*p;
 	size_t	p_size;
 
+	ft_memset(cwd, 0, 1024);
 	getcwd(cwd, 1024);
+	if (ft_strncmp(cwd, getenv("HOME"), ft_strlen(getenv("HOME"))) == 0)
+	{
+		cwd[0] = '~';
+		ft_memmove(cwd + 1, cwd + ft_strlen(getenv("HOME")), \
+				ft_strlen(cwd + ft_strlen(getenv("HOME"))) + 1);
+	}
 	p_size = ft_strlen(cwd) + ft_strlen(GREEN) + ft_strlen(BLUE)\
-			+ ft_strlen(RESET) + 13;
+			+ ft_strlen(RESET) + 13 + 8;
 	p = (char *)ft_calloc(p_size, sizeof(char));
 	if (p == NULL)
-	{
-		// free(cwd);
 		return (NULL);
-	}
-	ft_strlcpy(p, GREEN, p_size);
+	ft_strlcpy(p, "\001" GREEN "\002", p_size);
 	ft_strlcat(p, "Minishell:", p_size);
-	ft_strlcat(p, BLUE, p_size);
+	ft_strlcat(p, "\001" BLUE "\002", p_size);
 	ft_strlcat(p, cwd, p_size);
-	ft_strlcat(p, RESET, p_size);
+	ft_strlcat(p, "\001" RESET "\002", p_size);
 	ft_strlcat(p, "$ ", p_size);
 	return (p);
 }
@@ -94,6 +99,7 @@ static char	*get_prompt_str(void)
 void	exit_prompt(char *cmd, t_root *sh)
 {
 	int	i;
+
 	if (!cmd || !ft_strncmp(cmd, EXIT, 5))
 	{
 		free(cmd);
