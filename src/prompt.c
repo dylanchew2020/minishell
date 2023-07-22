@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/22 15:26:30 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/22 16:43:21 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,15 +69,19 @@ static char	*get_prompt_str(void)
 	char	*p;
 	size_t	p_size;
 
+	ft_memset(cwd, 0, 1024);
 	getcwd(cwd, 1024);
+	if (ft_strncmp(cwd, getenv("HOME"), ft_strlen(getenv("HOME"))) == 0)
+	{
+		cwd[0] = '~';
+		ft_memmove(cwd + 1, cwd + ft_strlen(getenv("HOME")), \
+				ft_strlen(cwd + ft_strlen(getenv("HOME"))) + 1);
+	}
 	p_size = ft_strlen(cwd) + ft_strlen(GREEN) + ft_strlen(BLUE)\
 			+ ft_strlen(RESET) + 13 + 8;
 	p = (char *)ft_calloc(p_size, sizeof(char));
 	if (p == NULL)
-	{
-		free(cwd);
 		return (NULL);
-	}
 	ft_strlcpy(p, "\001" GREEN "\002", p_size);
 	ft_strlcat(p, "Minishell:", p_size);
 	ft_strlcat(p, "\001" BLUE "\002", p_size);
@@ -90,6 +94,7 @@ static char	*get_prompt_str(void)
 void	exit_prompt(char *cmd, t_root *sh)
 {
 	int	i;
+
 	if (!cmd || !ft_strncmp(cmd, EXIT, 5))
 	{
 		free(cmd);

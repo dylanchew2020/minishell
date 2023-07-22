@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 14:45:01 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/15 15:37:23 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/22 15:45:03 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  * @param env_list  Double pointer to the linked list of environment variables.
  * @param key       The key of the environment variable to be removed.
  */
-void	unset(t_list **env_list, char *key)
+void	unset(char *key, t_list **env_list)
 {
 	t_list	*tmp;
 	t_list	*prev;

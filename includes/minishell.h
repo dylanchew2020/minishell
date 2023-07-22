@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/20 19:16:30 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/22 15:45:08 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,10 +198,12 @@ void		pwd(void);
 
 /* UNSET */
 
-void		unset(t_list **env_list, char *key);
+void		unset(char *key, t_list **env_list);
 
 /* CD */
-void		cd(char **value);
+
+void		cd(char **value, t_list **env_list);
+
 /* QUOTE */
 
 int			is_quote(char c);
