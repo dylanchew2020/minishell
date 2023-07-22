@@ -217,5 +217,6 @@ char		**cmd_quote_handler(char const *s, char c);
 
 /*	SIGNAL */
 void		signal_handler(int signum);
-void		signals(t_root	*sh);
+void		signal_handler2(int signum);
+void		signals(t_root	*sh, int mode);
 #endif

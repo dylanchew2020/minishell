@@ -27,7 +27,7 @@ void	prompt(t_root *sh, char **envp)
 	env_link_list(envp, &sh->env_list);
 	while (1)
 	{
-		signals(sh);
+		signals(sh, 1);
 		prompt_str = get_prompt_str();
 		cmd = readline(prompt_str);
 		if (!cmd)
@@ -45,6 +45,8 @@ void	prompt(t_root *sh, char **envp)
 			head = parser(cmd_lexer, ft_lstsize(cmd_lexer), sh);
 			print_tree(head, 0);
 			recurse_bst(head, envp, sh);
+			// ft_tcsetattr(0, 0, &sh->previous);
+			// signals(sh, 0);
 			ft_dup2(sh->stdin_tmp, STDIN_FILENO);
 			ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
 			if (access(".here_doc_tmp", F_OK & X_OK) == 0)
@@ -77,7 +79,7 @@ static char	*get_prompt_str(void)
 	p = (char *)ft_calloc(p_size, sizeof(char));
 	if (p == NULL)
 	{
-		free(cwd);
+		// free(cwd);
 		return (NULL);
 	}
 	ft_strlcpy(p, GREEN, p_size);

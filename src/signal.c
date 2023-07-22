@@ -12,15 +12,24 @@
 
 #include "minishell.h"
 
-void	signals(t_root	*sh)
+void	signals(t_root	*sh, int mode)
 {
-	(void) sh;
-	// ft_tcgetattr(STDIN_FILENO, &sh->previous);
-	// sh->current = sh->previous;
-	// // sh->current.c_lflag &= ~ECHOCTL;
-	// ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->current);
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, signal_handler);
+	if (mode == 1)
+	{
+		ft_tcgetattr(STDIN_FILENO, &sh->previous);
+		sh->current = sh->previous;
+		sh->current.c_lflag &= ~ECHOCTL;
+		ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->current);
+		signal(SIGINT, signal_handler);
+		signal(SIGQUIT, signal_handler);
+	}
+	// else if (mode == 0)
+	// {
+	// 	printf("it enter here\n");
+	// 	ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->previous);
+	// 	signal(SIGINT, signal_handler2);
+	// 	signal(SIGQUIT, signal_handler2);
+	// }
 	return ;
 }
 
@@ -41,10 +50,22 @@ void	signal_handler(int signum)
 	}
 	if (signum == SIGINT)
 	{
-		rl_replace_line("", 0);
 		write(1, "\n", 1);
+		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
 		return ;
+	}
+}
+
+void	signal_handler2(int signum)
+{
+	if (signum == SIGINT)
+	{
+		write(1, "\n", 1);
+	}
+	if (signum == SIGQUIT)
+	{
+		write(1, "Quit: 3\n", 8);
 	}
 }

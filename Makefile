@@ -8,8 +8,8 @@
 ################################################################################
 
 NAME		:= minishell
-CC			:= clang
-# CC			:= gcc
+# CC			:= clang
+CC			:= gcc
 FLAGS		:= -Wall -Wextra -Werror
 FSAN		:= -fsanitize=address -g3
 
