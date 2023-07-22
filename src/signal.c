@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:00 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/20 20:00:29 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/22 17:50:52 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	signal_handler(int signum)
 {
 	if (signum == SIGQUIT)
 	{
-		rl_on_new_line();		
+		rl_on_new_line();
 		rl_redisplay();
 		return ;
 	}

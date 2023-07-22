@@ -26,7 +26,7 @@ READLINE = -lreadline -L/usr/local/opt/readline/lib
 INC_DIR		= includes
 INC			= -I./$(INC_DIR)
 INC_LIBFT	= -I./$(LIBFT_DIR)$(INC_DIR)
-INC_RL		= -I/usr/local/opt/readline/include/readline
+INC_RL		= -I/usr/local/opt/readline/include
 
 ################################################################################
 #                                 PROGRAM'S SRCS                               #
@@ -63,7 +63,7 @@ OBJ			:= $(SRC:%.c=$(OBJ_DIR)/%.o)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
-	 $(CC) $(FLAGS) $(FSAN) $(INC) $(INC_LIBFT) $(INC_RL) -c $< -o $@
+	@ $(CC) $(FLAGS) $(FSAN) $(INC) $(INC_LIBFT) $(INC_RL) -c $< -o $@
 	@ printf "$(YELLOW)$<$(CLR_RMV)... "
 
 ################################################################################
@@ -81,7 +81,7 @@ RM			:= rm -f
 
 $(NAME): $(LIBFT) $(OBJ)
 	@ echo "\n$(GREEN)Compilation $(CLR_RMV)of $(BLUE) $(NAME) $(CLR_RMV)..."
-	 $(CC) $(FLAGS) $(FSAN) $(LIB) $(READLINE) $(OBJ) $(LIBFT_DIR)/$(LIBFT) -o $(NAME)
+	@ $(CC) $(FLAGS) $(FSAN) $(LIB) $(READLINE) $(OBJ) $(LIBFT_DIR)/$(LIBFT) -o $(NAME)
 	@ echo "$(GREEN)[Success] $(BLUE)$(NAME) $(CLR_RMV)created ✔️"
 	@ ./$(NAME)
 

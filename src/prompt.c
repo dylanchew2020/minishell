@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/20 19:53:04 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/22 12:26:09 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ void	prompt(t_root *sh, char **envp)
 	char	*prompt_str;
 
 	env_link_list(envp, &sh->env_list);
+	signals(sh, 1);
 	while (1)
 	{
-		signals(sh, 1);
 		prompt_str = get_prompt_str();
 		cmd = readline(prompt_str);
 		if (!cmd)
