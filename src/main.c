@@ -34,6 +34,10 @@ void	init_root(t_root *sh)
 	sh->stdout_tmp = dup(STDOUT_FILENO);
 	sh->env_list = NULL;
 	sh->pipe = ft_calloc(2, sizeof(int));
+	ft_tcgetattr(STDIN_FILENO, &sh->previous);
+	ft_tcgetattr(STDIN_FILENO, &sh->current);
+	sh->current.c_lflag &= ~ECHOCTL;
+	ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->current);
 }
 
 void	free_2d(char **str)

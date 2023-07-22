@@ -25,9 +25,9 @@ void	prompt(t_root *sh, char **envp)
 	char	*prompt_str;
 
 	env_link_list(envp, &sh->env_list);
-	signals(sh, 1);
 	while (1)
 	{
+		signals(sh, 1);
 		prompt_str = get_prompt_str();
 		cmd = readline(prompt_str);
 		if (!cmd)
@@ -44,9 +44,10 @@ void	prompt(t_root *sh, char **envp)
 				continue ;
 			head = parser(cmd_lexer, ft_lstsize(cmd_lexer), sh);
 			// print_tree(head, 0);
+			ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->previous);
+			signals(sh, 0);
 			recurse_bst(head, envp, sh);
-			// ft_tcsetattr(0, 0, &sh->previous);
-			// signals(sh, 0);
+			ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->current);
 			ft_dup2(sh->stdin_tmp, STDIN_FILENO);
 			ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
 			if (access(".here_doc_tmp", F_OK & X_OK) == 0)

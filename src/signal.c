@@ -14,22 +14,17 @@
 
 void	signals(t_root	*sh, int mode)
 {
+	(void) sh;
 	if (mode == 1)
 	{
-		ft_tcgetattr(STDIN_FILENO, &sh->previous);
-		sh->current = sh->previous;
-		sh->current.c_lflag &= ~ECHOCTL;
-		ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->current);
 		signal(SIGINT, signal_handler);
 		signal(SIGQUIT, signal_handler);
 	}
-	// else if (mode == 0)
-	// {
-	// 	printf("it enter here\n");
-	// 	ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->previous);
-	// 	signal(SIGINT, signal_handler2);
-	// 	signal(SIGQUIT, signal_handler2);
-	// }
+	else if (mode == 0)
+	{
+		signal(SIGINT, signal_handler2);
+		signal(SIGQUIT, signal_handler2);
+	}
 	return ;
 }
 
