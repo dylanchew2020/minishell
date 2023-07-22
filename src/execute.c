@@ -78,6 +78,8 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 			printf("bash: syntax error near unexpected token `newline'\n");
 			return ;
 		}
+		if (fd == -2)
+			return ;
 		if (node->right == NULL || node->right->token != HEREDOC)
 			ft_dup2(fd, STDIN_FILENO);
 		ft_close(fd);

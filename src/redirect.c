@@ -100,7 +100,7 @@ int	heredoc_fd(char *node_value, t_root *sh)
 		{
 			free(delim);
 			free(line);
-			exit (1);
+			return (-2);
 		}
 		if ((ft_strlen(line) == ft_strlen(delim)) \
 		&& ft_strncmp(line, delim, ft_strlen(delim)) == 0)
