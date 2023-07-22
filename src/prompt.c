@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/22 16:43:21 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/22 12:26:09 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 
 static char	*get_prompt_str(void);
 
@@ -24,12 +25,13 @@ void	prompt(t_root *sh, char **envp)
 	char	*prompt_str;
 
 	env_link_list(envp, &sh->env_list);
+	signals(sh, 1);
 	while (1)
 	{
 		prompt_str = get_prompt_str();
 		cmd = readline(prompt_str);
 		if (!cmd)
-			continue ;
+			exit_prompt(cmd, sh);
 		if (*cmd)
 		{
 			history_add(&sh->history, cmd);
@@ -43,6 +45,8 @@ void	prompt(t_root *sh, char **envp)
 			head = parser(cmd_lexer, ft_lstsize(cmd_lexer), sh);
 			// print_tree(head, 0);
 			recurse_bst(head, envp, sh);
+			// ft_tcsetattr(0, 0, &sh->previous);
+			// signals(sh, 0);
 			ft_dup2(sh->stdin_tmp, STDIN_FILENO);
 			ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
 			if (access(".here_doc_tmp", F_OK & X_OK) == 0)

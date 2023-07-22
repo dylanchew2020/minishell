@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/22 17:31:03 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/22 17:55:44 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ typedef struct s_root
 	int				stdout_tmp;
 	t_list			*env_list;
 	int				*pipe;
+	struct termios	previous;
+	struct termios	current;
 }	t_root;
 
 typedef struct s_env
@@ -159,6 +161,11 @@ int			ft_fork(void);
 int			ft_close(int fd);
 int			ft_dup2(int new_fd, int old_fd);
 
+/* FT_UTLIS2 */
+void		ft_tcgetattr(int fd, struct termios *termios_p);
+void		ft_tcsetattr(int fd, int optional_actions, \
+						struct termios *termios_p);
+
 /* PIPE */
 
 void		children(t_tree *node, char **envp, t_root *sh);
@@ -184,7 +191,7 @@ int			builtin(char **cmd, t_list **env_list);
 
 /* FREE */
 
-void	del_data(void	*content);
+void		del_data(void	*content);
 
 /* EXPORT */
 
@@ -216,4 +223,8 @@ int			is_quote(char c);
 int			quote_count(char *cmd);
 char		**cmd_quote_handler(char const *s, char c);
 
+/*	SIGNAL */
+void		signal_handler(int signum);
+void		signal_handler2(int signum);
+void		signals(t_root	*sh, int mode);
 #endif

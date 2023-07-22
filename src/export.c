@@ -124,7 +124,7 @@ char	*key_check(char *input)
 	while (ft_isalnum(input[i]) || input[i] == '_')
 		i++;
 	// printf("i = %d\n", i);
-	// if (input[i] == '=' || input[i] == '\0' || input[i] == ' ' \
+	// if (input[i] == '=' || input[i] == '\0' || input[i] == ' ' 
 	// 	|| input[i] == '"' || input[i] == '$')
 	if (i == 0)
 		key = NULL;

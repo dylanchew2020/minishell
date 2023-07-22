@@ -8,7 +8,8 @@
 ################################################################################
 
 NAME		:= minishell
-CC			:= clang
+# CC			:= clang
+CC			:= gcc
 FLAGS		:= -Wall -Wextra -Werror
 FSAN		:= -fsanitize=address -g3
 
@@ -54,7 +55,8 @@ SRC			:= $(addsuffix .c, \
 					expand\
 					pwd\
 					cd\
-					unset)
+					unset\
+					ft_utlis2)
 
 OBJ_DIR		:= ./obj
 OBJ			:= $(SRC:%.c=$(OBJ_DIR)/%.o)
@@ -79,7 +81,7 @@ RM			:= rm -f
 
 $(NAME): $(LIBFT) $(OBJ)
 	@ echo "\n$(GREEN)Compilation $(CLR_RMV)of $(BLUE) $(NAME) $(CLR_RMV)..."
-	@ $(CC) $(FLAGS) $(FSAN) $(LIB) $(READLINE) $(OBJ)  $(LIBFT_DIR)/$(LIBFT) -o $(NAME)
+	@ $(CC) $(FLAGS) $(FSAN) $(LIB) $(READLINE) $(OBJ) $(LIBFT_DIR)/$(LIBFT) -o $(NAME)
 	@ echo "$(GREEN)[Success] $(BLUE)$(NAME) $(CLR_RMV)created ✔️"
 	@ ./$(NAME)
 
@@ -108,3 +110,5 @@ fclean: clean
 re:			fclean all
 
 .PHONY:		all clean fclean re
+
+.PRECIOUS:	$(NAME) $(OBJ)
