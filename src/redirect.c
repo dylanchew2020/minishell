@@ -56,6 +56,11 @@ int	rdout_fd(char *node_value)
 	return (fd);
 }
 
+/**
+ * rdapp_fd - open a file for appending with read and write permissions
+ * @param node_value: the value stored in the node, which contains the file name
+ * @returns fd: the file descriptor of the opened file, or -1 if an error occurs
+ */
 int	rdapp_fd(char *node_value)
 {
 	char	*file;
@@ -102,7 +107,7 @@ int	heredoc_fd(char *node_value, t_root *sh)
 			{
 				free(delim);
 				free(line);
-				return (-1);
+				exit(-1);
 			}
 			if ((ft_strlen(line) == ft_strlen(delim)) \
 			&& (ft_strncmp(line, delim, ft_strlen(delim)) == 0))
@@ -125,9 +130,10 @@ int	heredoc_fd(char *node_value, t_root *sh)
 	{
 		signal(SIGQUIT, SIG_IGN);
 		waitpid(child, &status, 0);
-		if (WIFEXITED(status))
 			status = WEXITSTATUS(status);
 		free(delim);
+		if (status == 255)
+			return (-1);
 		if (access(".here_doc_tmp", F_OK & X_OK) != 0)
 		{
 			printf("Error: %s: %s\n", strerror(errno), ".here_doc_tmp");

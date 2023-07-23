@@ -12,6 +12,16 @@
 
 #include "minishell.h"
 
+/**
+ * signals - Set up signal handlers based on the given mode.
+ * @param sh: A pointer to a structure representing the shell (unused in this
+ 				implementation).
+ * @param mode: An integer representing the mode for setting up signal handlers.
+ *              Mode 1: Set signal_handler for SIGINT and SIGQUIT signals.
+ *              Mode 0: Set signal_handler2 for SIGINT and SIGQUIT signals.
+ *              Mode 2: Set heredoc_signal for SIGINT and ignore SIGQUIT signal.
+ * @return: void
+ */
 void	signals(t_root	*sh, int mode)
 {
 	(void) sh;
@@ -33,13 +43,12 @@ void	signals(t_root	*sh, int mode)
 	return ;
 }
 
-//SIGINT - ctrl + c
-//SIGQUIT - ctrl + \ //
-
-// Function: int rl_redisplay ()
-
-// Change what's displayed on the screen to reflect the current 
-// contents of rl_line_buffer.
+/**
+ * signal_handler - Handle signals for SIGINT and SIGQUIT during 
+ 					normal shell operation.
+ * @param signum: The signal number.
+ * @return: void
+ */
 void	signal_handler(int signum)
 {
 	if (signum == SIGQUIT)
@@ -58,6 +67,12 @@ void	signal_handler(int signum)
 	}
 }
 
+/**
+ * signal_handler2 - Handle signals for SIGINT and SIGQUIT in a specific 
+ 					 mode (mode 0).
+ * @param signum: The signal number.
+ * @return: void
+ */
 void	signal_handler2(int signum)
 {
 	if (signum == SIGINT)
@@ -71,6 +86,12 @@ void	signal_handler2(int signum)
 	}
 }
 
+/**
+ * heredoc_signal - Handle the SIGINT signal during "heredoc"
+ 					 mode (mode 2).
+ * @param signum: The signal number.
+ * @return: void
+ */
 void	heredoc_signal(int signum)
 {
 	if (signum == SIGINT)
