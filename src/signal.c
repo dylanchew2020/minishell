@@ -25,6 +25,11 @@ void	signals(t_root	*sh, int mode)
 		signal(SIGINT, signal_handler2);
 		signal(SIGQUIT, signal_handler2);
 	}
+	else if (mode == 2)
+	{
+		signal(SIGINT, heredoc_signal);
+		signal(SIGQUIT, SIG_IGN);
+	}
 	return ;
 }
 
@@ -58,9 +63,19 @@ void	signal_handler2(int signum)
 	if (signum == SIGINT)
 	{
 		write(1, "\n", 1);
+		return ;
 	}
 	if (signum == SIGQUIT)
 	{
 		write(1, "Quit: 3\n", 8);
+	}
+}
+
+void	heredoc_signal(int signum)
+{
+	if (signum == SIGINT)
+	{
+		write(1, "\n", 1);
+		exit(EXIT_SUCCESS);
 	}
 }

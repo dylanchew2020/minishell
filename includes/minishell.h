@@ -98,6 +98,7 @@ typedef struct s_root
 	int				*pipe;
 	struct termios	previous;
 	struct termios	current;
+	int				heredoc_flag;
 }	t_root;
 
 typedef struct s_env
@@ -226,5 +227,6 @@ char		**cmd_quote_handler(char const *s, char c);
 /*	SIGNAL */
 void		signal_handler(int signum);
 void		signal_handler2(int signum);
+void		heredoc_signal(int signum);
 void		signals(t_root	*sh, int mode);
 #endif

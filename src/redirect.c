@@ -75,6 +75,8 @@ int	heredoc_fd(char *node_value, t_root *sh)
 	int		fd;
 	char	*line;
 	char	*tmp;
+	pid_t	child;
+	int		status;
 
 	delim = find_file(node_value);
 	if (delim == NULL)
@@ -82,47 +84,57 @@ int	heredoc_fd(char *node_value, t_root *sh)
 	if (access(".here_doc_tmp", F_OK & X_OK) == 0)
 		unlink(".here_doc_tmp");
 	fd = ft_open(".here_doc_tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	while (TRUE)
+	child = ft_fork();
+	if (child == 0)
 	{
-		// write(1, "> ", 2);
-		// printf("debug\n");
-		// line = get_next_line(STDIN_FILENO);
-		// printf("debug2\n");
-		if (sh->pipe[1] != 0)
+		while (TRUE)
 		{
-			ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
-			line = readline("> ");
-			ft_dup2(sh->pipe[1], STDOUT_FILENO);
-		}
-		else
-			line = readline("> ");
-		if (line == NULL)
-		{
-			free(delim);
+			signals(sh, 2);
+			if (sh->pipe[1] != 0)
+			{
+				ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
+				line = readline("> ");
+				ft_dup2(sh->pipe[1], STDOUT_FILENO);
+			}
+			else
+				line = readline("> ");
+			if (line == NULL)
+			{
+				free(delim);
+				free(line);
+				return (-1);
+			}
+			if ((ft_strlen(line) == ft_strlen(delim)) \
+			&& (ft_strncmp(line, delim, ft_strlen(delim)) == 0))
+			{
+				free(line);
+				ft_close(fd);
+				break ;
+			}
+			tmp = line;
+			line = expand(line, &sh->env_list);
+			free(tmp);
+			ft_putstr_fd(line, fd);
+			ft_putstr_fd("\n", fd);
 			free(line);
-			return (-2);
 		}
-		if ((ft_strlen(line) == ft_strlen(delim)) \
-		&& ft_strncmp(line, delim, ft_strlen(delim)) == 0)
-		{
-			free(line);
-			ft_close(fd);
-			break ;
-		}
-		tmp = line;
-		line = expand(line, &sh->env_list);
-		free(tmp);
-		ft_putstr_fd(line, fd);
-		ft_putstr_fd("\n", fd);
-		free(line);
+		free(delim);
+		exit(EXIT_SUCCESS);
 	}
-	if (access(".here_doc_tmp", F_OK & X_OK) != 0)
+	else
 	{
-		printf("Error: %s: %s\n", strerror(errno), ".here_doc_tmp");
-		return (-1);
+		signal(SIGQUIT, SIG_IGN);
+		waitpid(child, &status, 0);
+		if (WIFEXITED(status))
+			status = WEXITSTATUS(status);
+		free(delim);
+		if (access(".here_doc_tmp", F_OK & X_OK) != 0)
+		{
+			printf("Error: %s: %s\n", strerror(errno), ".here_doc_tmp");
+			return (-1);
+		}
+		fd = ft_open(".here_doc_tmp", O_RDONLY, 0666);
 	}
-	fd = ft_open(".here_doc_tmp", O_RDONLY, 0666);
-	free(delim);
 	return (fd);
 }
 
