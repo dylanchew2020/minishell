@@ -1,3 +1,0 @@
--rw-r--r-- 1 dchew dchew     62 Jul 25 22:12 input.txt
--rw-r--r-- 1 dchew dchew     52 Jul 25 22:12 sorted_uniq.txt
--rw-r--r-- 1 dchew dchew     59 Jul 25 22:11 txt_files.txt
