@@ -43,15 +43,15 @@ void	prompt(t_root *sh, char **envp)
 			if (cmd_lexer == NULL)
 				continue ;
 			head = parser(cmd_lexer, ft_lstsize(cmd_lexer), sh);
-			// print_tree(head, 0);
+			print_tree(head, 0);
 			ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->previous);
 			signals(sh, 0);
 			recurse_bst(head, envp, sh);
 			ft_dup2(sh->stdin_tmp, STDIN_FILENO);
 			ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
 			ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->current);
-			if (access(".here_doc_tmp", F_OK & X_OK) == 0)
-				unlink(".here_doc_tmp");
+			if (access("./tmp/.here_doc_tmp", F_OK & X_OK) == 0)
+				unlink("./tmp/.here_doc_tmp");
 			free_tree(head);
 			while (cmd_lexer)
 			{

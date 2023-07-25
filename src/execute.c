@@ -30,6 +30,7 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 {
 	int		fd;
 
+	fd = 0;
 	if (node == NULL)
 		return ;
 	if (node->token == PIPE)
@@ -72,6 +73,7 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 	}
 	else if (node->token == HEREDOC)
 	{
+		ft_dup2(sh->stdin_tmp, STDIN_FILENO);
 		fd = heredoc_fd(node->value, sh);
 		if (fd == -1)
 		{
