@@ -37,36 +37,27 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 		children(node, envp, sh);
 	else if (node->token == RDIN)
 	{
-		fd = rdin_fd(node->value);
-		if (fd == -1)
-		{
-			printf("bash: syntax error near unexpected token `newline'\n");
+		fd = rdin_fd(node->value, sh);
+		if (fd < 0)
 			return ;
-		}
 		ft_dup2(fd, STDIN_FILENO);
 		ft_close(fd);
 		redir_arg(node, envp, sh);
 	}
 	else if (node->token == RDOUT)
 	{
-		fd = rdout_fd(node->value);
-		if (fd == -1)
-		{
-			printf("bash: syntax error near unexpected token `newline'\n");
+		fd = rdout_fd(node->value, sh);
+		if (fd < 0)
 			return ;
-		}
 		ft_dup2(fd, STDOUT_FILENO);
 		ft_close(fd);
 		redir_arg(node, envp, sh);
 	}
 	else if (node->token == RDAPP)
 	{
-		fd = rdapp_fd(node->value);
-		if (fd == -1)
-		{
-			printf("bash: syntax error near unexpected token `newline'\n");
+		fd = rdapp_fd(node->value, sh);
+		if (fd < 0)
 			return ;
-		}
 		ft_dup2(fd, STDOUT_FILENO);
 		ft_close(fd);
 		redir_arg(node, envp, sh);
@@ -75,12 +66,7 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 	{
 		ft_dup2(sh->stdin_tmp, STDIN_FILENO);
 		fd = heredoc_fd(node->value, sh);
-		if (fd == -1)
-		{
-			printf("bash: syntax error near unexpected token `newline'\n");
-			return ;
-		}
-		if (fd == -2)
+		if (fd < 0)
 			return ;
 		if (node->right == NULL || node->right->token != HEREDOC)
 			ft_dup2(fd, STDIN_FILENO);

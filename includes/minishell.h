@@ -172,9 +172,9 @@ void		children(t_tree *node, char **envp, t_root *sh);
 
 /* REDIRECTION */
 
-int			rdin_fd(char *node_value);
-int			rdout_fd(char *node_value);
-int			rdapp_fd(char *node_value);
+int			rdin_fd(char *node_value, t_root *sh);
+int			rdout_fd(char *node_value, t_root *sh);
+int			rdapp_fd(char *node_value, t_root *sh);
 int			heredoc_fd(char *node_value, t_root *sh);
 char		*find_file(char *node_value);
 

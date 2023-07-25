@@ -26,6 +26,7 @@
 
 void	left_child(int	*pipe, t_tree *node, char **envp, t_root *sh)
 {
+	// if (ft_strncmp(node->left->value, "cat", 3))
 	ft_dup2(pipe[1], STDOUT_FILENO);
 	recurse_bst(node->left, envp, sh);
 	ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
@@ -47,7 +48,7 @@ void	right_child(int *pipe, t_tree *node, char **envp, t_root *sh)
 {
 	ft_dup2(pipe[0], STDIN_FILENO);
 	recurse_bst(node->right, envp, sh);
-	ft_dup2(sh->stdout_tmp, STDIN_FILENO);
+	ft_dup2(sh->stdin_tmp, STDIN_FILENO);
 }
 
 /**
@@ -67,18 +68,16 @@ void	children(t_tree *node, char **envp, t_root *sh)
 	// int		pipe[2];
 
 	ft_pipe(sh->pipe);
-	children[0] = ft_fork();
-	if (children[0] == 0)
-	{
+	// children[0] = ft_fork();
+	// if (children[0] == 0)
+	// {
 		left_child(sh->pipe, node, envp, sh);
-		exit(EXIT_SUCCESS);
-	}
-	// printf("node->right->value: %s\n", node->right->value);
-	// printf("node->left->value: %s\n", node->left->value);
+	// 	exit(EXIT_SUCCESS);
+	// }
 	// if (ft_strncmp(node->left->value, "cat", 3) && node->right->token == COMMAND)
 	// {
 	// 	printf("test\n");
-		waitpid(children[0], &status, 0);
+		// waitpid(children[0], &status, 0);
 	// }
 	ft_close(sh->pipe[1]);
 	sh->pipe[1] = 0;

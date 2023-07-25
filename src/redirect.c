@@ -19,18 +19,24 @@
  * @param path: node->value
  * @returns fd: file descriptor of the infile.
  */
-int	rdin_fd(char *node_value)
+int	rdin_fd(char *node_value, t_root *sh)
 {
 	char	*file;
 	int		fd;
 
 	file = find_file(node_value);
 	if (file == NULL)
+	{
+		ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
+		printf("bash: syntax error near unexpected token `newline'\n");
 		return (-1);
+	}
 	if (access(file, F_OK & X_OK) != 0)
 	{
+		ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
 		printf("Error: %s: %s\n", strerror(errno), file);
-		return (-1);
+		free(file);
+		return (-2);
 	}
 	fd = ft_open(file, O_RDONLY, 0666);
 	free(file);
@@ -43,27 +49,35 @@ int	rdin_fd(char *node_value)
  * @param path: node->value
  * @returns fd: file descriptor of the outfile.
  */
-int	rdout_fd(char *node_value)
+int	rdout_fd(char *node_value, t_root *sh)
 {
 	char	*file;
 	int		fd;
 
 	file = find_file(node_value);
 	if (file == NULL)
+	{
+		ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
+		printf("bash: syntax error near unexpected token `newline'\n");
 		return (-1);
+	}
 	fd = ft_open(file, O_CREAT | O_RDWR | O_TRUNC, 0666);
 	free(file);
 	return (fd);
 }
 
-int	rdapp_fd(char *node_value)
+int	rdapp_fd(char *node_value, t_root *sh)
 {
 	char	*file;
 	int		fd;
 
 	file = find_file(node_value);
 	if (file == NULL)
+	{
+		ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
+		printf("bash: syntax error near unexpected token `newline'\n");
 		return (-1);
+	}
 	fd = ft_open(file, O_CREAT | O_RDWR | O_APPEND, 0666);
 	free(file);
 	return (fd);
@@ -78,7 +92,11 @@ int	heredoc_fd(char *node_value, t_root *sh)
 
 	delim = find_file(node_value);
 	if (delim == NULL)
+	{
+		ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
+		printf("bash: syntax error near unexpected token `newline'\n");
 		return (-1);
+	}
 	if (access("./tmp/.here_doc_tmp", F_OK & X_OK) == 0)
 		unlink("./tmp/.here_doc_tmp");
 	fd = ft_open("./tmp/.here_doc_tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -115,6 +133,7 @@ int	heredoc_fd(char *node_value, t_root *sh)
 	if (access("./tmp/.here_doc_tmp", F_OK & X_OK) != 0)
 	{
 		printf("Error: %s: %s\n", strerror(errno), "./tmp/.here_doc_tmp");
+		free(delim);
 		return (-1);
 	}
 	fd = ft_open("./tmp/.here_doc_tmp", O_RDONLY, 0666);
