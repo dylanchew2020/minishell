@@ -88,6 +88,7 @@ int	heredoc_fd(char *node_value, t_root *sh)
 		// printf("debug\n");
 		// line = get_next_line(STDIN_FILENO);
 		// printf("debug2\n");
+		signals(sh, 1);
 		if (sh->pipe[1] != 0)
 		{
 			ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
