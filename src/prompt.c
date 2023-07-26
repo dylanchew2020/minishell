@@ -50,8 +50,8 @@ void	prompt(t_root *sh, char **envp)
 			ft_dup2(sh->stdin_tmp, STDIN_FILENO);
 			ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
 			ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->current);
-			if (access("./tmp/.here_doc_tmp", F_OK & X_OK) == 0)
-				unlink("./tmp/.here_doc_tmp");
+			if (access(".here_doc_tmp", F_OK & X_OK) == 0)
+				unlink(".here_doc_tmp");
 			free_tree(head);
 			while (cmd_lexer)
 			{
@@ -110,6 +110,7 @@ void	exit_prompt(char *cmd, t_root *sh)
 		printf("i = %i\n", i);
 		close(i);
 		ft_lstclear(&sh->env_list, del_data);
+		system("leaks minishell");
 		exit(0);
 	}
 }

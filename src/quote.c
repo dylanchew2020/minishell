@@ -165,3 +165,56 @@ char	**cmd_quote_handler(char const *s, char c)
 	}
 	return (res);
 }
+
+char	**cmd_join(char **res, char **add_arg)
+{
+	int		i;
+	int		j;
+	char	**new_res;
+
+	i = 0;
+	j = 0;
+	while (res[i] != NULL)
+		++i;
+	while (add_arg[j] != NULL)
+		++j;
+	new_res = ft_calloc(i + j + 1, sizeof(char *));
+	if (!new_res)
+		return (NULL);
+	i = 0;
+	while (res[i] != NULL)
+	{
+		new_res[i] = ft_strdup(res[i]);
+		if (!new_res[i])
+		{
+			while (i > 0)
+				free(new_res[--i]);
+			free(new_res);
+			return (NULL);
+		}
+		++i;
+	}
+	j = 0;
+	while (add_arg[j] != NULL)
+	{
+		new_res[i] = ft_strdup(add_arg[j]);
+		if (!new_res[i])
+		{
+			while (i > 0)
+				free(new_res[--i]);
+			free(new_res);
+			return (NULL);
+		}
+		++i;
+		++j;
+	}
+	i = 0;
+	while (res[i] != NULL)
+		free(res[i++]);
+	free(res);
+	j = 0;
+	while (add_arg[j] != NULL)
+		free(add_arg[j++]);
+	free(add_arg);
+	return (new_res);
+}

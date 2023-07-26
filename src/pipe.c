@@ -68,7 +68,17 @@ void	children(t_tree *node, char **envp, t_root *sh)
 {
 	pid_t	children[2];
 	int		status;
-
+	
+	if (node->left == NULL)
+	{
+		printf("minishell: syntax error near unexpected token `|'\n");
+		return ;
+	}
+	if (node->right == NULL)
+	{
+		printf("minishell: syntax error: unexpected end of file\n");
+		return ;
+	}
 	ft_pipe(sh->pipe);
 	if (node->left->token == HEREDOC)
 	{

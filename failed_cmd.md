@@ -4,10 +4,6 @@ echo -n -n "Hello, World!"
 exit status
 $?
 
-./minishell
-../minishell
-
-cat | cat | ls
 
 echo hi > 1.tmp test
 

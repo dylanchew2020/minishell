@@ -95,7 +95,12 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 void	redir_arg(t_tree *node, char **envp, t_root *sh)
 {
 	if (node->right != NULL)
-		recurse_bst(node->right, envp, sh);
+	{
+		if (node->right->token == COMMAND)
+			sh->add_arg = node->right->value;
+		else
+			recurse_bst(node->right, envp, sh);
+	}
 	if (node->left != NULL)
 		recurse_bst(node->left, envp, sh);
 }
@@ -122,6 +127,9 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 		return (history_print(sh->history));
 	path = get_exe_path(argv, &sh->env_list);
 	cmd = cmd_quote_handler(argv, ' ');
+	if (sh->add_arg != NULL)
+		cmd = cmd_join(cmd, cmd_quote_handler(sh->add_arg, ' '));
+	print_exec_cmd(cmd);
 	if (builtin(cmd, &sh->env_list) == 1)
 		return ;
 	child = ft_fork();

@@ -92,6 +92,7 @@ typedef struct s_root
 {
 	t_history		*history;
 	t_token_check	tkchk[NO_OF_TOKEN_TYPES];
+	char			*add_arg;
 	int				stdin_tmp;
 	int				stdout_tmp;
 	t_list			*env_list;
@@ -222,6 +223,7 @@ void		cd(char **value, t_list **env_list);
 int			is_quote(char c);
 int			quote_count(char *cmd);
 char		**cmd_quote_handler(char const *s, char c);
+char		**cmd_join(char **res, char **add_arg);
 
 /*	SIGNAL */
 void		signal_handler(int signum);
