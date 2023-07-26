@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/26 17:45:09 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/26 19:55:35 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	exit_prompt(char *cmd, t_root *sh)
 		printf("i = %i\n", i);
 		close(i);
 		ft_lstclear(&sh->env_list, del_data);
-		// system("leaks minishell");
+		system("leaks minishell");
 		exit(0);
 	}
 }

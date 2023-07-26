@@ -59,7 +59,8 @@ SRC			:= $(addsuffix .c, \
 					ft_utlis2\
 					echo\
 					heredoc\
-					expand2)
+					expand2\
+					recurse_bst_functions)
 
 OBJ_DIR		:= ./obj
 OBJ			:= $(SRC:%.c=$(OBJ_DIR)/%.o)
