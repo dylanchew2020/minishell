@@ -14,6 +14,8 @@
 
 static void	print_banner(void);
 
+int g_exit_code = EXIT_SUCCESS;
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_root	sh;
@@ -23,7 +25,7 @@ int	main(int argc, char **argv, char **envp)
 	init_root(&sh);
 	print_banner();
 	prompt(&sh, envp);
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 void	init_root(t_root *sh)
@@ -41,16 +43,6 @@ void	init_root(t_root *sh)
 	ft_tcsetattr(STDIN_FILENO, TCSAFLUSH, &sh->current);
 	ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->current);
 	sh->heredoc_flag = 0;
-}
-
-void	free_2d(char **str)
-{
-	int	i;
-
-	i = -1;
-	while (str[++i])
-		free(str[i]);
-	free(str);
 }
 
 void	init_token_check(t_token_check	*tkchk)

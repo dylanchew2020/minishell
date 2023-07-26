@@ -44,6 +44,13 @@
 # define RESET	"\033[0m"
 
 # define EXIT	"exit"
+# define EXIT_MISUSE 2
+# define EXIT_NO_INVOKE 126
+# define EXIT_NO_CMD 127
+# define EXIT_BAD_EXIT 128
+# define EXIT_CTRL_C 130
+# define EXIT_SIGNAL 137
+# define EXIT_RANGE 255
 
 # define PIPE_OP	"|"
 # define RDIN_OP	"<"

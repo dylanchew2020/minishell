@@ -17,7 +17,7 @@ void	ft_tcgetattr(int fd, struct termios *termios_p)
 	if (tcgetattr(fd, termios_p) == -1)
 	{
 		perror("tcgetattr failed");
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 }
 
@@ -26,6 +26,22 @@ void	ft_tcsetattr(int fd, int optional_actions, struct termios *termios_p)
 	if (tcsetattr(fd, optional_actions, termios_p) == -1)
 	{
 		perror("tcsetattr failed");
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
+}
+
+void	free_2d(char **str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+		free(str[i]);
+	free(str);
+}
+
+void	mini_error(char *str, int exit_code)
+{
+	ft_putstr_fd(str, 2);
+	exit(EXIT_FAILURE);
 }

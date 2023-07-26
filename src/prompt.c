@@ -24,7 +24,7 @@ void	prompt(t_root *sh, char **envp)
 	char	*prompt_str;
 
 	env_link_list(envp, &sh->env_list);
-	while (1)
+	while (TRUE)
 	{
 		signals(sh, 1);
 		prompt_str = get_prompt_str();
@@ -110,7 +110,7 @@ void	exit_prompt(char *cmd, t_root *sh)
 		close(i);
 		ft_lstclear(&sh->env_list, del_data);
 		// system("leaks minishell");
-		exit(0);
+		exit(EXIT_SUCCESS);
 	}
 }
 
