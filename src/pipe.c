@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:06 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/20 19:30:16 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/26 16:44:19 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 void	left_child(int	*pipe, t_tree *node, char **envp, t_root *sh)
 {
 	ft_dup2(pipe[1], STDOUT_FILENO);
+	ft_close(sh->pipe[0]);
+	sh->pipe[0] = 0;
 	recurse_bst(node->left, envp, sh);
 	ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
 }
@@ -46,8 +48,10 @@ void	left_child(int	*pipe, t_tree *node, char **envp, t_root *sh)
 void	right_child(int *pipe, t_tree *node, char **envp, t_root *sh)
 {
 	ft_dup2(pipe[0], STDIN_FILENO);
+	ft_close(sh->pipe[1]);
+	sh->pipe[1] = 0;
 	recurse_bst(node->right, envp, sh);
-	ft_dup2(sh->stdout_tmp, STDIN_FILENO);
+	ft_dup2(sh->stdin_tmp, STDIN_FILENO);
 }
 
 /**
@@ -64,31 +68,48 @@ void	children(t_tree *node, char **envp, t_root *sh)
 {
 	pid_t	children[2];
 	int		status;
-	// int		pipe[2];
 
+	if (node->left == NULL)
+	{
+		printf("minishell: syntax error near unexpected token `|'\n");
+		return ;
+	}
+	if (node->right == NULL)
+	{
+		printf("minishell: syntax error: unexpected end of file\n");
+		return ;
+	}
 	ft_pipe(sh->pipe);
+	if (node->left->token == HEREDOC)
+	{
+		ft_dup2(sh->pipe[1], STDOUT_FILENO);
+		recurse_bst(node->left, envp, sh);
+		ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
+	}
+	if (node->right->token == HEREDOC)
+	{
+		ft_dup2(sh->pipe[0], STDIN_FILENO);
+		recurse_bst(node->right, envp, sh);
+		ft_dup2(sh->stdin_tmp, STDIN_FILENO);
+	}
 	children[0] = ft_fork();
 	if (children[0] == 0)
 	{
-		left_child(sh->pipe, node, envp, sh);
+		if (node->left->token != HEREDOC)
+			left_child(sh->pipe, node, envp, sh);
 		exit(EXIT_SUCCESS);
 	}
-	// printf("node->right->value: %s\n", node->right->value);
-	// printf("node->left->value: %s\n", node->left->value);
-	// if (ft_strncmp(node->left->value, "cat", 3) && node->right->token == COMMAND)
-	// {
-	// 	printf("test\n");
-		waitpid(children[0], &status, 0);
-	// }
-	ft_close(sh->pipe[1]);
-	sh->pipe[1] = 0;
 	children[1] = ft_fork();
 	if (children[1] == 0)
 	{
-		right_child(sh->pipe, node, envp, sh);
+		if (node->right->token != HEREDOC)
+			right_child(sh->pipe, node, envp, sh);
 		exit(EXIT_SUCCESS);
 	}
-	waitpid(children[1], &status, 0);
+	ft_close(sh->pipe[1]);
+	sh->pipe[1] = 0;
 	ft_close(sh->pipe[0]);
 	sh->pipe[0] = 0;
+	waitpid(children[0], &status, 0);
+	waitpid(children[1], &status, 0);
 }

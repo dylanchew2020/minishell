@@ -6,12 +6,11 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/26 16:17:30 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/26 17:45:09 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 static char	*get_prompt_str(void);
 
@@ -43,7 +42,7 @@ void	prompt(t_root *sh, char **envp)
 			if (cmd_lexer == NULL)
 				continue ;
 			head = parser(cmd_lexer, ft_lstsize(cmd_lexer), sh);
-			print_tree(head, 0);
+			// print_tree(head, 0);
 			ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->previous);
 			signals(sh, 0);
 			recurse_bst(head, envp, sh);
@@ -110,6 +109,7 @@ void	exit_prompt(char *cmd, t_root *sh)
 		printf("i = %i\n", i);
 		close(i);
 		ft_lstclear(&sh->env_list, del_data);
+		// system("leaks minishell");
 		exit(0);
 	}
 }

@@ -59,3 +59,4 @@ dkms.conf
 minishell
 *.tmp*
 tmp/
+*.txt

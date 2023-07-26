@@ -6,20 +6,21 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:11 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/26 15:32:48 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/26 17:14:22 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * builtin - Executes built-in commands based on the command array.
- *           Supported built-in commands: unset, cd, pwd, export, env.
- *
- * @param cmd       Double pointer to the command array.
- * @param env_list  Double pointer to the linked list containing environment variables.
- * @return          1 if a built-in command is executed, 0 otherwise.
- */
+// /**
+//  * builtin - Executes built-in commands based on the command array.
+//  *           Supported built-in commands: unset, cd, pwd, export, env.
+//  *
+//  * @param cmd       Double pointer to the command array.
+//  * @param env_list  Double pointer to the linked list containing environment 
+// 					   variables.
+//  * @return          1 if a built-in command is executed, 0 otherwise.
+//  */
 int	builtin(char **cmd, t_list **env_list)
 {
 	if (ft_strnstr(cmd[0], "unset", ft_strlen("unset")) != NULL)

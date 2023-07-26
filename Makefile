@@ -11,7 +11,7 @@ NAME		:= minishell
 # CC			:= clang
 CC			:= gcc
 FLAGS		:= -Wall -Wextra -Werror
-FSAN		:= -fsanitize=address -g3
+FSAN		:= #-fsanitize=address -g3
 
 ################################################################################
 #                               PROGRAM'S INCLUDES                             #
@@ -57,7 +57,8 @@ SRC			:= $(addsuffix .c, \
 					cd\
 					unset\
 					ft_utlis2\
-					echo)
+					echo\
+					heredoc)
 
 OBJ_DIR		:= ./obj
 OBJ			:= $(SRC:%.c=$(OBJ_DIR)/%.o)

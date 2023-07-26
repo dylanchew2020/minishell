@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:00 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/22 17:50:52 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/26 17:14:41 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,5 @@ void	signal_handler2(int signum)
 void	heredoc_signal(int signum)
 {
 	if (signum == SIGINT)
-	{
-		write(1, "\n", 1);
 		exit(EXIT_SUCCESS);
-	}
 }

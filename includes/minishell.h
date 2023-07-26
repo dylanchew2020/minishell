@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/26 15:29:54 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/26 18:18:07 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ typedef struct s_root
 {
 	t_history		*history;
 	t_token_check	tkchk[NO_OF_TOKEN_TYPES];
+	char			*add_arg;
 	int				stdin_tmp;
 	int				stdout_tmp;
 	t_list			*env_list;
@@ -173,10 +174,9 @@ void		children(t_tree *node, char **envp, t_root *sh);
 
 /* REDIRECTION */
 
-int			rdin_fd(char *node_value);
-int			rdout_fd(char *node_value);
-int			rdapp_fd(char *node_value);
-int			heredoc_fd(char *node_value, t_root *sh);
+int			rdin_fd(char *node_value, t_root *sh);
+int			rdout_fd(char *node_value, t_root *sh);
+int			rdapp_fd(char *node_value, t_root *sh);
 char		*find_file(char *node_value);
 
 /* ENV */
@@ -201,6 +201,7 @@ char		*key_check(char *input);
 char		*find_value(char *input);
 void		add_link_list(char	*input, t_list	**env_list);
 void		modified_value(t_env *data_node, char *input);
+void		export_declare(t_list **env_list);
 
 /* EXPAND */
 
@@ -223,6 +224,7 @@ void		cd(char **value, t_list **env_list);
 int			is_quote(char c);
 int			quote_count(char *cmd);
 char		**cmd_quote_handler(char const *s, char c);
+char		**cmd_join(char **res, char **add_arg);
 
 /*	SIGNAL */
 void		signal_handler(int signum);
@@ -232,4 +234,11 @@ void		signals(t_root	*sh, int mode);
 
 /* ECHO */
 void		echo_builtin(char **cmd);
+
+/* HERE_DOC */
+int			heredoc_fd(char *node_value, t_root *sh);
+void		heredoc_child(t_root *sh, char *delim, int heredoc_fd);
+char		*heredoc_input(t_root *sh, char *delim);
+int			heredoc_parent(pid_t child_pid, char *delim);
+
 #endif

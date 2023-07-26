@@ -30,6 +30,7 @@ void	init_root(t_root *sh)
 {
 	sh->history = NULL;
 	init_token_check(sh->tkchk);
+	sh->add_arg = NULL;
 	sh->stdin_tmp = dup(STDIN_FILENO);
 	sh->stdout_tmp = dup(STDOUT_FILENO);
 	sh->env_list = NULL;
