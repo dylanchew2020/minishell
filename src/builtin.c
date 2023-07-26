@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:11 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/22 15:45:26 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/26 15:32:48 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@ int	builtin(char **cmd, t_list **env_list)
 	else if ((ft_strnstr(cmd[0], "env", ft_strlen("env")) != NULL) \
 			|| (ft_strnstr(cmd[0], "env", ft_strlen("env")) != NULL))
 		get_env(env_list);
+	else if ((ft_strnstr(cmd[0], "echo", ft_strlen("echo")) != NULL) \
+			|| (ft_strnstr(cmd[0], "echo", ft_strlen("echo")) != NULL))
+		echo_builtin(cmd);
 	else
 		return (0);
 	return (1);

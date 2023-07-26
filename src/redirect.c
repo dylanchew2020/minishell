@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:03 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/20 20:55:44 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/26 16:17:07 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,11 @@ int	rdout_fd(char *node_value)
 	return (fd);
 }
 
+/**
+ * rdapp_fd - open a file for appending with read and write permissions
+ * @param node_value: the value stored in the node, which contains the file name
+ * @returns fd: the file descriptor of the opened file, or -1 if an error occurs
+ */
 int	rdapp_fd(char *node_value)
 {
 	char	*file;
@@ -75,50 +80,67 @@ int	heredoc_fd(char *node_value, t_root *sh)
 	int		fd;
 	char	*line;
 	char	*tmp;
+	pid_t	child;
+	int		status;
 
 	delim = find_file(node_value);
 	if (delim == NULL)
 		return (-1);
-	if (access("./tmp/.here_doc_tmp", F_OK & X_OK) == 0)
-		unlink("./tmp/.here_doc_tmp");
-	fd = ft_open("./tmp/.here_doc_tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	while (TRUE)
+	if (access(".here_doc_tmp", F_OK & X_OK) == 0)
+		unlink(".here_doc_tmp");
+	fd = ft_open(".here_doc_tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	child = ft_fork();
+	if (child == 0)
 	{
-		if (sh->pipe[1] != 0)
+		while (TRUE)
 		{
-			ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
-			line = readline("> ");
-			ft_dup2(sh->pipe[1], STDOUT_FILENO);
-		}
-		else
-			line = readline("> ");
-		if (line == NULL)
-		{
-			free(delim);
+			signals(sh, 2);
+			if (sh->pipe[1] != 0)
+			{
+				ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
+				line = readline("> ");
+				ft_dup2(sh->pipe[1], STDOUT_FILENO);
+			}
+			else
+				line = readline("> ");
+			if (line == NULL)
+			{
+				free(delim);
+				free(line);
+				exit(-1);
+			}
+			if ((ft_strlen(line) == ft_strlen(delim)) \
+			&& (ft_strncmp(line, delim, ft_strlen(delim)) == 0))
+			{
+				free(line);
+				ft_close(fd);
+				break ;
+			}
+			tmp = line;
+			line = expand(line, &sh->env_list);
+			free(tmp);
+			ft_putstr_fd(line, fd);
+			ft_putstr_fd("\n", fd);
 			free(line);
-			return (-2);
 		}
-		if ((ft_strlen(line) == ft_strlen(delim)) \
-		&& ft_strncmp(line, delim, ft_strlen(delim)) == 0)
-		{
-			free(line);
-			ft_close(fd);
-			break ;
-		}
-		tmp = line;
-		line = expand(line, &sh->env_list);
-		free(tmp);
-		ft_putstr_fd(line, fd);
-		ft_putstr_fd("\n", fd);
-		free(line);
+		free(delim);
+		exit(EXIT_SUCCESS);
 	}
-	if (access("./tmp/.here_doc_tmp", F_OK & X_OK) != 0)
+	else
 	{
-		printf("Error: %s: %s\n", strerror(errno), "./tmp/.here_doc_tmp");
-		return (-1);
+		signal(SIGQUIT, SIG_IGN);
+		waitpid(child, &status, 0);
+			status = WEXITSTATUS(status);
+		free(delim);
+		if (status == 255)
+			return (-1);
+		if (access(".here_doc_tmp", F_OK & X_OK) != 0)
+		{
+			printf("Error: %s: %s\n", strerror(errno), ".here_doc_tmp");
+			return (-1);
+		}
+		fd = ft_open(".here_doc_tmp", O_RDONLY, 0666);
 	}
-	fd = ft_open("./tmp/.here_doc_tmp", O_RDONLY, 0666);
-	free(delim);
 	return (fd);
 }
 

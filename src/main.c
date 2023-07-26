@@ -39,6 +39,7 @@ void	init_root(t_root *sh)
 	sh->current.c_lflag &= ~ECHOCTL;
 	ft_tcsetattr(STDIN_FILENO, TCSAFLUSH, &sh->current);
 	ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->current);
+	sh->heredoc_flag = 0;
 }
 
 void	free_2d(char **str)

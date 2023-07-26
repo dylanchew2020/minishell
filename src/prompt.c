@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/22 20:45:37 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/26 16:17:30 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ void	prompt(t_root *sh, char **envp)
 			ft_dup2(sh->stdin_tmp, STDIN_FILENO);
 			ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
 			ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->current);
-			if (access("./tmp/.here_doc_tmp", F_OK & X_OK) == 0)
-				unlink("./tmp/.here_doc_tmp");
+			if (access(".here_doc_tmp", F_OK & X_OK) == 0)
+				unlink(".here_doc_tmp");
 			free_tree(head);
 			while (cmd_lexer)
 			{
