@@ -26,8 +26,9 @@
 
 void	left_child(int	*pipe, t_tree *node, char **envp, t_root *sh)
 {
-	// if (ft_strncmp(node->left->value, "cat", 3))
 	ft_dup2(pipe[1], STDOUT_FILENO);
+	ft_close(sh->pipe[0]);
+	sh->pipe[0] = 0;
 	recurse_bst(node->left, envp, sh);
 	ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
 }
@@ -47,6 +48,8 @@ void	left_child(int	*pipe, t_tree *node, char **envp, t_root *sh)
 void	right_child(int *pipe, t_tree *node, char **envp, t_root *sh)
 {
 	ft_dup2(pipe[0], STDIN_FILENO);
+	ft_close(sh->pipe[1]);
+	sh->pipe[1] = 0;
 	recurse_bst(node->right, envp, sh);
 	ft_dup2(sh->stdin_tmp, STDIN_FILENO);
 }
@@ -65,29 +68,38 @@ void	children(t_tree *node, char **envp, t_root *sh)
 {
 	pid_t	children[2];
 	int		status;
-	// int		pipe[2];
 
 	ft_pipe(sh->pipe);
-	// children[0] = ft_fork();
-	// if (children[0] == 0)
-	// {
-		left_child(sh->pipe, node, envp, sh);
-	// 	exit(EXIT_SUCCESS);
-	// }
-	// if (ft_strncmp(node->left->value, "cat", 3) && node->right->token == COMMAND)
-	// {
-	// 	printf("test\n");
-		// waitpid(children[0], &status, 0);
-	// }
-	ft_close(sh->pipe[1]);
-	sh->pipe[1] = 0;
+	if (node->left->token == HEREDOC)
+	{
+		ft_dup2(sh->pipe[1], STDOUT_FILENO);
+		recurse_bst(node->left, envp, sh);
+		ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
+	}
+	if (node->right->token == HEREDOC)
+	{
+		ft_dup2(sh->pipe[0], STDIN_FILENO);
+		recurse_bst(node->right, envp, sh);
+		ft_dup2(sh->stdin_tmp, STDIN_FILENO);
+	}
+	children[0] = ft_fork();
+	if (children[0] == 0)
+	{
+		if (node->left->token != HEREDOC)
+			left_child(sh->pipe, node, envp, sh);
+		exit(EXIT_SUCCESS);
+	}
 	children[1] = ft_fork();
 	if (children[1] == 0)
 	{
-		right_child(sh->pipe, node, envp, sh);
+		if (node->right->token != HEREDOC)
+			right_child(sh->pipe, node, envp, sh);
 		exit(EXIT_SUCCESS);
 	}
-	waitpid(children[1], &status, 0);
+	ft_close(sh->pipe[1]);
+	sh->pipe[1] = 0;
 	ft_close(sh->pipe[0]);
 	sh->pipe[0] = 0;
+	waitpid(children[0], &status, 0);
+	waitpid(children[1], &status, 0);
 }

@@ -70,7 +70,7 @@ char	**find_path(t_list **env_list)
 /**
  * @brief Determines the full path of an executable given its name.
  *
- * Splits the provided command into words, checks if any of the path 
+ * Splits the provided command into words, checks if any of the path
  * strings stored in PATH match the command name, then joins the path
  * with the command if a match is found and the file exists.
  *
@@ -87,9 +87,22 @@ char	*get_exe_path(char *argv, t_list **env_list)
 	tmp = ft_split(argv, ' ');
 	cmd = ft_strdup(tmp[0]);
 	free_2d(tmp);
+	if (strncmp(cmd, "./", 2) == 0 || strncmp(cmd, "../", 3) == 0)
+	{
+		if (access(cmd, X_OK) == 0)
+			return (cmd);
+		else
+		{
+			free(cmd);
+			return (NULL);
+		}
+	}
 	tmp = find_path(env_list);
 	if (tmp == NULL)
-		return (NULL);
+	{
+		free(cmd);
+		return NULL;
+	}
 	i = -1;
 	while (tmp[++i])
 	{

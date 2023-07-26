@@ -122,7 +122,6 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 		return (history_print(sh->history));
 	path = get_exe_path(argv, &sh->env_list);
 	cmd = cmd_quote_handler(argv, ' ');
-	// print_exec_cmd(cmd);
 	if (builtin(cmd, &sh->env_list) == 1)
 		return ;
 	child = ft_fork();
