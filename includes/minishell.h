@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/26 18:55:40 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/26 19:43:53 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,18 @@ typedef struct s_env
 	char			*value;
 }	t_env;
 
+typedef struct s_expand_variable
+{
+	char	*expanded_cmd;
+	char	*substring;
+	char	*dollar_ptr;
+	char	*single_quote_ptr;
+	char	*start;
+	char	*key;
+	char	*value;
+	int		count;
+	int		len;
+}	t_expand_variable;
 /* PROGRAM */
 
 void		init_root(t_root *root);
@@ -207,6 +219,13 @@ void		export_declare(t_list **env_list);
 /* EXPAND */
 
 char		*expand(char *cmd, t_list **env_list);
+void		single_quote(t_expand_variable *data);
+void		join_dollar_ptr(t_expand_variable *data, t_list **env_list);
+
+/* EXPAND2 */
+char		*sub_or_join(char *cmd, char *start, int len, char *substring);
+void		init_data(t_expand_variable *data, char *cmd);
+char		*join_remaining(t_expand_variable *data, char *cmd);
 
 /* PWD */
 

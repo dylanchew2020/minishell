@@ -58,7 +58,8 @@ SRC			:= $(addsuffix .c, \
 					unset\
 					ft_utlis2\
 					echo\
-					heredoc)
+					heredoc\
+					expand2)
 
 OBJ_DIR		:= ./obj
 OBJ			:= $(SRC:%.c=$(OBJ_DIR)/%.o)
