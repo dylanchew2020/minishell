@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/22 20:30:57 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/26 15:29:54 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,4 +229,7 @@ void		signal_handler(int signum);
 void		signal_handler2(int signum);
 void		heredoc_signal(int signum);
 void		signals(t_root	*sh, int mode);
+
+/* ECHO */
+void		echo_builtin(char **cmd);
 #endif
