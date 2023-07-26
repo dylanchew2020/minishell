@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 15:52:57 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/22 17:51:23 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/22 20:40:16 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	path_helper(char **path)
 		}
 		else
 		{
-			printf("Error: %s\n", strerror(errno));
+			printf("Error: Path Helper Failed: %s\n", strerror(errno));
 			return ;
 		}
 	}
@@ -51,19 +51,19 @@ static void	path_helper(char **path)
  * @return An array of strings representing the system PATH, or NULL if an
  * error occurs.
  */
-char	**find_path(void)
+char	**find_path(t_list **env_list)
 {
 	char	*tmp;
 	char	**path;
 
-	tmp = getenv("PATH");
+	tmp = existed_env("PATH", env_list);
 	if (tmp != NULL)
 	{
 		path = ft_split(tmp, ':');
 		path_helper(path);
 		return (path);
 	}
-	printf("Error: %s\n", strerror(errno));
+	// printf("Error: PATH not set: %s\n", strerror(errno));
 	return (NULL);
 }
 
@@ -77,7 +77,7 @@ char	**find_path(void)
  * @param argv The command to find the path for.
  * @return The full path of the executable if found, NULL otherwise.
  */
-char	*get_exe_path(char *argv)
+char	*get_exe_path(char *argv, t_list **env_list)
 {
 	char	*cmd;
 	char	**tmp;
@@ -87,7 +87,9 @@ char	*get_exe_path(char *argv)
 	tmp = ft_split(argv, ' ');
 	cmd = ft_strdup(tmp[0]);
 	free_2d(tmp);
-	tmp = find_path();
+	tmp = find_path(env_list);
+	if (tmp == NULL)
+		return (NULL);
 	i = -1;
 	while (tmp[++i])
 	{

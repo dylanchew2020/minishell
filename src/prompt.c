@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/22 12:26:09 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/22 20:45:37 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,15 @@ void	prompt(t_root *sh, char **envp)
 			if (cmd_lexer == NULL)
 				continue ;
 			head = parser(cmd_lexer, ft_lstsize(cmd_lexer), sh);
-			// print_tree(head, 0);
+			print_tree(head, 0);
 			ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->previous);
 			signals(sh, 0);
 			recurse_bst(head, envp, sh);
-			ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->current);
 			ft_dup2(sh->stdin_tmp, STDIN_FILENO);
 			ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
-			if (access(".here_doc_tmp", F_OK & X_OK) == 0)
-				unlink(".here_doc_tmp");
+			ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->current);
+			if (access("./tmp/.here_doc_tmp", F_OK & X_OK) == 0)
+				unlink("./tmp/.here_doc_tmp");
 			free_tree(head);
 			while (cmd_lexer)
 			{

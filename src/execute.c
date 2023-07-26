@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/20 18:24:38 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/22 20:42:05 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 {
 	int		fd;
 
+	fd = 0;
 	if (node == NULL)
 		return ;
 	if (node->token == PIPE)
@@ -72,6 +73,7 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 	}
 	else if (node->token == HEREDOC)
 	{
+		ft_dup2(sh->stdin_tmp, STDIN_FILENO);
 		fd = heredoc_fd(node->value, sh);
 		if (fd == -1)
 		{
@@ -132,11 +134,9 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 
 	if (ft_strncmp(argv, "history", 7) == 0)
 		return (history_print(sh->history));
-	printf("argv: %s\n", argv);
-	path = get_exe_path(argv);
-	printf("path: %s\n", path);
+	path = get_exe_path(argv, &sh->env_list);
 	cmd = cmd_quote_handler(argv, ' ');
-	print_exec_cmd(cmd);
+	// print_exec_cmd(cmd);
 	if (builtin(cmd, &sh->env_list) == 1)
 		return ;
 	child = ft_fork();

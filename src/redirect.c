@@ -79,16 +79,11 @@ int	heredoc_fd(char *node_value, t_root *sh)
 	delim = find_file(node_value);
 	if (delim == NULL)
 		return (-1);
-	if (access(".here_doc_tmp", F_OK & X_OK) == 0)
-		unlink(".here_doc_tmp");
-	fd = ft_open(".here_doc_tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (access("./tmp/.here_doc_tmp", F_OK & X_OK) == 0)
+		unlink("./tmp/.here_doc_tmp");
+	fd = ft_open("./tmp/.here_doc_tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	while (TRUE)
 	{
-		// write(1, "> ", 2);
-		// printf("debug\n");
-		// line = get_next_line(STDIN_FILENO);
-		// printf("debug2\n");
-		signals(sh, 1);
 		if (sh->pipe[1] != 0)
 		{
 			ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
@@ -117,12 +112,12 @@ int	heredoc_fd(char *node_value, t_root *sh)
 		ft_putstr_fd("\n", fd);
 		free(line);
 	}
-	if (access(".here_doc_tmp", F_OK & X_OK) != 0)
+	if (access("./tmp/.here_doc_tmp", F_OK & X_OK) != 0)
 	{
-		printf("Error: %s: %s\n", strerror(errno), ".here_doc_tmp");
+		printf("Error: %s: %s\n", strerror(errno), "./tmp/.here_doc_tmp");
 		return (-1);
 	}
-	fd = ft_open(".here_doc_tmp", O_RDONLY, 0666);
+	fd = ft_open("./tmp/.here_doc_tmp", O_RDONLY, 0666);
 	free(delim);
 	return (fd);
 }

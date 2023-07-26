@@ -13,31 +13,31 @@
 #include "minishell.h"
 
 /**
- * ft_pipe - Creates a pipe between two file descriptors. If the pipe cannot 
- *           be created, it outputs an error message and terminates the 
+ * ft_pipe - Creates a pipe between two file descriptors. If the pipe cannot
+ *           be created, it outputs an error message and terminates the
  *           process with an exit status of 1.
  *
- * @param p: A two-element array to hold the file descriptors for the input 
+ * @param p: A two-element array to hold the file descriptors for the input
  *           and output ends of the pipe.
  *
  * @returns
- * The file descriptor for the input end of the pipe, or terminates the 
+ * The file descriptor for the input end of the pipe, or terminates the
  * process if the pipe could not be created.
  */
 int	ft_pipe(int p[2])
 {
-	if (pipe(p) < 0)
+	if (pipe(p) == -1)
 	{
 		printf("pipe: %d\n", getpid());
-		ft_putstr_fd("Error: can't create a pipe \n", 2);
-		exit (1);
+		perror("pipe");
+		exit (EXIT_FAILURE);
 	}
 	return (*p);
 }
 
 /**
- * ft_open - Opens a file with the given flags and permissions. If the file 
- *           cannot be opened, it outputs an error message and terminates the 
+ * ft_open - Opens a file with the given flags and permissions. If the file
+ *           cannot be opened, it outputs an error message and terminates the
  *           process with an exit status of 1.
  *
  * @param file: The name of the file to be opened.
@@ -45,7 +45,7 @@ int	ft_pipe(int p[2])
  * @param permission: The permissions to use when opening the file.
  *
  * @returns
- * The file descriptor for the opened file, or terminates the process if 
+ * The file descriptor for the opened file, or terminates the process if
  * the file could not be opened.
  */
 int	ft_open(const char *file, int flags, int permission)
@@ -63,12 +63,12 @@ int	ft_open(const char *file, int flags, int permission)
 }
 
 /**
- * ft_fork - Forks a new child process. If the fork cannot be completed, 
- *           it outputs an error message and terminates the process 
+ * ft_fork - Forks a new child process. If the fork cannot be completed,
+ *           it outputs an error message and terminates the process
  *           with an exit status of 1.
  *
  * @returns
- * The PID of the child process, or terminates the process if the 
+ * The PID of the child process, or terminates the process if the
  * fork could not be completed.
  */
 int	ft_fork(void)
@@ -87,13 +87,13 @@ int	ft_fork(void)
 
 /**
  * ft_close - Closes a file descriptor. If the file descriptor cannot be
- * 			  closed, it outputs an error message and terminates the 
+ * 			  closed, it outputs an error message and terminates the
  * 			  process with an exit status of 1.
  *
  * @param fd: The file descriptor to close.
  *
- * @returns 
- * 0 on successful closure, or terminates the process if the closure could 
+ * @returns
+ * 0 on successful closure, or terminates the process if the closure could
  * not be completed.
  */
 int	ft_close(int fd)
@@ -108,16 +108,16 @@ int	ft_close(int fd)
 }
 
 /**
- * ft_dup2 - Duplicates a file descriptor, replacing an old file descriptor 
+ * ft_dup2 - Duplicates a file descriptor, replacing an old file descriptor
  * 			 with a new one. If the file descriptor cannot be duplicated,
- * 			 it outputs an error message and terminates the process with 
+ * 			 it outputs an error message and terminates the process with
  * 			 an exit status of 1.
  *
  * @param new_fd: The new file descriptor.
  * @param old_fd: The old file descriptor to be replaced.
  *
- * @returns 
- * The new file descriptor on successful duplication, or terminates the process 
+ * @returns
+ * The new file descriptor on successful duplication, or terminates the process
  * if the duplication could not be completed.
  */
 int	ft_dup2(int new_fd, int old_fd)

@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:26:51 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/20 19:52:11 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/22 20:46:19 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	init_root(t_root *sh)
 	ft_tcgetattr(STDIN_FILENO, &sh->previous);
 	ft_tcgetattr(STDIN_FILENO, &sh->current);
 	sh->current.c_lflag &= ~ECHOCTL;
+	ft_tcsetattr(STDIN_FILENO, TCSAFLUSH, &sh->current);
 	ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->current);
 }
 

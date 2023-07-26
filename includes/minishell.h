@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/22 17:55:44 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/22 20:30:57 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,8 +125,8 @@ void		history_print(t_history *history);
 
 /* PATH */
 
-char		**find_path(void);
-char		*get_exe_path(char *argv);
+char		**find_path(t_list **env_list);
+char		*get_exe_path(char *argv, t_list **env_list);
 
 /* LEXER */
 
