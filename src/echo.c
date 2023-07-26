@@ -6,13 +6,13 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 15:28:02 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/26 15:52:29 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/26 16:06:21 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	loop_n( char *str)
+static int	loop_n( char *str)
 {
 	int i;
 
