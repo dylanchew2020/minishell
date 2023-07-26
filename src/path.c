@@ -84,9 +84,7 @@ char	*get_exe_path(char *argv, t_list **env_list)
 	char	*join;
 	int		i;
 
-	tmp = ft_split(argv, ' ');
-	cmd = ft_strdup(tmp[0]);
-	free_2d(tmp);
+	cmd = ft_strdup(argv);
 	if (strncmp(cmd, "./", 2) == 0 || strncmp(cmd, "../", 3) == 0)
 	{
 		if (access(cmd, X_OK) == 0)

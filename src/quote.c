@@ -52,7 +52,7 @@ int	quote_count(char *cmd)
 	{
 		if (*cmd == '\0')
 		{
-			ft_putstr_fd("Error: unclosed quote.\n", STDERR_FILENO);
+			printf("minishell: unclosed quote\n");
 			return (-1);
 		}
 		++count;
@@ -104,7 +104,7 @@ static char	*nextstr(char const **s, char c)
 	while (**s == c)
 		++(*s);
 	start = (char *)*s;
-	quote_len = quote_count((char *)s);
+	quote_len = quote_count((char *)*s);
 	while ((quote_len > 0 || **s != c) && **s != '\0')
 	{
 		*s += quote_len;

@@ -43,7 +43,7 @@ void	prompt(t_root *sh, char **envp)
 			if (cmd_lexer == NULL)
 				continue ;
 			head = parser(cmd_lexer, ft_lstsize(cmd_lexer), sh);
-			print_tree(head, 0);
+			// print_tree(head, 0);
 			ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->previous);
 			signals(sh, 0);
 			recurse_bst(head, envp, sh);
@@ -110,7 +110,7 @@ void	exit_prompt(char *cmd, t_root *sh)
 		printf("i = %i\n", i);
 		close(i);
 		ft_lstclear(&sh->env_list, del_data);
-		system("leaks minishell");
+		// system("leaks minishell");
 		exit(0);
 	}
 }

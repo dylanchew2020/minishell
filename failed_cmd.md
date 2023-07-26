@@ -4,6 +4,7 @@ echo -n -n "Hello, World!"
 exit status
 $?
 
+unset first env node
 
 echo hi > 1.tmp test
 

@@ -96,7 +96,8 @@ void	redir_arg(t_tree *node, char **envp, t_root *sh)
 {
 	if (node->right != NULL)
 	{
-		if (node->right->token == COMMAND)
+		if (node->left != NULL && node->left->token == COMMAND &&\
+			node->right->token == COMMAND)
 			sh->add_arg = node->right->value;
 		else
 			recurse_bst(node->right, envp, sh);
@@ -125,18 +126,19 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 
 	if (ft_strncmp(argv, "history", 7) == 0)
 		return (history_print(sh->history));
-	path = get_exe_path(argv, &sh->env_list);
 	cmd = cmd_quote_handler(argv, ' ');
 	if (sh->add_arg != NULL)
 		cmd = cmd_join(cmd, cmd_quote_handler(sh->add_arg, ' '));
-	print_exec_cmd(cmd);
+	// print_exec_cmd(cmd);
+	path = get_exe_path(cmd[0], &sh->env_list);
+	// printf("path: %s\n", path);
 	if (builtin(cmd, &sh->env_list) == 1)
 		return ;
 	child = ft_fork();
 	if (child == 0)
 	{
 		if (execve(path, cmd, envp) == -1)
-			exit(printf("Error: Command not found: %s\n", *cmd));
+			exit(printf("Error: Command not found: %s.\n", *cmd));
 	}
 	else
 	{
@@ -153,7 +155,7 @@ void	print_exec_cmd(char **cmd)
 	i = 0;
 	while (cmd[i] != NULL)
 	{
-		printf("argv[%d]: %s\n", i, cmd[i]);
+		printf("argv[%d]: |%s|\n", i, cmd[i]);
 		i++;
 	}
 }

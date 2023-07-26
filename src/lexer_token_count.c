@@ -108,7 +108,10 @@ static int	quotes_helper(char **cmd)
 
 	quote_len = quote_count((*cmd));
 	if (quote_len == -1)
+	{
+		ft_putstr_fd("Error: unclosed quote.\n", STDERR_FILENO);
 		return (-1);
+	}
 	else if (quote_len == 0)
 		++(*cmd);
 	else if (quote_len > 0)
