@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 15:52:57 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/26 17:57:34 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/26 18:55:30 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,50 @@ char	**find_path(t_list **env_list)
 	return (NULL);
 }
 
+static char	*join_path_helper(char *cmd, char **tmp, int i)
+{
+	char	*join;
+
+	if (ft_strncmp(tmp[i], cmd, ft_strlen(tmp[i])) == 0)
+	{
+		free_2d(tmp);
+		return (cmd);
+	}
+	join = ft_strjoin(tmp[i], cmd);
+	if (access(join, F_OK) == 0)
+	{
+		free (cmd);
+		free_2d(tmp);
+		return (join);
+	}
+	free(join);
+	return (NULL);
+}
+
+char	*join_path(t_list **env_list, char *cmd)
+{
+	char	**tmp;
+	char	*join;
+	int		i;
+
+	tmp = find_path(env_list);
+	if (tmp == NULL)
+	{
+		free(cmd);
+		return (NULL);
+	}
+	i = -1;
+	while (tmp[++i])
+	{
+		join = join_path_helper(cmd, tmp, i);
+		if (join != NULL)
+			return (join);
+	}
+	free (cmd);
+	free_2d(tmp);
+	return (NULL);
+}
+
 /**
  * @brief Determines the full path of an executable given its name.
  *
@@ -79,11 +123,8 @@ char	**find_path(t_list **env_list)
 char	*get_exe_path(char *argv, t_list **env_list)
 {
 	char	*cmd;
-	char	**tmp;
 	char	*join;
-	int		i;
 
-	// printf("argv: %s\n", argv);
 	cmd = ft_strdup(argv);
 	if (strncmp(cmd, "./", 2) == 0 || strncmp(cmd, "../", 3) == 0)
 	{
@@ -95,30 +136,8 @@ char	*get_exe_path(char *argv, t_list **env_list)
 			return (NULL);
 		}
 	}
-	tmp = find_path(env_list);
-	if (tmp == NULL)
-	{
-		free(cmd);
-		return (NULL);
-	}
-	i = -1;
-	while (tmp[++i])
-	{
-		if (ft_strncmp(tmp[i], cmd, ft_strlen(tmp[i])) == 0)
-		{
-			free_2d(tmp);
-			return (cmd);
-		}
-		join = ft_strjoin(tmp[i], cmd);
-		if (access(join, F_OK) == 0)
-		{
-			free (cmd);
-			free_2d(tmp);
-			return (join);
-		}
-		free(join);
-	}
-	free (cmd);
-	free_2d(tmp);
+	join = join_path(env_list, cmd);
+	if (join != NULL)
+		return (join);
 	return (NULL);
 }

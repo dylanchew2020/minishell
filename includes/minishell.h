@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/26 18:18:07 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/26 18:55:40 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ void		history_print(t_history *history);
 /* PATH */
 
 char		**find_path(t_list **env_list);
+char		*join_path(t_list **env_list, char *cmd);
 char		*get_exe_path(char *argv, t_list **env_list);
 
 /* LEXER */
