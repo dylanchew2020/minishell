@@ -37,33 +37,40 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 		children(node, envp, sh);
 	else if (node->token == RDIN)
 	{
+		printf("rdin %i\n", fd);
 		fd = rdin_fd(node->value, sh);
 		if (fd < 0)
 			return ;
 		ft_dup2(fd, STDIN_FILENO);
 		ft_close(fd);
 		redir_arg(node, envp, sh);
+		// recurse_rdin(node, envp, sh);
 	}
 	else if (node->token == RDOUT)
 	{
+		printf("rdout %i\n", fd);
 		fd = rdout_fd(node->value, sh);
 		if (fd < 0)
 			return ;
 		ft_dup2(fd, STDOUT_FILENO);
 		ft_close(fd);
 		redir_arg(node, envp, sh);
+		// recurse_rdout(node, envp, sh);
 	}
 	else if (node->token == RDAPP)
 	{
+		printf("rdapp %i\n", fd);
 		fd = rdapp_fd(node->value, sh);
 		if (fd < 0)
 			return ;
 		ft_dup2(fd, STDOUT_FILENO);
 		ft_close(fd);
 		redir_arg(node, envp, sh);
+		// recurse_rdapp(node, envp, sh);
 	}
 	else if (node->token == HEREDOC)
 	{
+		printf("heredoc %i\n", fd);
 		ft_dup2(sh->stdin_tmp, STDIN_FILENO);
 		fd = heredoc_fd(node->value, sh);
 		if (fd < 0)
@@ -72,6 +79,7 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 			ft_dup2(fd, STDIN_FILENO);
 		ft_close(fd);
 		redir_arg(node, envp, sh);
+		// recurse_heredoc(node, envp, sh);
 	}
 	else if (node->token == COMMAND)
 		exec_cmd(node->value, envp, sh);

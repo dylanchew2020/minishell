@@ -11,7 +11,7 @@ NAME		:= minishell
 # CC			:= clang
 CC			:= gcc
 FLAGS		:= -Wall -Wextra -Werror
-FSAN		:= #-fsanitize=address -g3
+FSAN		:= -fsanitize=address -g3
 
 ################################################################################
 #                               PROGRAM'S INCLUDES                             #
@@ -22,11 +22,13 @@ LIBFT = libft.a
 
 LIB := -lft -L./$(LIBFT_DIR)
 READLINE = -lreadline -L/usr/local/opt/readline/lib
+# READLINE =  -lreadline
 
 INC_DIR		= includes
 INC			= -I./$(INC_DIR)
 INC_LIBFT	= -I./$(LIBFT_DIR)$(INC_DIR)
 INC_RL		= -I/usr/local/opt/readline/include
+# INC_RL		= -I/usr/include/readline 
 
 ################################################################################
 #                                 PROGRAM'S SRCS                               #

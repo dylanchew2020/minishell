@@ -109,7 +109,7 @@ void	exit_prompt(char *cmd, t_root *sh)
 		printf("i = %i\n", i);
 		close(i);
 		ft_lstclear(&sh->env_list, del_data);
-		system("leaks minishell");
+		// system("leaks minishell");
 		exit(0);
 	}
 }

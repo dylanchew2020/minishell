@@ -168,6 +168,12 @@ void		exec_cmd(char *argv, char **envp, t_root *sh);
 void		redir_arg(t_tree *node, char **envp, t_root *sh);
 void		print_exec_cmd(char **cmd);
 
+/* RECURSE_BST_FUNCTIONS */
+void		recurse_rdin(t_tree *node, char **envp, t_root *sh);
+void		recurse_rdout(t_tree *node, char **envp, t_root *sh);
+void		recurse_rdapp(t_tree *node, char **envp, t_root *sh);
+void		recurse_heredoc(t_tree *node, char **envp, t_root *sh);
+
 /* FT_UTLIS */
 
 int			ft_pipe(int p[2]);

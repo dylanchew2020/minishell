@@ -70,6 +70,7 @@ static char	*join_path_helper(char *cmd, char **tmp, int i)
 {
 	char	*join;
 
+	printf("cmd: %s\n", cmd);
 	if (ft_strncmp(tmp[i], cmd, ft_strlen(tmp[i])) == 0)
 	{
 		free_2d(tmp);
