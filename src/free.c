@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 17:38:59 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/05 17:39:20 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/29 14:35:44 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -25,4 +25,24 @@ void	del_data(void	*content)
 	free(data->key);
 	free(data->value);
 	free(data);
+}
+
+void	reset_data(t_root *sh, t_list **cmd_lexer, t_tree **head)
+{
+	t_list	*current;
+	t_list	*next;
+
+	ft_dup2(sh->stdin_tmp, STDIN_FILENO);
+	ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
+	ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->current);
+	if (access(".here_doc_tmp", F_OK & X_OK) == 0)
+		unlink(".here_doc_tmp");
+	free_tree(*head);
+	current = *cmd_lexer;	
+	while (current)
+	{
+		next = current->next;
+		free(current);
+		current = next;
+	}
 }

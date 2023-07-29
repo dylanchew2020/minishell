@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:11 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/29 10:40:32 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/29 14:17:28 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
  */
 int	builtin(char **cmd, t_list **env_list)
 {
+	upper_to_lower(&cmd[0]);
 	if (ft_strncmp(cmd[0], "unset", ft_strlen("unset") + 1) == 0)
 		unset(cmd[1], env_list);
 	else if (ft_strncmp(cmd[0], "cd", ft_strlen("cd") + 1) == 0)
@@ -38,4 +39,17 @@ int	builtin(char **cmd, t_list **env_list)
 	else
 		return (0);
 	return (1);
+}
+
+void	upper_to_lower(char **str)
+{
+	int		i;
+
+	i = 0;
+	while ((*str)[i])
+	{
+		if ((*str)[i] >= 'A' && (*str)[i] <= 'Z')
+			(*str)[i] += 32;
+		i++;
+	}
 }

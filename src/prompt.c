@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/26 19:55:35 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/29 14:36:43 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,31 @@
 
 static char	*get_prompt_str(void);
 
+static int	lexer_paser_exec(t_root *sh, char **envp, char **cmd)
+{
+	char	*tmp;
+	t_list	*cmd_lexer;
+	t_tree	*head;
+
+	history_add(&sh->history, *cmd);
+	tmp = *cmd;
+	*cmd = expand(*cmd, &sh->env_list);
+	free(tmp);
+	exit_prompt(*cmd, sh);
+	cmd_lexer = lexer(*cmd);
+	if (cmd_lexer == NULL)
+		return (-1);
+	head = parser(cmd_lexer, ft_lstsize(cmd_lexer), sh);
+	ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->previous);
+	signals(sh, 0);
+	recurse_bst(head, envp, sh);
+	reset_data(sh, &cmd_lexer, &head);
+	return (0);
+}
+
 void	prompt(t_root *sh, char **envp)
 {
 	char	*cmd;
-	char	*tmp;
-	t_list	*cmd_lexer;
-	t_list	*tmp_lexer;
-	t_tree	*head;
 	char	*prompt_str;
 
 	env_link_list(envp, &sh->env_list);
@@ -33,34 +51,11 @@ void	prompt(t_root *sh, char **envp)
 			exit_prompt(cmd, sh);
 		if (*cmd)
 		{
-			history_add(&sh->history, cmd);
-			tmp = cmd;
-			cmd = expand(cmd, &sh->env_list);
-			free(tmp);
-			exit_prompt(cmd, sh);
-			cmd_lexer = lexer(cmd);
-			if (cmd_lexer == NULL)
+			if (lexer_paser_exec(sh, envp, &cmd) == -1)
 				continue ;
-			head = parser(cmd_lexer, ft_lstsize(cmd_lexer), sh);
-			// print_tree(head, 0);
-			ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->previous);
-			signals(sh, 0);
-			recurse_bst(head, envp, sh);
-			ft_dup2(sh->stdin_tmp, STDIN_FILENO);
-			ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
-			ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->current);
-			if (access(".here_doc_tmp", F_OK & X_OK) == 0)
-				unlink(".here_doc_tmp");
-			free_tree(head);
-			while (cmd_lexer)
-			{
-				tmp_lexer = cmd_lexer->next;
-				free(cmd_lexer);
-				cmd_lexer = tmp_lexer;
-			}
 		}
-		free(prompt_str);
 		free(cmd);
+		free(prompt_str);
 	}
 	history_clear(&sh->history);
 	ft_lstclear(&sh->env_list, del_data);
@@ -112,35 +107,4 @@ void	exit_prompt(char *cmd, t_root *sh)
 		// system("leaks minishell");
 		exit(EXIT_SUCCESS);
 	}
-}
-
-void	print_tree(t_tree *root, int b)
-{
-	static int	level;
-
-	if (b == 0)
-		++level;
-	if (root == NULL)
-	{
-		printf("NULL\n");
-		if (b == 0)
-			--level;
-		return ;
-	}
-	printf("token (%u): (%s)\n", root->token, root->value);
-	printf("left %i  ", level);
-	print_tree(root->left, 0);
-	printf("right %i  ", level);
-	print_tree(root->right, 0);
-	--level;
-}
-
-void	free_tree(t_tree *node)
-{
-	if (node == NULL)
-		return ;
-	free_tree(node->left);
-	free_tree(node->right);
-	free(node->value);
-	free(node);
 }

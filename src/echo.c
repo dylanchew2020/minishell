@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int	loop_n( char *str)
+static int	loop_n(char *str)
 {
 	int i;
 
@@ -30,12 +30,15 @@ void	echo_builtin(char **cmd)
 {
 	int	i;
 	int	flag;
+	int	flag2;
 
 	flag = 0;
+	flag2 = 0;
 	i = 0;
 	while (cmd[++i])
 	{
-		if ((ft_strncmp(cmd[i], "-n", 2) == 0) && (loop_n((cmd[i] + 2)) == 1))
+		if ((ft_strncmp(cmd[i], "-n", 2) == 0) && (loop_n((cmd[i] + 2)) == 1)\
+			&& (flag2 == 0))
 		{
 			flag = 1;
 			continue ;
@@ -44,6 +47,7 @@ void	echo_builtin(char **cmd)
 		{
 			write(1, cmd[i], ft_strlen(cmd[i]));
 			write(1, " ", 1);
+			flag2 = 1;
 		}
 	}
 	if (flag != 1)

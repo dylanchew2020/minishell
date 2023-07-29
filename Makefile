@@ -11,7 +11,7 @@ NAME		:= minishell
 # CC			:= clang
 CC			:= gcc
 FLAGS		:= -Wall -Wextra -Werror
-FSAN		:= -fsanitize=address -g3
+# FSAN		:= -fsanitize=address -g3
 
 ################################################################################
 #                               PROGRAM'S INCLUDES                             #
@@ -63,7 +63,8 @@ SRC			:= $(addsuffix .c, \
 					heredoc\
 					expand2\
 					recurse_bst_functions\
-					exit)
+					exit\
+					tree_utils)
 
 OBJ_DIR		:= ./obj
 OBJ			:= $(SRC:%.c=$(OBJ_DIR)/%.o)
