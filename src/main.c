@@ -14,7 +14,7 @@
 
 static void	print_banner(void);
 
-int g_exit_code = EXIT_SUCCESS;
+int g_exit_stat = EXIT_SUCCESS;
 
 int	main(int argc, char **argv, char **envp)
 {
