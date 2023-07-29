@@ -140,6 +140,7 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 	path = get_exe_path(cmd[0], &sh->env_list);
 	if (builtin(cmd, &sh->env_list) == 1)
 	{
+		free_2d(cmd);
 		free(path);
 		return ;
 	}
