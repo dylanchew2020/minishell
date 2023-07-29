@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:26:51 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/22 20:46:19 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/29 15:59:12 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	init_root(t_root *sh)
 {
 	sh->history = NULL;
 	init_token_check(sh->tkchk);
-	sh->add_arg = NULL;
+	sh->tree_arg_value = NULL;
 	sh->stdin_tmp = dup(STDIN_FILENO);
 	sh->stdout_tmp = dup(STDOUT_FILENO);
 	sh->env_list = NULL;

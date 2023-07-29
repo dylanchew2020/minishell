@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 17:38:59 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/29 14:41:45 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/29 16:18:29 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	reset_data(t_root *sh, t_list **cmd_lexer, t_tree **head)
 	if (access(".here_doc_tmp", F_OK & X_OK) == 0)
 		unlink(".here_doc_tmp");
 	free_tree(*head);
+	sh->tree_arg_value = NULL;
 	current = *cmd_lexer;
 	while (current)
 	{

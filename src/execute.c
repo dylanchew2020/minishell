@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/29 15:54:37 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/29 16:19:15 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,6 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 	cmd = cmd_quote_handler(argv, ' ');
 	if (sh->tree_arg_value != NULL)
 		cmd = cmd_join(cmd, sh);
-	print_exec_cmd(cmd);
-	printf("cmd[0]: |%s|\n", cmd[0]);
 	if (builtin(cmd, &sh->env_list) == 1)
 	{
 		free_2d(cmd);

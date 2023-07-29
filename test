@@ -1,5 +1,5 @@
+argv: |echo hi|
 argv[0]: |echo|
 argv[1]: |hi|
-argv[2]: |asd|
 cmd[0]: |echo|
-hi asd 
+hi 
