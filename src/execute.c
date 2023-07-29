@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/29 14:04:34 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/29 16:19:15 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ void	redir_arg(t_tree *node, char **envp, t_root *sh)
 {
 	if (node->right != NULL)
 	{
-		if (node->left != NULL && node->left->token == COMMAND &&\
+		if (node->left != NULL && node->left->token == COMMAND && \
 			node->right->token == COMMAND)
-			sh->add_arg = node->right->value;
+			sh->tree_arg_value = node->right->value;
 		else
 			recurse_bst(node->right, envp, sh);
 	}
@@ -93,8 +93,8 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 	if (ft_strncmp(argv, "history", 7) == 0)
 		return (history_print(sh->history));
 	cmd = cmd_quote_handler(argv, ' ');
-	if (sh->add_arg != NULL)
-		cmd = cmd_join(cmd, cmd_quote_handler(sh->add_arg, ' '));
+	if (sh->tree_arg_value != NULL)
+		cmd = cmd_join(cmd, sh);
 	if (builtin(cmd, sh) == 1)
 	{
 		free_2d(cmd);
@@ -110,13 +110,10 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 			exit(EXIT_NO_CMD);
 		}
 	}
-	else
-	{
-		waitpid(child, &g_exit_status, 0);
-		g_exit_status = exit_status(g_exit_status);
-		free(path);
-		free_2d(cmd);
-	}
+	waitpid(child, &g_exit_status, 0);
+	g_exit_status = exit_status(g_exit_status);
+	free(path);
+	free_2d(cmd);
 }
 
 void	print_exec_cmd(char **cmd)

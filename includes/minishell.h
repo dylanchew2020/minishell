@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/29 14:33:49 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/29 17:22:46 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ typedef struct s_root
 {
 	t_history		*history;
 	t_token_check	tkchk[NO_OF_TOKEN_TYPES];
-	char			*add_arg;
+	char			*tree_arg_value;
 	int				stdin_tmp;
 	int				stdout_tmp;
 	t_list			*env_list;
@@ -207,7 +207,6 @@ void		ft_tcsetattr(int fd, int optional_actions, \
 int			array2d_len(char **str);
 
 /* PIPE */
-
 void		children(t_tree *node, char **envp, t_root *sh);
 
 /* REDIRECTION */
@@ -268,11 +267,15 @@ int			unset(char *key, t_list **env_list);
 int			cd(char **value, t_list **env_list);
 
 /* QUOTE */
+char		**cmd_quote_handler(char const *s, char c);
 
+/* QUOTE_UTILS */
+char		*remove_quote(char *str);
 int			is_quote(char c);
 int			quote_count(char *cmd);
-char		**cmd_quote_handler(char const *s, char c);
-char		**cmd_join(char **res, char **add_arg);
+
+/*	CMD_JOIN */
+char		**cmd_join(char **res, t_root *sh);
 
 /*	SIGNAL */
 
