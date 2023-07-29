@@ -52,7 +52,6 @@ void	export(char **cmd, t_list **env_list)
 			i++;
 		}
 	}
-	free_2d(split);
 }
 
 /**

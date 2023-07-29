@@ -46,7 +46,6 @@ void	cd(char **value, t_list **env_list)
 		i = chdir(split[1]);
 		if (i != 0)
 			perror("cd: ");
-		free_2d(split);
 	}
 }
 

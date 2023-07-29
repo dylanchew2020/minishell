@@ -31,11 +31,10 @@ int	builtin(char **cmd, t_list **env_list)
 		pwd();
 	else if (ft_strnstr(cmd[0], "export", ft_strlen("export")) != NULL)
 		export(cmd, env_list);
-	else if ((ft_strnstr(cmd[0], "env", ft_strlen("env")) != NULL) \
-			|| (ft_strnstr(cmd[0], "env", ft_strlen("env")) != NULL))
+	else if ((ft_strnstr(cmd[0], "env", ft_strlen("env")) != NULL) || (ft_strnstr(cmd[0], "env", ft_strlen("env")) != NULL))
 		get_env(env_list);
 	else if ((ft_strnstr(cmd[0], "echo", ft_strlen("echo")) != NULL) \
-			|| (ft_strnstr(cmd[0], "echo", ft_strlen("echo")) != NULL))
+			|| (ft_strnstr(cmd[0], "ECHO", ft_strlen("ECHO")) != NULL))
 		echo_builtin(cmd);
 	else
 		return (0);
