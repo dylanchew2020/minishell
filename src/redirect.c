@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:03 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/26 18:17:11 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/29 14:43:24 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ char	*find_file(char *value)
 	char	*file;
 
 	if ((*value != '<' && *value != '>') && *value != '\0')
-		return (NULL); // change to if statement, check for correct redir token
+		return (NULL);
 	while ((*value == '<' || *value == '>' || *value == ' ') && *value != '\0')
 		++value;
 	if (*value == '\0')

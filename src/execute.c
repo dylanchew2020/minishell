@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/29 14:04:34 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/29 15:54:37 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ void	redir_arg(t_tree *node, char **envp, t_root *sh)
 {
 	if (node->right != NULL)
 	{
-		if (node->left != NULL && node->left->token == COMMAND &&\
+		if (node->left != NULL && node->left->token == COMMAND && \
 			node->right->token == COMMAND)
-			sh->add_arg = node->right->value;
+			sh->tree_arg_value = node->right->value;
 		else
 			recurse_bst(node->right, envp, sh);
 	}
@@ -94,8 +94,10 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 	if (ft_strncmp(argv, "history", 7) == 0)
 		return (history_print(sh->history));
 	cmd = cmd_quote_handler(argv, ' ');
-	if (sh->add_arg != NULL)
-		cmd = cmd_join(cmd, cmd_quote_handler(sh->add_arg, ' '));
+	if (sh->tree_arg_value != NULL)
+		cmd = cmd_join(cmd, sh);
+	print_exec_cmd(cmd);
+	printf("cmd[0]: |%s|\n", cmd[0]);
 	if (builtin(cmd, &sh->env_list) == 1)
 	{
 		free_2d(cmd);
@@ -108,12 +110,9 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 		if (execve(path, cmd, envp) == -1)
 			exit(printf("Error: Command not found: %s.\n", *cmd));
 	}
-	else
-	{
-		waitpid(child, &status, 0);
-		free(path);
-		free_2d(cmd);
-	}
+	waitpid(child, &status, 0);
+	free(path);
+	free_2d(cmd);
 }
 
 void	print_exec_cmd(char **cmd)

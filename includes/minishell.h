@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/29 14:33:49 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/29 15:47:55 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ typedef struct s_root
 {
 	t_history		*history;
 	t_token_check	tkchk[NO_OF_TOKEN_TYPES];
-	char			*add_arg;
+	char			*tree_arg_value;
 	int				stdin_tmp;
 	int				stdout_tmp;
 	t_list			*env_list;
@@ -190,7 +190,6 @@ void		ft_tcsetattr(int fd, int optional_actions, \
 						struct termios *termios_p);
 
 /* PIPE */
-
 void		children(t_tree *node, char **envp, t_root *sh);
 
 /* REDIRECTION */
@@ -208,7 +207,6 @@ char		*existed_env(char *key, t_list **env_list);
 void		creat_new_env_node(char *key, char	*input, t_list **env_list);
 
 /* BUILT IN */
-
 int			builtin(char **cmd, t_list **env_list);
 
 /* FREE */
@@ -237,23 +235,22 @@ void		init_data(t_expand_variable *data, char *cmd);
 char		*join_remaining(t_expand_variable *data, char *cmd);
 
 /* PWD */
-
 void		pwd(void);
 
 /* UNSET */
-
 void		unset(char *key, t_list **env_list);
 
 /* CD */
-
 void		cd(char **value, t_list **env_list);
 
 /* QUOTE */
+char		**cmd_quote_handler(char const *s, char c);
+char		**cmd_join(char **res, t_root *sh);
 
+/* QUOTE_UTILS */
+char		*remove_quote(char *str);
 int			is_quote(char c);
 int			quote_count(char *cmd);
-char		**cmd_quote_handler(char const *s, char c);
-char		**cmd_join(char **res, char **add_arg);
 
 /*	SIGNAL */
 void		signal_handler(int signum);

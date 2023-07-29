@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 19:59:58 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/26 20:00:06 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/29 14:43:16 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	recurse_rdin(t_tree *node, char **envp, t_root *sh)
 {
-	int fd;
+	int	fd;
 
 	fd = 0;
 	fd = rdin_fd(node->value, sh);

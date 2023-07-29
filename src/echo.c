@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 15:28:02 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/26 19:54:31 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/29 14:40:59 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	loop_n(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -37,7 +37,7 @@ void	echo_builtin(char **cmd)
 	i = 0;
 	while (cmd[++i])
 	{
-		if ((ft_strncmp(cmd[i], "-n", 2) == 0) && (loop_n((cmd[i] + 2)) == 1)\
+		if ((ft_strncmp(cmd[i], "-n", 2) == 0) && (loop_n((cmd[i] + 2)) == 1) \
 			&& (flag2 == 0))
 		{
 			flag = 1;
