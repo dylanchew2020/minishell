@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:04 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/29 16:19:02 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/29 17:22:06 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,60 +91,4 @@ char	**cmd_quote_handler(char const *s, char c)
 		++i;
 	}
 	return (res);
-}
-
-// void	**cmd_join_utils(char ***res, char ***new_res, char ***add_arg)
-// {
-// 	char	**r;
-// 	char	**n;
-// 	char	**a;
-// 	int		i;
-// 	int		j;
-
-// 	r = *res;
-// 	n = *new_res;
-// 	a = *add_arg;
-// }
-
-char	**cmd_join(char **res, t_root *sh)
-{
-	int		i;
-	int		j;
-	char	**new_res;
-	char	**add_arg;
-
-	i = 0;
-	j = 0;
-	add_arg = cmd_quote_handler(sh->tree_arg_value, ' ');
-	while (res[i] != NULL)
-		++i;
-	while (add_arg[j] != NULL)
-		++j;
-	new_res = ft_calloc(i + j + 1, sizeof(char *));
-	i = 0;
-	while (res[i] != NULL)
-	{
-		new_res[i] = ft_strdup(res[i]);
-		if (!new_res[i])
-		{
-			free_2d(new_res);
-			return (NULL);
-		}
-		++i;
-	}
-	j = 0;
-	while (add_arg[j] != NULL)
-	{
-		new_res[i] = ft_strdup(add_arg[j]);
-		if (!new_res[i])
-		{
-			free_2d(new_res);
-			return (NULL);
-		}
-		++i;
-		++j;
-	}
-	free_2d(res);
-	free_2d(add_arg);
-	return (new_res);
 }

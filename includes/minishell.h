@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/29 15:47:55 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/29 17:22:46 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,12 +245,14 @@ void		cd(char **value, t_list **env_list);
 
 /* QUOTE */
 char		**cmd_quote_handler(char const *s, char c);
-char		**cmd_join(char **res, t_root *sh);
 
 /* QUOTE_UTILS */
 char		*remove_quote(char *str);
 int			is_quote(char c);
 int			quote_count(char *cmd);
+
+/*	CMD_JOIN */
+char		**cmd_join(char **res, t_root *sh);
 
 /*	SIGNAL */
 void		signal_handler(int signum);

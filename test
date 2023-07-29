@@ -1,5 +1,1 @@
-argv: |echo hi|
-argv[0]: |echo|
-argv[1]: |hi|
-cmd[0]: |echo|
-hi 
+hi haskdasasdkasdas 
