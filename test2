@@ -1,13 +1,1 @@
-Makefile
-README.md
-failed_cmd.md
-includes
-libft
-minishell
-obj
-quote.md
-src
-test
-test1
-test2
-test_minishell.bash
+-rw-r--r--   1 tzi-qi  2022_kuala-lumpur   3075 Jul 26 17:51 Makefile

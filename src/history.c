@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:25:57 by lchew             #+#    #+#             */
-/*   Updated: 2023/06/03 17:39:31 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/26 18:58:20 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,20 @@ t_history	*history_node_new(int index, void *cmd)
 	return (history);
 }
 
-/**
- * history_clear - Frees the memory used by a doubly-linked list of history nodes,
- *                 and sets the list head pointer to NULL. It also clears the 
- *                 history maintained by the readline library. This function 
- *                 should be called when the shell is exiting or when history is 
- *                 no longer needed.
- *
- * @param history: A pointer to the head of the doubly-linked list of history nodes.
- *
- * @returns 
- * Void. Does not return any value and does not modify any global variables.
- */
+// /**
+//  * history_clear - Frees the memory used by a doubly-linked list of history 
+// 					  nodes,
+//  *                 and sets the list head pointer to NULL. It also clears 
+// 					  the 
+//  *                 history maintained by the readline library. This function 
+//  *                 should be called when the shell is exiting or when history
+// 					  is no longer needed.
+//  * @param history: A pointer to the head of the doubly-linked list of 
+// 				      history nodes.
+//  *
+//  * @returns 
+//  * Void. Does not return any value and does not modify any global variables.
+//  */
 void	history_clear(t_history **history)
 {
 	t_history	*tmp;
@@ -67,19 +69,22 @@ void	history_clear(t_history **history)
 	clear_history();
 }
 
-/**
- * history_add - Adds a new history node to a doubly-linked list of history nodes.
- *               It first checks if the provided command is not NULL. If the command
- *               is valid, it increments the index, then creates a new history node 
- *               using the updated index and the command. It then appends the new node 
- *               to the end of the list, correctly adjusting 'next' and 'prev' pointers.
- *
- * @param history: A pointer to the head of the doubly-linked list of history nodes.
- * @param cmd: The command for the new history node.
- *
- * @returns 
- * Void. Does not return any value and does not modify any global variables.
- */
+// /**
+//  * history_add - Adds a new history node to a doubly-linked list of 
+//					history nodes. It first checks if the provided command 
+// 					is not NULL. If the command is valid, it increments the 
+// 					index, then creates a new history node using the updated
+// 					index and the command. It then appends the new node 
+//                  to the end of the list, correctly adjusting 'next' and 
+// 					'prev' pointers.
+//  *
+//  * @param history: A pointer to the head of the doubly-linked list of 
+// 					history nodes.
+//  * @param cmd: The command for the new history node.
+//  *
+//  * @returns 
+//  * Void. Does not return any value and does not modify any global variables.
+//  */
 void	history_add(t_history **history, char *cmd)
 {
 	t_history	*new;
@@ -127,4 +132,3 @@ void	history_print(t_history *history)
 		tmp = tmp->next;
 	}
 }
-

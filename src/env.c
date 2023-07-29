@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:10 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/26 17:24:32 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/26 19:54:39 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ void	creat_new_env_node(char *key, char	*input, t_list **env_list)
 	t_env	*data;
 	t_list	*node;
 
-	// printf("creating new node\n");
 	data = ft_calloc(1, sizeof(t_env));
 	data->key = key;
 	data->value = ft_substr(input, ft_strchr(input, '=') \

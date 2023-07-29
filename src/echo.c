@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 15:28:02 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/26 16:17:59 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/26 19:54:31 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	loop_n( char *str)
 
 void	echo_builtin(char **cmd)
 {
-	int i;
+	int	i;
 	int	flag;
 
 	flag = 0;
