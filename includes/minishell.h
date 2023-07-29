@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/26 19:43:53 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/29 14:33:49 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,8 @@ t_tree		*tree_node_new(t_token type, char *value, t_tree *left, \
 							t_tree *right);
 t_token		type_assign(char *value, t_root *sh);
 void		init_token_check(t_token_check	*tkchk);
+
+/* TREE_UTILS */
 void		print_tree(t_tree *root, int b);
 void		free_tree(t_tree *node);
 
@@ -212,6 +214,7 @@ int			builtin(char **cmd, t_list **env_list);
 /* FREE */
 
 void		del_data(void	*content);
+void		reset_data(t_root *sh, t_list **cmd_lexer, t_tree **head);
 
 /* EXPORT */
 

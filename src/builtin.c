@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:11 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/26 17:14:22 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/29 14:17:28 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ int	builtin(char **cmd, t_list **env_list)
 		pwd();
 	else if (ft_strnstr(cmd[0], "export", ft_strlen("export")) != NULL)
 		export(cmd, env_list);
-	else if ((ft_strnstr(cmd[0], "env", ft_strlen("env")) != NULL) || (ft_strnstr(cmd[0], "env", ft_strlen("env")) != NULL))
+	else if ((ft_strnstr(cmd[0], "env", ft_strlen("env")) != NULL) \
+			|| (ft_strnstr(cmd[0], "env", ft_strlen("env")) != NULL))
 		get_env(env_list);
 	else if ((ft_strnstr(cmd[0], "echo", ft_strlen("echo")) != NULL) \
 			|| (ft_strnstr(cmd[0], "ECHO", ft_strlen("ECHO")) != NULL))
