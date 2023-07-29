@@ -95,7 +95,7 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 	cmd = cmd_quote_handler(argv, ' ');
 	if (sh->add_arg != NULL)
 		cmd = cmd_join(cmd, cmd_quote_handler(sh->add_arg, ' '));
-	if (builtin(cmd, &sh->env_list) == 1)
+	if (builtin(cmd, sh) == 1)
 	{
 		free_2d(cmd);
 		return ;
@@ -105,7 +105,10 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 	if (child == 0)
 	{
 		if (execve(path, cmd, envp) == -1)
-			exit(printf("Error: Command not found: %s.\n", *cmd));
+		{
+			printf("Error: Command not found: %s.\n", *cmd);
+			exit(EXIT_NO_CMD);
+		}
 	}
 	else
 	{

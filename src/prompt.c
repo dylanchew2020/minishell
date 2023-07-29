@@ -13,42 +13,22 @@
 #include "minishell.h"
 
 static char	*get_prompt_str(void);
-
-static int	lexer_paser_exec(t_root *sh, char **envp, char **cmd)
-{
-	char	*tmp;
-	t_list	*cmd_lexer;
-	t_tree	*head;
-
-	history_add(&sh->history, *cmd);
-	tmp = *cmd;
-	*cmd = expand(*cmd, &sh->env_list);
-	free(tmp);
-	exit_prompt(*cmd, sh);
-	cmd_lexer = lexer(*cmd);
-	if (cmd_lexer == NULL)
-		return (-1);
-	head = parser(cmd_lexer, ft_lstsize(cmd_lexer), sh);
-	ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->previous);
-	signals(sh, 0);
-	recurse_bst(head, envp, sh);
-	reset_data(sh, &cmd_lexer, &head);
-	return (0);
-}
+static int	lexer_paser_exec(t_root *sh, char **envp, char **cmd);
 
 void	prompt(t_root *sh, char **envp)
 {
 	char	*cmd;
 	char	*prompt_str;
 
-	env_link_list(envp, &sh->env_list);
 	while (TRUE)
 	{
 		signals(sh, 1);
+		if (sh->exit_cmd_flag == 1)
+			break ;
 		prompt_str = get_prompt_str();
 		cmd = readline(prompt_str);
 		if (!cmd)
-			exit_prompt(cmd, sh);
+			break ;
 		if (*cmd)
 		{
 			if (lexer_paser_exec(sh, envp, &cmd) == -1)
@@ -57,9 +37,6 @@ void	prompt(t_root *sh, char **envp)
 		free(cmd);
 		free(prompt_str);
 	}
-	history_clear(&sh->history);
-	ft_lstclear(&sh->env_list, del_data);
-	return ;
 }
 
 static char	*get_prompt_str(void)
@@ -90,21 +67,23 @@ static char	*get_prompt_str(void)
 	return (p);
 }
 
-void	exit_prompt(char *cmd, t_root *sh)
+static int	lexer_paser_exec(t_root *sh, char **envp, char **cmd)
 {
-	int	i;
+	char	*tmp;
+	t_list	*cmd_lexer;
+	t_tree	*head;
 
-	if (!cmd || !ft_strncmp(cmd, EXIT, 5))
-	{
-		free(cmd);
-		clear_history();
-		ft_close(sh->stdin_tmp);
-		ft_close(sh->stdout_tmp);
-		i = open("Makefile", O_RDONLY);
-		printf("i = %i\n", i);
-		close(i);
-		ft_lstclear(&sh->env_list, del_data);
-		// system("leaks minishell");
-		exit(EXIT_SUCCESS);
-	}
+	history_add(&sh->history, *cmd);
+	tmp = *cmd;
+	*cmd = expand(*cmd, &sh->env_list);
+	free(tmp);
+	cmd_lexer = lexer(*cmd);
+	if (cmd_lexer == NULL)
+		return (-1);
+	head = parser(cmd_lexer, ft_lstsize(cmd_lexer), sh);
+	ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->previous);
+	signals(sh, 0);
+	recurse_bst(head, envp, sh);
+	reset_data(sh, &cmd_lexer, &head);
+	return (0);
 }

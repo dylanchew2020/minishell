@@ -21,23 +21,25 @@
 					   variables.
  * @return          1 if a built-in command is executed, 0 otherwise.
  */
-int	builtin(char **cmd, t_list **env_list)
+int	builtin(char **cmd, t_root *sh)
 {
 	upper_to_lower(&cmd[0]);
 	if (ft_strncmp(cmd[0], "unset", ft_strlen("unset") + 1) == 0)
-		unset(cmd[1], env_list);
+		g_exit_status = unset(cmd[1], &sh->env_list);
 	else if (ft_strncmp(cmd[0], "cd", ft_strlen("cd") + 1) == 0)
-		g_exit_status = cd(cmd, env_list);
+		g_exit_status = cd(cmd, &sh->env_list);
 	else if (ft_strncmp(cmd[0], "pwd", ft_strlen("pwd") + 1) == 0)
 		g_exit_status = pwd();
 	else if (ft_strncmp(cmd[0], "export", ft_strlen("export") + 1) == 0)
-		g_exit_status = export(cmd, env_list);
+		g_exit_status = export(cmd, &sh->env_list);
 	else if (ft_strncmp(cmd[0], "env", ft_strlen("env") + 1) == 0)
-		get_env(env_list);
+		g_exit_status = get_env(&sh->env_list);
 	else if (ft_strncmp(cmd[0], "echo", ft_strlen("echo") + 1) == 0)
-		echo_builtin(cmd);
+		g_exit_status = echo_command(cmd);
+	else if (ft_strncmp(cmd[0], "exit", ft_strlen("exit") + 1) == 0)
+		g_exit_status = exit_command(cmd, sh);
 	else
-		return (0);
+		return (0);	
 	return (1);
 }
 

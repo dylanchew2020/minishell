@@ -30,18 +30,12 @@ void	ft_tcsetattr(int fd, int optional_actions, struct termios *termios_p)
 	}
 }
 
-void	free_2d(char **str)
+int	array2d_len(char **str)
 {
 	int	i;
 
-	i = -1;
-	while (str[++i])
-		free(str[i]);
-	free(str);
-}
-
-void	mini_error(char *str, int exit_code)
-{
-	ft_putstr_fd(str, 2);
-	exit(exit_code);
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }

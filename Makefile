@@ -11,7 +11,7 @@ NAME		:= minishell
 # CC			:= clang
 CC			:= gcc
 FLAGS		:= -Wall -Wextra -Werror
-# FSAN		:= -fsanitize=address -g3
+FSAN		:= -fsanitize=address -g3
 
 ################################################################################
 #                               PROGRAM'S INCLUDES                             #

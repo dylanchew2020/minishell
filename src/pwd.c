@@ -21,7 +21,7 @@ int	pwd(void)
 
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 	{
-		perror("getcwd() error");
+		perror("pwd: ");
 		return (EXIT_FAILURE);		
 	}
 	else

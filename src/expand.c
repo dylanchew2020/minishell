@@ -49,8 +49,7 @@ void	join_dollar_ptr(t_expand_variable *data, t_list **env_list)
 	data->expanded_cmd = sub_or_join(data->expanded_cmd, \
 									data->start, data->len, data->substring);
 	data->dollar_ptr++;
-	if (data->dollar_ptr[0] == '?' && \
-		(data->dollar_ptr[1] == ' ' || data->dollar_ptr[1] == '\0'))
+	if (data->dollar_ptr[0] == '?')
 		replace_exit_status(data);
 	else
 	{

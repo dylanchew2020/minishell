@@ -32,13 +32,3 @@ void	print_tree(t_tree *root, int b)
 	print_tree(root->right, 0);
 	--level;
 }
-
-void	free_tree(t_tree *node)
-{
-	if (node == NULL)
-		return ;
-	free_tree(node->left);
-	free_tree(node->right);
-	free(node->value);
-	free(node);
-}
