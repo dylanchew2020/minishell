@@ -26,30 +26,30 @@ static int	loop_n(char *str)
 	return (1);
 }
 
-void	echo_builtin(char **cmd)
+int	echo_command(char **cmd)
 {
-	int	i;
-	int	flag;
-	int	flag2;
-
-	flag = 0;
-	flag2 = 0;
-	i = 0;
-	while (cmd[++i])
+	t_echo_var	echo;
+	
+	echo.flag = 0;
+	echo.flag2 = 0;
+	echo.i = 0;
+	while (cmd[++echo.i])
 	{
-		if ((ft_strncmp(cmd[i], "-n", 2) == 0) && (loop_n((cmd[i] + 2)) == 1) \
-			&& (flag2 == 0))
+		if ((ft_strncmp(cmd[echo.i], "-n", 2) == 0) && (loop_n((cmd[echo.i] + 2)) == 1)\
+			&& (echo.flag2 == 0))
 		{
-			flag = 1;
+			echo.flag = 1;
 			continue ;
 		}
 		else
 		{
-			write(1, cmd[i], ft_strlen(cmd[i]));
-			write(1, " ", 1);
-			flag2 = 1;
+			write(1, cmd[echo.i], ft_strlen(cmd[echo.i]));
+			if (cmd[echo.i + 1] != NULL)
+				write(1, " ", 1);
+			echo.flag2 = 1;
 		}
 	}
-	if (flag != 1)
+	if (echo.flag != 1)
 		write(1, "\n", 1);
+	return (EXIT_SUCCESS);
 }

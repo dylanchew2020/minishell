@@ -32,6 +32,8 @@ void	env_link_list(char **envp, t_list **env_list)
 	while (envp[i])
 	{
 		content = ft_calloc(1, sizeof(t_env));
+		if	(!content)
+			exit(EXIT_FAILURE);
 		content->key = ft_substr(envp[i], 0, ft_strchr(envp[i], '=') - envp[i]);
 		content->value = ft_substr(envp[i], \
 						ft_strchr(envp[i], '=') - envp[i] + 1, \
@@ -49,7 +51,7 @@ void	env_link_list(char **envp, t_list **env_list)
  * @param env_list Double pointer to the linked list containing the environment variables.
  */
 
-void	get_env(t_list **env_list)
+int	get_env(t_list **env_list)
 {
 	t_env	*data;
 	t_list	*tmp;
@@ -61,6 +63,7 @@ void	get_env(t_list **env_list)
 		printf("%s=%s\n", data->key, data->value);
 		tmp = tmp->next;
 	}
+	return (EXIT_SUCCESS);
 }
 
 /**

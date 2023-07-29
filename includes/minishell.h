@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
 /*   Updated: 2023/07/29 17:22:46 by tzi-qi           ###   ########.fr       */
@@ -44,6 +44,13 @@
 # define RESET	"\033[0m"
 
 # define EXIT	"exit"
+# define EXIT_MISUSE 2		/* Misused of shell built-ins */
+# define EXIT_NO_INVOKE 126	/* Command invoked cannot execute */
+# define EXIT_NO_CMD 127	/* Command not found */
+# define EXIT_BAD_EXIT 128	/* Invalid exit argument */
+# define EXIT_CTRL_C 130	/* Ctrl-C */
+# define EXIT_SIGNAL 137	/* Signal */
+# define EXIT_RANGE 255		/* Exit Status out of range */
 
 # define PIPE_OP	"|"
 # define RDIN_OP	"<"
@@ -53,6 +60,8 @@
 
 # define SINGLE_QUOTE	"\'"
 # define DOUBLE_QUOTE	"\""
+
+extern int	g_exit_status;
 
 typedef struct s_history
 {
@@ -88,6 +97,33 @@ typedef struct s_tree
 	struct s_tree	*right;
 }	t_tree;
 
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+}	t_env;
+
+typedef struct s_echo_var
+{
+	int	i;
+	int	flag;
+	int	flag2;
+}	t_echo_var;
+
+typedef struct s_expand_variable
+{
+	char	*expanded_cmd;
+	char	*substring;
+	char	*dollar_ptr;
+	char	*single_quote_ptr;
+	char	*exit_status_str;
+	char	*start;
+	char	*key;
+	char	*value;
+	int		count;
+	int		len;
+}	t_expand_variable;
+
 typedef struct s_root
 {
 	t_history		*history;
@@ -100,35 +136,16 @@ typedef struct s_root
 	struct termios	previous;
 	struct termios	current;
 	int				heredoc_flag;
+	int				exit_cmd_flag;
 }	t_root;
 
-typedef struct s_env
-{
-	char			*key;
-	char			*value;
-}	t_env;
-
-typedef struct s_expand_variable
-{
-	char	*expanded_cmd;
-	char	*substring;
-	char	*dollar_ptr;
-	char	*single_quote_ptr;
-	char	*start;
-	char	*key;
-	char	*value;
-	int		count;
-	int		len;
-}	t_expand_variable;
 /* PROGRAM */
 
-void		init_root(t_root *root);
-void		free_2d(char **str);
+void		init_root(t_root *root, char **envp);
 
 /* PROMPT */
 
 void		prompt(t_root *sh, char **envp);
-void		exit_prompt(char *cmd, t_root *sh);
 
 /* HISTORY */
 
@@ -161,7 +178,6 @@ void		init_token_check(t_token_check	*tkchk);
 
 /* TREE_UTILS */
 void		print_tree(t_tree *root, int b);
-void		free_tree(t_tree *node);
 
 /* EXECUTE */
 
@@ -188,6 +204,7 @@ int			ft_dup2(int new_fd, int old_fd);
 void		ft_tcgetattr(int fd, struct termios *termios_p);
 void		ft_tcsetattr(int fd, int optional_actions, \
 						struct termios *termios_p);
+int			array2d_len(char **str);
 
 /* PIPE */
 void		children(t_tree *node, char **envp, t_root *sh);
@@ -201,25 +218,28 @@ char		*find_file(char *node_value);
 
 /* ENV */
 
+int			get_env(t_list **env_list);
 void		env_link_list(char **envp, t_list **env_list);
-void		get_env(t_list **env_list);
 char		*existed_env(char *key, t_list **env_list);
 void		creat_new_env_node(char *key, char	*input, t_list **env_list);
 
 /* BUILT IN */
-int			builtin(char **cmd, t_list **env_list);
+
+int			builtin(char **cmd, t_root *sh);
+void		upper_to_lower(char **str);
 
 /* FREE */
 
 void		del_data(void	*content);
 void		reset_data(t_root *sh, t_list **cmd_lexer, t_tree **head);
+void		free_tree(t_tree *node);
+void		free_2d(char **str);
 
 /* EXPORT */
 
-void		export(char **cmd, t_list **env_list);
+int			export(char **cmd, t_list **env_list);
 char		*key_check(char *input);
-char		*find_value(char *input);
-void		add_link_list(char	*input, t_list	**env_list);
+int			add_link_list(char	*input, t_list	**env_list);
 void		modified_value(t_env *data_node, char *input);
 void		export_declare(t_list **env_list);
 
@@ -235,13 +255,16 @@ void		init_data(t_expand_variable *data, char *cmd);
 char		*join_remaining(t_expand_variable *data, char *cmd);
 
 /* PWD */
-void		pwd(void);
+
+int			pwd(void);
 
 /* UNSET */
-void		unset(char *key, t_list **env_list);
+
+int			unset(char *key, t_list **env_list);
 
 /* CD */
-void		cd(char **value, t_list **env_list);
+
+int			cd(char **value, t_list **env_list);
 
 /* QUOTE */
 char		**cmd_quote_handler(char const *s, char c);
@@ -255,18 +278,28 @@ int			quote_count(char *cmd);
 char		**cmd_join(char **res, t_root *sh);
 
 /*	SIGNAL */
+
 void		signal_handler(int signum);
 void		signal_handler2(int signum);
 void		heredoc_signal(int signum);
 void		signals(t_root	*sh, int mode);
 
 /* ECHO */
-void		echo_builtin(char **cmd);
+
+int			echo_command(char **cmd);
 
 /* HERE_DOC */
+
 int			heredoc_fd(char *node_value, t_root *sh);
 void		heredoc_child(t_root *sh, char *delim, int heredoc_fd);
 char		*heredoc_input(t_root *sh, char *delim);
 int			heredoc_parent(pid_t child_pid, char *delim);
+
+/* EXIT */
+
+int			exit_status(int status);
+int			exit_command(char **cmd, t_root *sh);
+void		exit_prompt(t_root *sh);
+
 
 #endif

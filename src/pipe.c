@@ -57,7 +57,6 @@ void	right_child(int *pipe, t_tree *node, char **envp, t_root *sh)
 void	children_parent(t_tree *node, char **envp, t_root *sh)
 {
 	pid_t	children[2];
-	int		status;
 
 	children[0] = ft_fork();
 	if (children[0] == 0)
@@ -77,8 +76,9 @@ void	children_parent(t_tree *node, char **envp, t_root *sh)
 	sh->pipe[1] = 0;
 	ft_close(sh->pipe[0]);
 	sh->pipe[0] = 0;
-	waitpid(children[0], &status, 0);
-	waitpid(children[1], &status, 0);
+	waitpid(children[0], &g_exit_status, 0);
+	waitpid(children[1], &g_exit_status, 0);
+	g_exit_status = exit_status(g_exit_status);
 }
 
 void	heredoc_check(t_tree *node, char **envp, t_root *sh)

@@ -15,12 +15,16 @@
 /**
  * pwd - Prints the current working directory.
  */
-void	pwd(void)
+int	pwd(void)
 {
 	char	cwd[256];
 
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
-		perror("getcwd() error");
+	{
+		perror("pwd: ");
+		return (EXIT_FAILURE);		
+	}
 	else
 		printf("%s\n",cwd);
+	return (EXIT_SUCCESS);
 }

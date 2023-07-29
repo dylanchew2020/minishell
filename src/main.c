@@ -14,19 +14,22 @@
 
 static void	print_banner(void);
 
+int g_exit_status = EXIT_SUCCESS;
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_root	sh;
 
 	(void) argv;
 	(void) argc;
-	init_root(&sh);
+	init_root(&sh, envp);
 	print_banner();
 	prompt(&sh, envp);
-	return (0);
+	exit_prompt(&sh);
+	return (g_exit_status);
 }
 
-void	init_root(t_root *sh)
+void	init_root(t_root *sh, char **envp)
 {
 	sh->history = NULL;
 	init_token_check(sh->tkchk);
@@ -34,6 +37,7 @@ void	init_root(t_root *sh)
 	sh->stdin_tmp = dup(STDIN_FILENO);
 	sh->stdout_tmp = dup(STDOUT_FILENO);
 	sh->env_list = NULL;
+	env_link_list(envp, &sh->env_list);
 	sh->pipe = ft_calloc(2, sizeof(int));
 	ft_tcgetattr(STDIN_FILENO, &sh->previous);
 	ft_tcgetattr(STDIN_FILENO, &sh->current);
@@ -41,16 +45,7 @@ void	init_root(t_root *sh)
 	ft_tcsetattr(STDIN_FILENO, TCSAFLUSH, &sh->current);
 	ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->current);
 	sh->heredoc_flag = 0;
-}
-
-void	free_2d(char **str)
-{
-	int	i;
-
-	i = -1;
-	while (str[++i])
-		free(str[i]);
-	free(str);
+	sh->exit_cmd_flag = 0;
 }
 
 void	init_token_check(t_token_check	*tkchk)

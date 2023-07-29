@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
 /*   Updated: 2023/07/29 16:19:15 by tzi-qi           ###   ########.fr       */
@@ -89,14 +89,13 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 	char	*path;
 	char	**cmd;
 	pid_t	child;
-	int		status;
 
 	if (ft_strncmp(argv, "history", 7) == 0)
 		return (history_print(sh->history));
 	cmd = cmd_quote_handler(argv, ' ');
 	if (sh->tree_arg_value != NULL)
 		cmd = cmd_join(cmd, sh);
-	if (builtin(cmd, &sh->env_list) == 1)
+	if (builtin(cmd, sh) == 1)
 	{
 		free_2d(cmd);
 		return ;
@@ -106,9 +105,13 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 	if (child == 0)
 	{
 		if (execve(path, cmd, envp) == -1)
-			exit(printf("Error: Command not found: %s.\n", *cmd));
+		{
+			printf("Error: Command not found: %s.\n", *cmd);
+			exit(EXIT_NO_CMD);
+		}
 	}
-	waitpid(child, &status, 0);
+	waitpid(child, &g_exit_status, 0);
+	g_exit_status = exit_status(g_exit_status);
 	free(path);
 	free_2d(cmd);
 }

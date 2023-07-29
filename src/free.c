@@ -47,3 +47,23 @@ void	reset_data(t_root *sh, t_list **cmd_lexer, t_tree **head)
 		current = next;
 	}
 }
+
+void	free_2d(char **str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+		free(str[i]);
+	free(str);
+}
+
+void	free_tree(t_tree *node)
+{
+	if (node == NULL)
+		return ;
+	free_tree(node->left);
+	free_tree(node->right);
+	free(node->value);
+	free(node);
+}

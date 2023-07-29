@@ -18,14 +18,14 @@
  * @param env_list  Double pointer to the linked list of environment variables.
  * @param key       The key of the environment variable to be removed.
  */
-void	unset(char *key, t_list **env_list)
+int	unset(char *key, t_list **env_list)
 {
 	t_list	*tmp;
 	t_list	*prev;
 	t_env	*data;
 
 	if (key == NULL)
-		return ;
+		return (EXIT_SUCCESS);
 	tmp = *env_list;
 	prev = NULL;
 	while (tmp)
@@ -43,4 +43,5 @@ void	unset(char *key, t_list **env_list)
 		prev = tmp;
 		tmp = tmp->next;
 	}
+	return (EXIT_SUCCESS);
 }

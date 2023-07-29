@@ -57,7 +57,7 @@ int	ft_open(const char *file, int flags, int permission)
 	{
 		printf("open: %d\n", getpid());
 		ft_putstr_fd("Error: Can't open file\n", 2);
-		exit (1);
+		exit (EXIT_FAILURE);
 	}
 	return (fd);
 }

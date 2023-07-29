@@ -94,13 +94,12 @@ void	heredoc_child(t_root *sh, char *delim, int heredoc_fd)
 int	heredoc_parent(pid_t child_pid, char *delim)
 {
 	int	fd;
-	int	status;
 
 	signal(SIGQUIT, SIG_IGN);
-	waitpid(child_pid, &status, 0);
-	status = WEXITSTATUS(status);
+	waitpid(child_pid, &g_exit_status, 0);
+	g_exit_status = exit_status(g_exit_status);
 	free(delim);
-	if (status == 255)
+	if (g_exit_status == 255)
 		return (-1);
 	if (access(".here_doc_tmp", F_OK & X_OK) != 0)
 	{

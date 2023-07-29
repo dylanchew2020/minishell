@@ -11,7 +11,7 @@ NAME		:= minishell
 # CC			:= clang
 CC			:= gcc
 FLAGS		:= -Wall -Wextra -Werror
-# FSAN		:= -fsanitize=address -g3
+FSAN		:= -fsanitize=address -g3
 
 ################################################################################
 #                               PROGRAM'S INCLUDES                             #
@@ -28,7 +28,7 @@ INC_DIR		= includes
 INC			= -I./$(INC_DIR)
 INC_LIBFT	= -I./$(LIBFT_DIR)$(INC_DIR)
 INC_RL		= -I/usr/local/opt/readline/include
-# INC_RL		= -I/usr/include/readline 
+# INC_RL		= -I/usr/include/readline
 
 ################################################################################
 #                                 PROGRAM'S SRCS                               #
@@ -63,6 +63,7 @@ SRC			:= $(addsuffix .c, \
 					heredoc\
 					expand2\
 					recurse_bst_functions\
+					exit\
 					tree_utils\
 					quote_utils\
 					cmd_join)
