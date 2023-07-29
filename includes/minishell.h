@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/26 19:43:53 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/29 12:11:59 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@
 
 # define SINGLE_QUOTE	"\'"
 # define DOUBLE_QUOTE	"\""
+
+extern int	g_exit_stat;
 
 typedef struct s_history
 {
@@ -121,6 +123,7 @@ typedef struct s_expand_variable
 	char	*substring;
 	char	*dollar_ptr;
 	char	*single_quote_ptr;
+	char	*exit_status_str;
 	char	*start;
 	char	*key;
 	char	*value;
@@ -260,18 +263,25 @@ char		**cmd_quote_handler(char const *s, char c);
 char		**cmd_join(char **res, char **add_arg);
 
 /*	SIGNAL */
+
 void		signal_handler(int signum);
 void		signal_handler2(int signum);
 void		heredoc_signal(int signum);
 void		signals(t_root	*sh, int mode);
 
 /* ECHO */
+
 void		echo_builtin(char **cmd);
 
 /* HERE_DOC */
+
 int			heredoc_fd(char *node_value, t_root *sh);
 void		heredoc_child(t_root *sh, char *delim, int heredoc_fd);
 char		*heredoc_input(t_root *sh, char *delim);
 int			heredoc_parent(pid_t child_pid, char *delim);
+
+/* EXIT */
+
+int	exit_status(int status);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 15:52:57 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/26 18:55:30 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/29 12:11:25 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static char	*join_path_helper(char *cmd, char **tmp, int i)
 {
 	char	*join;
 
-	printf("cmd: %s\n", cmd);
+	// printf("cmd: %s\n", cmd);
 	if (ft_strncmp(tmp[i], cmd, ft_strlen(tmp[i])) == 0)
 	{
 		free_2d(tmp);

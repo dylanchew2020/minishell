@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:04 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/15 19:07:45 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/29 12:16:47 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,9 +156,7 @@ char	**cmd_quote_handler(char const *s, char c)
 		res[i] = nextstr(&s, c);
 		if (!res[i])
 		{
-			while (i > 0)
-				free(res[--i]);
-			free(res);
+			free_2d(res);
 			return (NULL);
 		}
 		++i;
@@ -187,9 +185,7 @@ char	**cmd_join(char **res, char **add_arg)
 		new_res[i] = ft_strdup(res[i]);
 		if (!new_res[i])
 		{
-			while (i > 0)
-				free(new_res[--i]);
-			free(new_res);
+			free_2d(new_res);
 			return (NULL);
 		}
 		++i;
@@ -200,21 +196,13 @@ char	**cmd_join(char **res, char **add_arg)
 		new_res[i] = ft_strdup(add_arg[j]);
 		if (!new_res[i])
 		{
-			while (i > 0)
-				free(new_res[--i]);
-			free(new_res);
+			free_2d(new_res);
 			return (NULL);
 		}
 		++i;
 		++j;
 	}
-	i = 0;
-	while (res[i] != NULL)
-		free(res[i++]);
-	free(res);
-	j = 0;
-	while (add_arg[j] != NULL)
-		free(add_arg[j++]);
-	free(add_arg);
+	free_2d(res);
+	free_2d(add_arg);
 	return (new_res);
 }

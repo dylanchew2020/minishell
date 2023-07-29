@@ -28,7 +28,7 @@ INC_DIR		= includes
 INC			= -I./$(INC_DIR)
 INC_LIBFT	= -I./$(LIBFT_DIR)$(INC_DIR)
 INC_RL		= -I/usr/local/opt/readline/include
-# INC_RL		= -I/usr/include/readline 
+# INC_RL		= -I/usr/include/readline
 
 ################################################################################
 #                                 PROGRAM'S SRCS                               #
@@ -62,7 +62,8 @@ SRC			:= $(addsuffix .c, \
 					echo\
 					heredoc\
 					expand2\
-					recurse_bst_functions)
+					recurse_bst_functions\
+					exit)
 
 OBJ_DIR		:= ./obj
 OBJ			:= $(SRC:%.c=$(OBJ_DIR)/%.o)

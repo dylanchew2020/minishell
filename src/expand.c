@@ -3,14 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 12:16:13 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/26 19:43:42 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/29 12:07:19 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	replace_exit_status(t_expand_variable *data)
+{
+	char	*exit_status_str;
+
+	exit_status_str = ft_itoa(g_exit_stat);
+	data->expanded_cmd = sub_or_join(data->expanded_cmd, \
+										data->start, 0, exit_status_str);
+	free(exit_status_str);
+	data->dollar_ptr++;
+}
 
 void	single_quote(t_expand_variable *data)
 {
@@ -38,15 +49,21 @@ void	join_dollar_ptr(t_expand_variable *data, t_list **env_list)
 	data->expanded_cmd = sub_or_join(data->expanded_cmd, \
 									data->start, data->len, data->substring);
 	data->dollar_ptr++;
-	data->key = key_check(data->dollar_ptr);
-	data->value = existed_env(data->key, env_list);
-	if (data->value != NULL)
-		data->expanded_cmd = sub_or_join(data->expanded_cmd, \
-										data->start, 0, data->value);
-	if (data->key != NULL)
+	if (data->dollar_ptr[0] == '?' && \
+		(data->dollar_ptr[1] == ' ' || data->dollar_ptr[1] == '\0'))
+		replace_exit_status(data);
+	else
 	{
-		data->dollar_ptr += ft_strlen(data->key);
-		free(data->key);
+		data->key = key_check(data->dollar_ptr);
+		data->value = existed_env(data->key, env_list);
+		if (data->value != NULL)
+			data->expanded_cmd = sub_or_join(data->expanded_cmd, \
+											data->start, 0, data->value);
+		if (data->key != NULL)
+		{
+			data->dollar_ptr += ft_strlen(data->key);
+			free(data->key);
+		}
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 10:30:27 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/29 10:40:37 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/29 12:23:58 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@ int	exit_status(int status)
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
+	{
+		printf("exit status: %i\n", WTERMSIG(status));
 		return (WTERMSIG(status) + 128);
+	}
 	return (0);
 }
