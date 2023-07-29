@@ -61,7 +61,7 @@
 # define SINGLE_QUOTE	"\'"
 # define DOUBLE_QUOTE	"\""
 
-extern int	g_exit_stat;
+extern int	g_exit_status;
 
 typedef struct s_history
 {
@@ -225,10 +225,10 @@ void		del_data(void	*content);
 
 /* EXPORT */
 
-void		export(char **cmd, t_list **env_list);
+int			export(char **cmd, t_list **env_list);
 char		*key_check(char *input);
 char		*find_value(char *input);
-void		add_link_list(char	*input, t_list	**env_list);
+int			add_link_list(char	*input, t_list	**env_list);
 void		modified_value(t_env *data_node, char *input);
 void		export_declare(t_list **env_list);
 
@@ -245,7 +245,7 @@ char		*join_remaining(t_expand_variable *data, char *cmd);
 
 /* PWD */
 
-void		pwd(void);
+int			pwd(void);
 
 /* UNSET */
 
@@ -253,7 +253,7 @@ void		unset(char *key, t_list **env_list);
 
 /* CD */
 
-void		cd(char **value, t_list **env_list);
+int			cd(char **value, t_list **env_list);
 
 /* QUOTE */
 

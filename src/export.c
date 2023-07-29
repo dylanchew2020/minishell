@@ -12,6 +12,31 @@
 
 #include "minishell.h"
 
+int	export(char **cmd, t_list **env_list)
+{
+	char	**split;
+	int		i;
+
+	i = 1;
+	split = cmd;
+	if (split[1] == NULL)
+	{
+		export_declare(env_list);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		while (split[i])
+		{
+			if (ft_strchr(split[i], '=') != NULL)
+				if (add_link_list(split[i], env_list) != 0)
+					return (EXIT_FAILURE);
+			i++;
+		}
+	}
+	return (EXIT_SUCCESS);
+}
+
 void	export_declare(t_list **env_list)
 {
 	t_list	*tmp;
@@ -26,41 +51,6 @@ void	export_declare(t_list **env_list)
 	}
 }
 
-//  * export - Handles the export command, which either displays the current 
-// 			   environment variables
-//  *          or adds new environment variables.
-//  *
-//  * @param cmd       Double pointer to the command array.
-//  * @param env_list  Double pointer to the linked list containing 
-// 					   environment variables.
-
-void	export(char **cmd, t_list **env_list)
-{
-	char	**split;
-	int		i;
-
-	i = 1;
-	split = cmd;
-	if (split[1] == NULL)
-		export_declare(env_list);
-	else
-	{
-		while (split[i])
-		{
-			if (ft_strchr(split[i], '=') != NULL)
-				add_link_list(split[i], env_list);
-			i++;
-		}
-	}
-	free_2d(split);
-}
-
-/**
- * modified_value - Modifies the value of an environment variable node.
- *
- * @param data_node  Pointer to the environment variable node.
- * @param input      The new input value.
- */
 void	modified_value(t_env *data_node, char *input)
 {
 	char	*value;
@@ -74,13 +64,7 @@ void	modified_value(t_env *data_node, char *input)
 	free(tmp);
 }
 
-/**
- * modified_value - Modifies the value of an environment variable node.
- *
- * @param data_node  Pointer to the environment variable node.
- * @param input      The new input value.
- */
-void	add_link_list(char	*input, t_list	**env_list)
+int	add_link_list(char	*input, t_list	**env_list)
 {
 	char	*key;
 	t_env	*data;
@@ -89,7 +73,7 @@ void	add_link_list(char	*input, t_list	**env_list)
 
 	key = key_check(input);
 	if (key == NULL)
-		return ;
+		return (EXIT_FAILURE);
 	tmp = *env_list;
 	while (tmp)
 	{
@@ -104,16 +88,9 @@ void	add_link_list(char	*input, t_list	**env_list)
 	}
 	if (i != 0)
 		creat_new_env_node(key, input, env_list);
+	return (EXIT_SUCCESS);
 }
 
-// /**
-//  * key_check - Checks if the input string is a valid identifier 
-// 				 (environment variable key).
-//  *
-//  * @param input   The input string to check.
-//  * @return        The extracted key if it's a valid identifier,
-// 					 or NULL otherwise.
-//  */
 char	*key_check(char *input)
 {
 	int		i;
@@ -123,6 +100,7 @@ char	*key_check(char *input)
 	if (ft_isalpha(input[0]) == 0 && input[0] != '_')
 	{
 		printf("export 1: '%s': not a valid identifier\n", input);
+		g_exit_status = 1;
 		return (NULL);
 	}
 	while (ft_isalnum(input[i]) || input[i] == '_')

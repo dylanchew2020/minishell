@@ -131,12 +131,12 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 	char	**cmd;
 	pid_t	child;
 
-	printf("exit status: %i\n", g_exit_stat);
 	if (ft_strncmp(argv, "history", 7) == 0)
 		return (history_print(sh->history));
 	cmd = cmd_quote_handler(argv, ' ');
 	if (sh->add_arg != NULL)
 		cmd = cmd_join(cmd, cmd_quote_handler(sh->add_arg, ' '));
+	print_exec_cmd(cmd);
 	if (builtin(cmd, &sh->env_list) == 1)
 	{
 		free_2d(cmd);
@@ -151,8 +151,8 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 	}
 	else
 	{
-		waitpid(child, &g_exit_stat, 0);
-		exit_status(g_exit_stat);
+		waitpid(child, &g_exit_status, 0);
+		g_exit_status = exit_status(g_exit_status);
 		free(path);
 		free_2d(cmd);
 	}

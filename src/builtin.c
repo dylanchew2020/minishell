@@ -26,11 +26,11 @@ int	builtin(char **cmd, t_list **env_list)
 	if (ft_strncmp(cmd[0], "unset", ft_strlen("unset") + 1) == 0)
 		unset(cmd[1], env_list);
 	else if (ft_strncmp(cmd[0], "cd", ft_strlen("cd") + 1) == 0)
-		cd(cmd, env_list);
+		g_exit_status = cd(cmd, env_list);
 	else if (ft_strncmp(cmd[0], "pwd", ft_strlen("pwd") + 1) == 0)
-		pwd();
+		g_exit_status = pwd();
 	else if (ft_strncmp(cmd[0], "export", ft_strlen("export") + 1) == 0)
-		export(cmd, env_list);
+		g_exit_status = export(cmd, env_list);
 	else if (ft_strncmp(cmd[0], "env", ft_strlen("env") + 1) == 0)
 		get_env(env_list);
 	else if (ft_strncmp(cmd[0], "echo", ft_strlen("echo") + 1) == 0)

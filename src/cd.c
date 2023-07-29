@@ -24,7 +24,7 @@ static void	tilda_helper(char **dir, t_list **env_list);
  * @param value An array containing the command and its arguments.
  * @param env_list Pointer to the environment list.
  */
-void	cd(char **value, t_list **env_list)
+int	cd(char **value, t_list **env_list)
 {
 	char	**split;
 	int		i;
@@ -35,7 +35,7 @@ void	cd(char **value, t_list **env_list)
 		if (existed_env("HOME", env_list) == NULL)
 		{
 			ft_putstr_fd("cd: HOME not set\n", 2);
-			return ;
+			return (EXIT_FAILURE);
 		}
 		i = chdir(existed_env("HOME", env_list));
 	}
@@ -45,9 +45,12 @@ void	cd(char **value, t_list **env_list)
 		tilda_helper(&split[1], env_list);
 		i = chdir(split[1]);
 		if (i != 0)
+		{
 			perror("cd: ");
-		free_2d(split);
+			return (EXIT_FAILURE);
+		}
 	}
+	return (EXIT_SUCCESS);
 }
 
 /**
@@ -72,11 +75,10 @@ static void	tilda_helper(char **dir, t_list **env_list)
 		free(*dir);
 		*dir = ft_strdup(existed_env("HOME", env_list));
 	}
-	else if (tilda_ptr != NULL && tilda_ptr < slash_ptr) 
+	else if (tilda_ptr != NULL && tilda_ptr < slash_ptr)
 	{
 		tmp = *dir;
 		*dir = ft_strjoin(existed_env("HOME", env_list), slash_ptr);
 		free(tmp);
 	}
 }
-

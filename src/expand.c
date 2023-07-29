@@ -16,7 +16,7 @@ static void	replace_exit_status(t_expand_variable *data)
 {
 	char	*exit_status_str;
 
-	exit_status_str = ft_itoa(g_exit_stat);
+	exit_status_str = ft_itoa(g_exit_status);
 	data->expanded_cmd = sub_or_join(data->expanded_cmd, \
 										data->start, 0, exit_status_str);
 	free(exit_status_str);

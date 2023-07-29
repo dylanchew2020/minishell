@@ -17,9 +17,6 @@ int	exit_status(int status)
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
-	{
-		printf("exit status: %i\n", WTERMSIG(status));
 		return (WTERMSIG(status) + 128);
-	}
 	return (0);
 }
