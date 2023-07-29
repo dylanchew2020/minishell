@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int	loop_n( char *str)
+static int	loop_n(char *str)
 {
 	int i;
 
