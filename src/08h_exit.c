@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 10:30:27 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/29 12:23:58 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/30 15:01:29 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	exit_status(int status)
 int	exit_command(char **cmd, t_root *sh)
 {
 	int	i;
-	
+
 	i = 0;
 	sh->exit_cmd_flag = 1;
 	if (array2d_len(cmd) == 1)
@@ -57,15 +57,9 @@ void	exit_prompt(t_root *sh)
 {
 	if (sh->exit_cmd_flag == 1)
 	{
-		
 		ft_close(sh->stdin_tmp);
 		ft_close(sh->stdout_tmp);
 		history_clear(&sh->history);
 		ft_lstclear(&sh->env_list, del_data);
-		// i = open("Makefile", O_RDONLY);
-		// printf("i = %i\n", i);
-		// close(i);
-		// system("leaks minishell");
-		// exit(g_exit_status);
 	}
 }

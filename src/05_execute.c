@@ -1,16 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute.c                                          :+:      :+:    :+:   */
+/*   05_execute.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/29 16:19:15 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/30 16:31:40 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	exec_cmd(char *argv, char **envp, t_root *sh);
 
 /**
  * recurse_bst - Traverses a binary syntax tree (BST) recursively, processing
@@ -31,46 +33,17 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 	if (node == NULL)
 		return ;
 	if (node->token == PIPE)
-		children(node, envp, sh);
+		pipe_handler(node, envp, sh);
 	else if (node->token == RDIN)
-		recurse_rdin(node, envp, sh);
+		rdin_handler(node, envp, sh);
 	else if (node->token == RDOUT)
-		recurse_rdout(node, envp, sh);
+		rdout_handler(node, envp, sh);
 	else if (node->token == RDAPP)
-		recurse_rdapp(node, envp, sh);
+		rdapp_handler(node, envp, sh);
 	else if (node->token == HEREDOC)
-		recurse_heredoc(node, envp, sh);
+		heredoc_handler(node, envp, sh);
 	else if (node->token == COMMAND)
 		exec_cmd(node->value, envp, sh);
-}
-
-/**
- * redir_arg - Calls the function recurse_bst for the right and left child
- *             of a node if they exist. This function is called when a
- *             redirection token (RDIN or RDOUT) is found in the
- *             binary syntax tree (BST) during traversal by recurse_bst.
- *
- * @param node
- * A pointer to the current node in the BST.
- *
- * @param envp
- * The current environment variables.
- *
- * @returns
- * Void.
- */
-void	redir_arg(t_tree *node, char **envp, t_root *sh)
-{
-	if (node->right != NULL)
-	{
-		if (node->left != NULL && node->left->token == COMMAND && \
-			node->right->token == COMMAND)
-			sh->tree_arg_value = node->right->value;
-		else
-			recurse_bst(node->right, envp, sh);
-	}
-	if (node->left != NULL)
-		recurse_bst(node->left, envp, sh);
 }
 
 /**
@@ -84,14 +57,12 @@ void	redir_arg(t_tree *node, char **envp, t_root *sh)
  * @returns
  *  void.
  */
-void	exec_cmd(char *argv, char **envp, t_root *sh)
+static void	exec_cmd(char *argv, char **envp, t_root *sh)
 {
 	char	*path;
 	char	**cmd;
 	pid_t	child;
 
-	if (ft_strncmp(argv, "history", 7) == 0)
-		return (history_print(sh->history));
 	cmd = cmd_quote_handler(argv, ' ');
 	if (sh->tree_arg_value != NULL)
 		cmd = cmd_join(cmd, sh);
@@ -114,16 +85,4 @@ void	exec_cmd(char *argv, char **envp, t_root *sh)
 	g_exit_status = exit_status(g_exit_status);
 	free(path);
 	free_2d(cmd);
-}
-
-void	print_exec_cmd(char **cmd)
-{
-	int	i;
-
-	i = 0;
-	while (cmd[i] != NULL)
-	{
-		printf("argv[%d]: |%s|\n", i, cmd[i]);
-		i++;
-	}
 }

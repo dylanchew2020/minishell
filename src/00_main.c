@@ -1,20 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   00_main.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:26:51 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/29 15:59:12 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/30 17:18:39 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static int	init_root(t_root *sh, char **envp);
+static void	init_token_check(t_token_check	*tkchk);
 static void	print_banner(void);
 
-int g_exit_status = EXIT_SUCCESS;
+int	g_exit_status = EXIT_SUCCESS;
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -22,33 +24,42 @@ int	main(int argc, char **argv, char **envp)
 
 	(void) argv;
 	(void) argc;
-	init_root(&sh, envp);
+	if (init_root(&sh, envp) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	print_banner();
 	prompt(&sh, envp);
 	exit_prompt(&sh);
 	return (g_exit_status);
 }
 
-void	init_root(t_root *sh, char **envp)
+static int	init_root(t_root *sh, char **envp)
 {
 	sh->history = NULL;
 	init_token_check(sh->tkchk);
 	sh->tree_arg_value = NULL;
 	sh->stdin_tmp = dup(STDIN_FILENO);
 	sh->stdout_tmp = dup(STDOUT_FILENO);
+	if (sh->stdin_tmp == -1 || sh->stdout_tmp == -1)
+		return (EXIT_FAILURE);
 	sh->env_list = NULL;
-	env_link_list(envp, &sh->env_list);
+	if (env_link_list(envp, &sh->env_list) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	sh->pipe = ft_calloc(2, sizeof(int));
-	ft_tcgetattr(STDIN_FILENO, &sh->previous);
-	ft_tcgetattr(STDIN_FILENO, &sh->current);
+	if (!sh->pipe)
+		return (EXIT_FAILURE);
+	if (ft_tcgetattr(STDIN_FILENO, &sh->previous) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (ft_tcgetattr(STDIN_FILENO, &sh->current) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	sh->current.c_lflag &= ~ECHOCTL;
-	ft_tcsetattr(STDIN_FILENO, TCSAFLUSH, &sh->current);
-	ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->current);
+	if (ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->current) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	sh->heredoc_flag = 0;
 	sh->exit_cmd_flag = 0;
+	return (EXIT_SUCCESS);
 }
 
-void	init_token_check(t_token_check	*tkchk)
+static void	init_token_check(t_token_check	*tkchk)
 {
 	tkchk[0].token = RDAPP;
 	tkchk[0].op = RDAPP_OP;

@@ -36,37 +36,37 @@ INC_RL		= -I/usr/local/opt/readline/include
 
 SRC_DIR		:= ./src
 SRC			:= $(addsuffix .c, \
-					main\
-					builtin\
-					env\
-					execute\
-					history\
-					lexer\
-					lexer_token_count\
-					lexer_char_count\
-					parser\
-					path\
-					pipe\
-					prompt\
-					quote\
-					redirect\
-					signal\
-					ft_utlis\
-					export\
-					free\
-					expand\
-					pwd\
-					cd\
-					unset\
-					ft_utlis2\
-					echo\
-					heredoc\
-					expand2\
-					recurse_bst_functions\
-					exit\
-					tree_utils\
-					quote_utils\
-					cmd_join)
+					00_main \
+					01_prompt\
+					02_expand\
+					02a_expand_utils\
+					03_lexer\
+					03a_lexer_token_count\
+					03b_lexer_char_count\
+					04_parser\
+					04a_parser_utils\
+					05_execute\
+					05a_exec_utils\
+					05b_exec_path\
+					06_pipe\
+					07_redirection\
+					07a_redir_utils\
+					07b_redir_heredoc\
+					08_builtin\
+					08a_echo\
+					08b_cd\
+					08c_pwd\
+					08d_export\
+					08e_unset\
+					08f_env\
+					08g_history\
+					08h_exit\
+					09_quote\
+					09a_quote_utils\
+					10_signal\
+					11_free\
+					12_minishell_utils\
+					13_minishell_utils2)
 
 OBJ_DIR		:= ./obj
 OBJ			:= $(SRC:%.c=$(OBJ_DIR)/%.o)

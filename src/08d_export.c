@@ -1,16 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
+/*   08d_export.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 17:26:43 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/26 17:25:28 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/30 16:19:24 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	export_declare(t_list **env_list);
+static void	modified_value(t_env *data_node, char *input);
+static int	add_link_list(char	*input, t_list	**env_list);
 
 int	export(char **cmd, t_list **env_list)
 {
@@ -37,7 +41,7 @@ int	export(char **cmd, t_list **env_list)
 	return (EXIT_SUCCESS);
 }
 
-void	export_declare(t_list **env_list)
+static void	export_declare(t_list **env_list)
 {
 	t_list	*tmp;
 	t_env	*data;
@@ -51,7 +55,7 @@ void	export_declare(t_list **env_list)
 	}
 }
 
-void	modified_value(t_env *data_node, char *input)
+static void	modified_value(t_env *data_node, char *input)
 {
 	char	*value;
 	char	*tmp;
@@ -64,7 +68,7 @@ void	modified_value(t_env *data_node, char *input)
 	free(tmp);
 }
 
-int	add_link_list(char	*input, t_list	**env_list)
+static int	add_link_list(char	*input, t_list	**env_list)
 {
 	char	*key;
 	t_env	*data;

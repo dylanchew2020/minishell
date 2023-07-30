@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_utlis.c                                         :+:      :+:    :+:   */
+/*   12_minishell_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:00:27 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/20 19:32:56 by lchew            ###   ########.fr       */
+/*   Updated: 2023/07/30 17:32:24 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	ft_pipe(int p[2])
 	{
 		printf("pipe: %d\n", getpid());
 		perror("pipe");
-		exit (EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	}
 	return (*p);
 }
@@ -56,8 +56,8 @@ int	ft_open(const char *file, int flags, int permission)
 	if (fd < 0)
 	{
 		printf("open: %d\n", getpid());
-		ft_putstr_fd("Error: Can't open file\n", 2);
-		exit (EXIT_FAILURE);
+		ft_putstr_fd("Error: Failed to open file\n", 2);
+		exit(EXIT_FAILURE);
 	}
 	return (fd);
 }
@@ -79,8 +79,8 @@ int	ft_fork(void)
 	if (child < 0)
 	{
 		printf("fork: %d\n", getpid());
-		ft_putstr_fd("Error: Can't fork a child\n", 2);
-		exit (1);
+		ft_putstr_fd("Error: Failed to create child process\n", 2);
+		exit(1);
 	}
 	return (child);
 }
@@ -101,8 +101,8 @@ int	ft_close(int fd)
 	if (close(fd) < 0)
 	{
 		printf("close: %d\n", getpid());
-		ft_putstr_fd("Error: Can't close the fd\n", 2);
-		exit (1);
+		ft_putstr_fd("Error: Failed to close the fd\n", 2);
+		exit(EXIT_FAILURE);
 	}
 	return (0);
 }
@@ -126,6 +126,9 @@ int	ft_dup2(int new_fd, int old_fd)
 
 	i = dup2(new_fd, old_fd);
 	if (i < 0)
-		exit(printf("Error: Can't dup2\n"));
+	{
+		printf("Error: Failed to dup2\n");
+		exit(EXIT_FAILURE);
+	}
 	return (i);
 }

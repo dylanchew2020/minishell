@@ -1,16 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc.c                                          :+:      :+:    :+:   */
+/*   07b_redir_heredoc.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 17:50:58 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/26 18:17:07 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/30 17:28:46 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	heredoc_parent(pid_t child_pid, char *delim);
+static void	heredoc_child(t_root *sh, char *delim, int heredoc_fd);
 
 /**
  * heredoc_fd - to check whether the redirect in file exists or not.
@@ -43,35 +46,35 @@ int	heredoc_fd(char *node_value, t_root *sh)
 	return (fd);
 }
 
-char	*heredoc_input(t_root *sh, char *delim)
+static int	heredoc_parent(pid_t child_pid, char *delim)
 {
-	char	*line;
+	int	fd;
 
-	if (sh->pipe[1] != 0)
+	signal(SIGQUIT, SIG_IGN);
+	waitpid(child_pid, &g_exit_status, 0);
+	g_exit_status = exit_status(g_exit_status);
+	free(delim);
+	if (g_exit_status == 255)
+		return (-1);
+	if (access(".here_doc_tmp", F_OK & X_OK) != 0)
 	{
-		ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
-		line = readline("> ");
-		ft_dup2(sh->pipe[1], STDOUT_FILENO);
+		printf("Error: %s: %s\n", strerror(errno), ".here_doc_tmp");
+		return (-1);
 	}
-	else
-		line = readline("> ");
-	if (line == NULL)
-	{
-		free(delim);
-		free(line);
-		exit(-1);
-	}
-	return (line);
+	fd = ft_open(".here_doc_tmp", O_RDONLY, 0666);
+	return (fd);
 }
 
-void	heredoc_child(t_root *sh, char *delim, int heredoc_fd)
+static char	*heredoc_input(t_root *sh, char *delim);
+
+static void	heredoc_child(t_root *sh, char *delim, int heredoc_fd)
 {
 	char	*line;
 	char	*tmp;
 
 	while (TRUE)
 	{
-		signals(sh, 2);
+		signals(2);
 		line = heredoc_input(sh, delim);
 		if ((ft_strlen(line) == ft_strlen(delim)) \
 		&& (ft_strncmp(line, delim, ft_strlen(delim)) == 0))
@@ -91,21 +94,23 @@ void	heredoc_child(t_root *sh, char *delim, int heredoc_fd)
 	exit(EXIT_SUCCESS);
 }
 
-int	heredoc_parent(pid_t child_pid, char *delim)
+static char	*heredoc_input(t_root *sh, char *delim)
 {
-	int	fd;
+	char	*line;
 
-	signal(SIGQUIT, SIG_IGN);
-	waitpid(child_pid, &g_exit_status, 0);
-	g_exit_status = exit_status(g_exit_status);
-	free(delim);
-	if (g_exit_status == 255)
-		return (-1);
-	if (access(".here_doc_tmp", F_OK & X_OK) != 0)
+	if (sh->pipe[1] != 0)
 	{
-		printf("Error: %s: %s\n", strerror(errno), ".here_doc_tmp");
-		return (-1);
+		ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
+		line = readline("> ");
+		ft_dup2(sh->pipe[1], STDOUT_FILENO);
 	}
-	fd = ft_open(".here_doc_tmp", O_RDONLY, 0666);
-	return (fd);
+	else
+		line = readline("> ");
+	if (line == NULL)
+	{
+		free(delim);
+		free(line);
+		exit(EXIT_SUCCESS);
+	}
+	return (line);
 }

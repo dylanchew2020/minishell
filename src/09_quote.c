@@ -1,43 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quote.c                                            :+:      :+:    :+:   */
+/*   09_quote.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:04 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/29 17:22:06 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/30 16:01:34 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	countstr(char const *s, char c)
-{
-	int	count;
-	int	quote_len;
+static char	*nextstr(char const **s, char c);
+static int	countstr(char const *s, char c);
 
-	count = 0;
-	while (*s != '\0')
+char	**cmd_quote_handler(char const *s, char c)
+{
+	char	**res;
+	int		i;
+	int		n;
+
+	if (s == NULL)
+		return (NULL);
+	n = countstr(s, c);
+	res = ft_calloc(n + 1, sizeof(char *));
+	i = 0;
+	while (i < n)
 	{
-		if (*s != c)
+		res[i] = nextstr(&s, c);
+		if (!res[i])
 		{
-			++count;
-			quote_len = quote_count((char *)s);
-			while ((quote_len > 0 || *s != c) && *s != '\0')
-			{
-				s += quote_len;
-				quote_len = 0;
-				if (is_quote(*s) != 0)
-					quote_len = quote_count((char *)s);
-				else if (*s != ' ' && *s != '\0')
-					++s;
-			}
+			free_2d(res);
+			return (NULL);
 		}
-		else
-			++s;
+		++i;
 	}
-	return (count);
+	return (res);
 }
 
 static char	*nextstr(char const **s, char c)
@@ -69,26 +68,30 @@ static char	*nextstr(char const **s, char c)
 	return (remove_quote(str));
 }
 
-char	**cmd_quote_handler(char const *s, char c)
+static int	countstr(char const *s, char c)
 {
-	char	**res;
-	int		i;
-	int		n;
+	int	count;
+	int	quote_len;
 
-	if (s == NULL)
-		return (NULL);
-	n = countstr(s, c);
-	res = ft_calloc(n + 1, sizeof(char *));
-	i = 0;
-	while (i < n)
+	count = 0;
+	while (*s != '\0')
 	{
-		res[i] = nextstr(&s, c);
-		if (!res[i])
+		if (*s != c)
 		{
-			free_2d(res);
-			return (NULL);
+			++count;
+			quote_len = quote_count((char *)s);
+			while ((quote_len > 0 || *s != c) && *s != '\0')
+			{
+				s += quote_len;
+				quote_len = 0;
+				if (is_quote(*s) != 0)
+					quote_len = quote_count((char *)s);
+				else if (*s != ' ' && *s != '\0')
+					++s;
+			}
 		}
-		++i;
+		else
+			++s;
 	}
-	return (res);
+	return (count);
 }

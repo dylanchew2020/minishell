@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin.c                                          :+:      :+:    :+:   */
+/*   08_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:11 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/29 14:17:28 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/30 16:41:47 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,35 +23,24 @@
  */
 int	builtin(char **cmd, t_root *sh)
 {
-	upper_to_lower(&cmd[0]);
-	if (ft_strncmp(cmd[0], "unset", ft_strlen("unset") + 1) == 0)
-		g_exit_status = unset(cmd[1], &sh->env_list);
+	str_to_lower(&cmd[0]);
+	if (ft_strncmp(cmd[0], "echo", ft_strlen("echo") + 1) == 0)
+		g_exit_status = echo_command(cmd);
 	else if (ft_strncmp(cmd[0], "cd", ft_strlen("cd") + 1) == 0)
 		g_exit_status = cd(cmd, &sh->env_list);
 	else if (ft_strncmp(cmd[0], "pwd", ft_strlen("pwd") + 1) == 0)
 		g_exit_status = pwd();
 	else if (ft_strncmp(cmd[0], "export", ft_strlen("export") + 1) == 0)
 		g_exit_status = export(cmd, &sh->env_list);
+	else if (ft_strncmp(cmd[0], "unset", ft_strlen("unset") + 1) == 0)
+		g_exit_status = unset(++cmd, &sh->env_list);
 	else if (ft_strncmp(cmd[0], "env", ft_strlen("env") + 1) == 0)
 		g_exit_status = get_env(&sh->env_list);
-	else if (ft_strncmp(cmd[0], "echo", ft_strlen("echo") + 1) == 0)
-		g_exit_status = echo_command(cmd);
+	else if (ft_strncmp(cmd[0], "history", ft_strlen("history") + 1) == 0)
+		g_exit_status = history_print(sh->history);
 	else if (ft_strncmp(cmd[0], "exit", ft_strlen("exit") + 1) == 0)
 		g_exit_status = exit_command(cmd, sh);
 	else
-		return (0);	
+		return (0);
 	return (1);
-}
-
-void	upper_to_lower(char **str)
-{
-	int		i;
-
-	i = 0;
-	while ((*str)[i])
-	{
-		if ((*str)[i] >= 'A' && (*str)[i] <= 'Z')
-			(*str)[i] += 32;
-		i++;
-	}
 }

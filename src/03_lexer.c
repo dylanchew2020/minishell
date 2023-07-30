@@ -6,7 +6,7 @@
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:34:45 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/12 16:30:56 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/30 14:59:47 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,8 @@ static void	cmd_modifier(char *cmd, char **tokens)
 			tokens[i][j++] = *cmd++;
 			while (*cmd == *(cmd - 1) || *cmd == ' ')
 				tokens[i][j++] = *cmd++;
-			if (ft_strchr("<>", *(cmd - 1)) != NULL && *cmd != ' ' && *cmd != '\0')
+			if (ft_strchr("<>", *(cmd - 1)) != NULL && \
+				*cmd != ' ' && *cmd != '\0')
 				tokens[i][j++] = ' ';
 			while (ft_strchr("|<> ", *cmd) == NULL && *cmd != '\0')
 				quote_cmd_mod(&cmd, tokens, &i, &j);

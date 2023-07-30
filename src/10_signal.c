@@ -1,16 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   10_signal.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:00 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/26 17:14:41 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/30 17:22:23 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	signal_handler(int signum);
+static void	signal_handler2(int signum);
+static void	heredoc_signal(int signum);
 
 /**
  * signals - Set up signal handlers based on the given mode.
@@ -22,9 +26,8 @@
  *              Mode 2: Set heredoc_signal for SIGINT and ignore SIGQUIT signal.
  * @return: void
  */
-void	signals(t_root	*sh, int mode)
+void	signals(int mode)
 {
-	(void) sh;
 	if (mode == 1)
 	{
 		signal(SIGINT, signal_handler);
@@ -49,7 +52,7 @@ void	signals(t_root	*sh, int mode)
  * @param signum: The signal number.
  * @return: void
  */
-void	signal_handler(int signum)
+static void	signal_handler(int signum)
 {
 	if (signum == SIGQUIT)
 	{
@@ -73,7 +76,7 @@ void	signal_handler(int signum)
  * @param signum: The signal number.
  * @return: void
  */
-void	signal_handler2(int signum)
+static void	signal_handler2(int signum)
 {
 	if (signum == SIGINT)
 	{
@@ -92,8 +95,8 @@ void	signal_handler2(int signum)
  * @param signum: The signal number.
  * @return: void
  */
-void	heredoc_signal(int signum)
+static void	heredoc_signal(int signum)
 {
 	if (signum == SIGINT)
-		exit(EXIT_SUCCESS);
+		exit(EXIT_FAILURE);
 }

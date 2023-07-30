@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   01_prompt.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/29 16:20:01 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/07/30 17:22:55 by tzi-qi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	prompt(t_root *sh, char **envp)
 
 	while (TRUE)
 	{
-		signals(sh, 1);
+		signals(1);
 		if (sh->exit_cmd_flag == 1)
 			break ;
 		prompt_str = get_prompt_str();
@@ -53,7 +53,7 @@ static char	*get_prompt_str(void)
 		ft_memmove(cwd + 1, cwd + ft_strlen(getenv("HOME")), \
 				ft_strlen(cwd + ft_strlen(getenv("HOME"))) + 1);
 	}
-	p_size = ft_strlen(cwd) + ft_strlen(GREEN) + ft_strlen(BLUE)\
+	p_size = ft_strlen(cwd) + ft_strlen(GREEN) + ft_strlen(BLUE) \
 			+ ft_strlen(RESET) + 13 + 8;
 	p = (char *)ft_calloc(p_size, sizeof(char));
 	if (p == NULL)
@@ -82,7 +82,7 @@ static int	lexer_paser_exec(t_root *sh, char **envp, char **cmd)
 		return (-1);
 	head = parser(cmd_lexer, ft_lstsize(cmd_lexer), sh);
 	ft_tcsetattr(STDIN_FILENO, TCSANOW, &sh->previous);
-	signals(sh, 0);
+	signals(0);
 	recurse_bst(head, envp, sh);
 	reset_data(sh, &cmd_lexer, &head);
 	return (0);
