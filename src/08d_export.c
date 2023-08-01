@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 17:26:43 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/01 23:05:45 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/01 23:20:41 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	export(char **cmd, t_list **env_list)
 			if (ft_strchr(split[i], '=') != NULL)
 				if (add_link_list(split[i], env_list) == 1)
 					return (EXIT_FAILURE);
-			else
 			i++;
 		}
 	}
@@ -79,7 +78,6 @@ static int	add_link_list(char	*input, t_list	**env_list)
 	int		i;
 
 	key = key_check(input);
-	printf("key: %s\n", key);
 	if (key == NULL)
 		return (EXIT_FAILURE);
 	tmp = *env_list;
@@ -102,17 +100,20 @@ static int	add_link_list(char	*input, t_list	**env_list)
 
 int	invalid_identifier(char *input)
 {
-	char	*space_ptr;
+	char	*start;
 	char	*equal_ptr;
 
-	space_ptr = ft_strchr(input, ' ');
+	start = input;
 	equal_ptr = ft_strchr(input, '=');
-	if ((ft_isalpha(input[0]) == 0 && input[0] != '_') || \
-		(space_ptr != NULL && space_ptr < equal_ptr))
-	{
-		printf("export 1: '%s': not a valid identifier\n", input);
-		g_exit_status = 1;
-		return (EXIT_FAILURE);
+	while (input < equal_ptr)
+	{	
+		if ((ft_isalpha(*input) == 0 && *input != '_'))
+		{
+			printf("export 1: '%s': not a valid identifier\n", start);
+			g_exit_status = 1;
+			return (EXIT_FAILURE);
+		}
+		++input;
 	}
 	return (EXIT_SUCCESS);
 }
