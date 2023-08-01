@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   08d_export.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 17:26:43 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/30 16:19:24 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/08/01 21:38:32 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,13 @@ int	export(char **cmd, t_list **env_list)
 	{
 		while (split[i])
 		{
+			if ((ft_isalpha(split[i][0]) == 0 && split[i][0] != '_') || \
+				ft_strchr(split[i], ' ') != NULL)
+			{
+				printf("export 1: '%s': not a valid identifier\n", split[i]);
+				g_exit_status = 1;
+				return (EXIT_FAILURE);
+			}
 			if (ft_strchr(split[i], '=') != NULL)
 				if (add_link_list(split[i], env_list) != 0)
 					return (EXIT_FAILURE);
@@ -76,13 +83,14 @@ static int	add_link_list(char	*input, t_list	**env_list)
 	int		i;
 
 	key = key_check(input);
+	printf("key: |%s| %p\n", key, key);
 	if (key == NULL)
 		return (EXIT_FAILURE);
 	tmp = *env_list;
 	while (tmp)
 	{
 		data = (t_env *)tmp->content;
-		i = ft_strncmp(data->key, key, ft_strlen(data->key));
+		i = ft_strncmp(data->key, key, ft_strlen(data->key) + 1);
 		if (i == 0)
 		{
 			modified_value(data, input);
@@ -101,12 +109,8 @@ char	*key_check(char *input)
 	char	*key;
 
 	i = 0;
-	if (ft_isalpha(input[0]) == 0 && input[0] != '_')
-	{
-		printf("export 1: '%s': not a valid identifier\n", input);
-		g_exit_status = 1;
-		return (NULL);
-	}
+	printf("input: |%s| %p\n", input, input);
+	printf("input space: %p\n", ft_strchr(input, ' '));
 	while (ft_isalnum(input[i]) || input[i] == '_')
 		i++;
 	if (i == 0)

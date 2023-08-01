@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quote_utlis.c                                      :+:      :+:    :+:   */
+/*   09a_quote_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 15:31:51 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/29 15:32:51 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/08/01 19:50:13 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,7 @@ int	quote_count(char *cmd)
 	while (is_quote(*cmd) != quote_type)
 	{
 		if (*cmd == '\0')
-		{
-			printf("minishell: unclosed quote\n");
 			return (-1);
-		}
 		++count;
 		++cmd;
 	}

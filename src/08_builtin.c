@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   08_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:11 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/30 16:41:47 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/08/01 17:09:12 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	builtin(char **cmd, t_root *sh)
 	else if (ft_strncmp(cmd[0], "export", ft_strlen("export") + 1) == 0)
 		g_exit_status = export(cmd, &sh->env_list);
 	else if (ft_strncmp(cmd[0], "unset", ft_strlen("unset") + 1) == 0)
-		g_exit_status = unset(++cmd, &sh->env_list);
+		g_exit_status = unset(cmd + 1, &sh->env_list);
 	else if (ft_strncmp(cmd[0], "env", ft_strlen("env") + 1) == 0)
 		g_exit_status = get_env(&sh->env_list);
 	else if (ft_strncmp(cmd[0], "history", ft_strlen("history") + 1) == 0)
@@ -42,5 +42,6 @@ int	builtin(char **cmd, t_root *sh)
 		g_exit_status = exit_command(cmd, sh);
 	else
 		return (0);
+	free_2d(cmd);
 	return (1);
 }

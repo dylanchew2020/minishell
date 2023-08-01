@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/30 17:22:36 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/08/01 15:52:19 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,7 @@ t_list		*lexer(char *cmd);
 int			count_token(char *cmd);
 int			count_sp_char(char *cmd);
 int			count_char(char *cmd);
+void		cmd_modifier(char *cmd, char **tokens);
 
 /* 04_PARSER */
 

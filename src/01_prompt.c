@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   01_prompt.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/30 17:22:55 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/08/01 19:16:54 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,9 @@ void	prompt(t_root *sh, char **envp)
 	while (TRUE)
 	{
 		signals(1);
-		if (sh->exit_cmd_flag == 1)
-			break ;
 		prompt_str = get_prompt_str();
 		cmd = readline(prompt_str);
+		free(prompt_str);
 		if (!cmd)
 			break ;
 		if (*cmd)
@@ -35,7 +34,8 @@ void	prompt(t_root *sh, char **envp)
 				continue ;
 		}
 		free(cmd);
-		free(prompt_str);
+		if (sh->exit_cmd_flag == 1)
+			break ;
 	}
 }
 

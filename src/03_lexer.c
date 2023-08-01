@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   03_lexer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:34:45 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/30 14:59:47 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/08/01 19:51:32 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 #include "minishell.h"
 
-static void	cmd_modifier(char *cmd, char **tokens);
-static void	quote_cmd_mod(char **cmd, char **tokens, int *i, int *j);
+static char	**tokenizer(char *cmd);
 
 /**
  * lexer - Converts a command string into a list of tokens, where a token can
@@ -31,18 +30,11 @@ t_list	*lexer(char *cmd)
 {
 	char	**tokens;
 	char	**tokens_head;
-	int		token_num;
 	t_list	*head;
 	t_list	*node;
 
-	if (!cmd)
-		return (NULL);
-	token_num = count_token(cmd);
-	if (token_num == -1)
-		return (NULL);
-	tokens = ft_calloc(token_num + 1, sizeof(char *));
-	cmd_modifier(cmd, tokens);
-	if (!tokens || !*tokens)
+	tokens = tokenizer(cmd);
+	if (!tokens)
 		return (NULL);
 	tokens_head = tokens;
 	head = ft_lstnew(ft_strtrim(*tokens++, " "));
@@ -63,78 +55,29 @@ t_list	*lexer(char *cmd)
 	return (head);
 }
 
-/**
- * cmd_modifier - Tokenizes a given command string based on certain characters
- *                ('|', '<', '>').
- * @param cmd: The command string to be tokenized.
- *
- * @returns
- * An array of tokens derived from the command string 'cmd'.
- * Each token can be a command or an operator ('|', '<', '>').
- * This array of tokens is dynamically allocated and hence should be freed
- * by the caller when it is no longer needed. If the command string 'cmd'
- * is empty or NULL, the function returns an array containing a single NULL
- * pointer.
- */
-static void	cmd_modifier(char *cmd, char **tokens)
+static char	**tokenizer(char *cmd)
 {
-	int	i;
-	int	j;
+	int		token_num;
+	char	**tokens;
 
-	i = 0;
-	while (*cmd != '\0')
+	if (!cmd)
+		return (NULL);
+	if (!(*cmd))
 	{
-		j = 0;
-		while (*cmd == ' ')
-			++cmd;
-		if (*cmd == '|')
-		{
-			tokens[i] = ft_calloc(count_sp_char(cmd) + 1, sizeof(char));
-			tokens[i][j++] = *cmd++;
-			while (*cmd == *(cmd - 1))
-				tokens[i][j++] = *cmd++;
-			tokens[i++][j] = '\0';
-		}
-		else if (ft_strchr("<>", *cmd) != NULL && *cmd != '\0')
-		{
-			tokens[i] = ft_calloc(count_sp_char(cmd) + 1, sizeof(char));
-			tokens[i][j++] = *cmd++;
-			while (*cmd == *(cmd - 1) || *cmd == ' ')
-				tokens[i][j++] = *cmd++;
-			if (ft_strchr("<>", *(cmd - 1)) != NULL && \
-				*cmd != ' ' && *cmd != '\0')
-				tokens[i][j++] = ' ';
-			while (ft_strchr("|<> ", *cmd) == NULL && *cmd != '\0')
-				quote_cmd_mod(&cmd, tokens, &i, &j);
-			tokens[i][j] = '\0';
-			++i;
-		}
-		else if (*cmd != '\0')
-		{
-			tokens[i] = ft_calloc(count_char(cmd) + 1, sizeof(char));
-			while (ft_strchr("|<>", *cmd) == NULL && *cmd != '\0')
-				quote_cmd_mod(&cmd, tokens, &i, &j);
-			tokens[i++][j] = '\0';
-		}
+		free(cmd);
+		return (NULL);
 	}
-}
-
-static void	quote_cmd_mod(char **cmd, char **tokens, int *i, int *j)
-{
-	int	quote_len;
-
-	quote_len = quote_count(*cmd);
-	if (quote_len == 0)
+	token_num = count_token(cmd);
+	if (token_num == -1)
 	{
-		tokens[*i][(*j)++] = **cmd;
-		++(*cmd);
+		free(cmd);
+		return (NULL);
 	}
-	else
-	{
-		while (quote_len-- > 0)
-		{
-			tokens[*i][(*j)++] = **cmd;
-			++(*cmd);
-		}
-	}
+	tokens = ft_calloc(token_num + 1, sizeof(char *));
+	if (!tokens)
+		return (NULL);
+	cmd_modifier(cmd, tokens);
+	if (!tokens || !*tokens)
+		return (NULL);
+	return (tokens);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   05a_execute_utils.c                                :+:      :+:    :+:   */
+/*   07_redirection.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 19:59:58 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/30 15:36:35 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/08/01 16:28:24 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,20 @@ void	rdout_handler(t_tree *node, char **envp, t_root *sh)
 void	rdapp_handler(t_tree *node, char **envp, t_root *sh)
 {
 	int	fd;
+	int	i;
 
+	i = 0;
+	while (node->value[i] == RDOUT_OP[0])
+		++i;
+	if (i == 3)
+		ft_putstr_fd("minishell: syntax error near unexpected token `<'\n", 2);
+	else if (i > 3)
+		ft_putstr_fd("minishell: syntax error near unexpected token `<<'\n", 2);
+	if (i > 2)
+	{
+		g_exit_status = 258;
+		return ;
+	}
 	fd = 0;
 	fd = rdapp_fd(node->value, sh);
 	if (fd < 0)
@@ -56,7 +69,20 @@ void	rdapp_handler(t_tree *node, char **envp, t_root *sh)
 void	heredoc_handler(t_tree *node, char **envp, t_root *sh)
 {
 	int	fd;
+	int	i;
 
+	i = 0;
+	while (node->value[i] == RDIN_OP[0])
+		++i;
+	if (i == 3)
+		ft_putstr_fd("minishell: syntax error near unexpected token `<'\n", 2);
+	else if (i > 3)
+		ft_putstr_fd("minishell: syntax error near unexpected token `<<'\n", 2);
+	if (i > 2)
+	{
+		g_exit_status = 258;
+		return ;
+	}
 	fd = 0;
 	ft_dup2(sh->stdin_tmp, STDIN_FILENO);
 	fd = heredoc_fd(node->value, sh);

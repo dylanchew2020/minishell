@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   08f_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:10 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/30 17:13:44 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/08/01 20:03:19 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 int	get_env(t_list **env_list)
 {
@@ -65,7 +64,7 @@ char	*existed_env(char *key, t_list **env_list)
 	while (tmp)
 	{
 		data = (t_env *)tmp->content;
-		if (ft_strncmp(data->key, key, ft_strlen(key)) == 0)
+		if (ft_strncmp(data->key, key, ft_strlen(key) + 1) == 0)
 		{
 			value = data->value;
 			break ;

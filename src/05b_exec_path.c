@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   path.c                                             :+:      :+:    :+:   */
+/*   05b_exec_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 15:52:57 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/29 12:11:25 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/01 19:56:05 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ char	*get_exe_path(char *argv, t_list **env_list)
 	char	*join;
 
 	cmd = ft_strdup(argv);
-	if (strncmp(cmd, "./", 2) == 0 || strncmp(cmd, "../", 3) == 0)
+	if (ft_strncmp(cmd, "./", 2) == 0 || ft_strncmp(cmd, "../", 3) == 0)
 	{
 		if (access(cmd, X_OK) == 0)
 			return (cmd);
