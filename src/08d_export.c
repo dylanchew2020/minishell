@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 17:26:43 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/01 21:38:32 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/01 23:05:45 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,12 @@ int	export(char **cmd, t_list **env_list)
 	{
 		while (split[i])
 		{
-			if ((ft_isalpha(split[i][0]) == 0 && split[i][0] != '_') || \
-				ft_strchr(split[i], ' ') != NULL)
-			{
-				printf("export 1: '%s': not a valid identifier\n", split[i]);
-				g_exit_status = 1;
+			if (invalid_identifier(split[i]) == 1)
 				return (EXIT_FAILURE);
-			}
 			if (ft_strchr(split[i], '=') != NULL)
-				if (add_link_list(split[i], env_list) != 0)
+				if (add_link_list(split[i], env_list) == 1)
 					return (EXIT_FAILURE);
+			else
 			i++;
 		}
 	}
@@ -83,7 +79,7 @@ static int	add_link_list(char	*input, t_list	**env_list)
 	int		i;
 
 	key = key_check(input);
-	printf("key: |%s| %p\n", key, key);
+	printf("key: %s\n", key);
 	if (key == NULL)
 		return (EXIT_FAILURE);
 	tmp = *env_list;
@@ -100,22 +96,23 @@ static int	add_link_list(char	*input, t_list	**env_list)
 	}
 	if (i != 0)
 		creat_new_env_node(key, input, env_list);
+	free(key);
 	return (EXIT_SUCCESS);
 }
 
-char	*key_check(char *input)
+int	invalid_identifier(char *input)
 {
-	int		i;
-	char	*key;
+	char	*space_ptr;
+	char	*equal_ptr;
 
-	i = 0;
-	printf("input: |%s| %p\n", input, input);
-	printf("input space: %p\n", ft_strchr(input, ' '));
-	while (ft_isalnum(input[i]) || input[i] == '_')
-		i++;
-	if (i == 0)
-		key = NULL;
-	else
-		key = ft_substr(input, 0, i);
-	return (key);
+	space_ptr = ft_strchr(input, ' ');
+	equal_ptr = ft_strchr(input, '=');
+	if ((ft_isalpha(input[0]) == 0 && input[0] != '_') || \
+		(space_ptr != NULL && space_ptr < equal_ptr))
+	{
+		printf("export 1: '%s': not a valid identifier\n", input);
+		g_exit_status = 1;
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
 }

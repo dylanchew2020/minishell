@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/08/01 20:51:55 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/01 22:04:02 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ static void	exec_cmd(char *argv, char **envp, t_root *sh)
 	cmd = cmd_quote_handler(argv, ' ');
 	if (sh->tree_arg_value != NULL)
 		cmd = cmd_join(cmd, sh);
-	print_exec_cmd(cmd);
 	if (builtin(cmd, sh) == 1)
 		return ;
 	path = get_exe_path(cmd[0], &sh->env_list);

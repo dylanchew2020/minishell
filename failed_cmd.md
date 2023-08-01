@@ -1,9 +1,9 @@
 
-bash: export: `ee e=123': not a valid identifier - handled $=2
+bash: export: `ee e=123': not a valid identifier - handled
 $asdasd - handled
-export $=2
-export "hi world"=a
-export hi=bye bye=hi hi=test
+export $=2 - handled
+export "hi world"=a - handled
+export hi=bye bye=hi hi=test - handled
 unclosed quote leak - handled
 check all ft_strncmp -checked
 

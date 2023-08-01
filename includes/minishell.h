@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/08/01 15:52:19 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/01 23:04:47 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ typedef struct s_echo_var
 
 typedef struct s_expand_variable
 {
-	char	*expanded_cmd;
+	char	*new_cmd;
 	char	*substring;
 	char	*dollar_ptr;
 	char	*single_quote_ptr;
@@ -150,7 +150,7 @@ void		single_quote(t_expand_variable *data);
 void		join_dollar_ptr(t_expand_variable *data, t_list **env_list);
 void		replace_exit_status(t_expand_variable *data);
 char		*sub_or_join(char *cmd, char *start, int len, char *substring);
-char		*join_remaining(t_expand_variable *data, char *cmd);
+char		*key_check(char *input);
 
 /* 03_LEXER */
 
@@ -198,7 +198,7 @@ int			echo_command(char **cmd);
 int			cd(char **value, t_list **env_list);
 int			pwd(void);
 int			export(char **cmd, t_list **env_list);
-char		*key_check(char *input);
+int			invalid_identifier(char *input);
 int			unset(char **key, t_list **env_list);
 int			get_env(t_list **env_list);
 int			env_link_list(char **envp, t_list **env_list);

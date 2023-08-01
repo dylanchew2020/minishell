@@ -6,13 +6,14 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 12:16:13 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/01 19:13:00 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/01 22:42:27 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static void	init_data(t_expand_variable *data, char *cmd);
+static char	*join_remaining(t_expand_variable *data, char *cmd);
 
 /**
  * expand - Expands environment variables in the command string.
@@ -49,8 +50,20 @@ char	*expand(char *cmd, t_list **env_list)
 
 static void	init_data(t_expand_variable *data, char *cmd)
 {
-	data->expanded_cmd = NULL;
+	data->new_cmd = NULL;
 	data->substring = NULL;
 	data->start = cmd;
 	data->dollar_ptr = ft_strchr(cmd, '$');
+}
+
+static char	*join_remaining(t_expand_variable *data, char *cmd)
+{
+	if (data->substring != NULL)
+		free(data->substring);
+	data->substring = ft_substr(data->start, 0, ft_strlen(data->start));
+	cmd = sub_or_join(data->new_cmd, data->start, \
+						ft_strlen(data->start), data->substring);
+	free(data->substring);
+	free(data);
+	return (cmd);
 }

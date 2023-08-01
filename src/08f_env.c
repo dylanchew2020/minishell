@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:10 by lchew             #+#    #+#             */
-/*   Updated: 2023/08/01 20:03:19 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/01 22:01:32 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	creat_new_env_node(char *key, char	*input, t_list **env_list)
 	t_list	*node;
 
 	data = ft_calloc(1, sizeof(t_env));
-	data->key = key;
+	data->key = ft_substr(key, 0, ft_strlen(key));
 	data->value = ft_substr(input, ft_strchr(input, '=') \
 					- input + 1, ft_strlen(input) - \
 					(ft_strchr(input, '=') - input));
