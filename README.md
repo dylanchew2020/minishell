@@ -91,3 +91,8 @@ Write a function to implement the 'exit' builtin with no options. (Relevant func
 130: Script terminated by Control+C. This status is used when a script or command is terminated by the user using the Control+C key combination.
 137: Script terminated by a signal. This status is used when a script or command is terminated by a signal, usually indicating a fatal error.
 255: Exit status out of range. It is used when the exit command is given an exit status that is outside the valid range of 0 to 255.
+
+
+echo -nn  -nnnn h
+echo -nnnnn h
+echo -nn -nna hi

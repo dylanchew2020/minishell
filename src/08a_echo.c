@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 15:28:02 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/02 17:38:13 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 18:34:43 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	echo_command(char **cmd)
 	echo.i = 0;
 	while (cmd[++echo.i])
 	{
-		if ((ft_strncmp(cmd[echo.i], "-n", ft_strlen("-n") + 1) == 0) \
+		if ((ft_strncmp(cmd[echo.i], "-n", ft_strlen("-n")) == 0) \
 			&& (loop_n((cmd[echo.i] + 2)) == 1) \
 			&& (echo.flag2 == 0))
 		{
