@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 14:45:01 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/01 17:33:25 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 17:08:07 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,16 @@ int	unset(char **key, t_list **env_list)
 	return (EXIT_SUCCESS);
 }
 
+/**
+ * @brief Helper function to remove a specific environment variable.
+ *
+ * This function iterates through the linked list and searches for the
+ * environment variable with the given key. Once found, it removes the node
+ * from the linked list and deallocates the memory used by that node.
+ *
+ * @param key Pointer to the key of the environment variable to be removed.
+ * @param env_list Double pointer to the linked list of environment variables.
+ */
 static void	unset_helper(char **key, t_list **env_list)
 {
 	t_list	*tmp;

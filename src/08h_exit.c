@@ -6,12 +6,22 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 10:30:27 by lchew             #+#    #+#             */
-/*   Updated: 2023/08/01 14:49:20 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 17:05:26 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief Gets the exit status of a terminated child process.
+ *
+ * This function examines the status returned by wait() to determine
+ * how the child process terminated.
+ *
+ * @param status The status code returned by wait().
+ * @return The exit status if exited normally, or termination signal + 128
+ * if terminated by a signal.
+ */
 int	exit_status(int status)
 {
 	if (WIFEXITED(status))
@@ -21,6 +31,17 @@ int	exit_status(int status)
 	return (0);
 }
 
+/**
+ * @brief Implements the exit command of the shell.
+ *
+ * This function handles the exit command, determining the appropriate
+ * exit status, and handling error cases like non-numeric arguments
+ * or too many arguments.
+ *
+ * @param cmd The command line arguments.
+ * @param sh Pointer to the shell's root structure.
+ * @return The exit status code.
+ */
 int	exit_command(char **cmd, t_root *sh)
 {
 	int	i;
@@ -50,6 +71,15 @@ int	exit_command(char **cmd, t_root *sh)
 	return (ft_atoi(cmd[1]));
 }
 
+/**
+ * @brief Finalizes the exit process for the shell.
+ *
+ * If the exit flag is set, this function performs necessary cleanup
+ * before terminating the shell, such as closing file descriptors,
+ * clearing history, and freeing memory.
+ *
+ * @param sh Pointer to the shell's root structure.
+ */
 void	exit_prompt(t_root *sh)
 {
 	if (sh->exit_cmd_flag == 1)

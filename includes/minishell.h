@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/08/02 14:44:14 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 15:35:48 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ typedef struct s_echo_var
 
 typedef struct s_expand_variable
 {
-	char	*new_cmd;
+	char	*n_cmd;
 	char	*substring;
 	char	*dollar_ptr;
 	char	*single_quote_ptr;

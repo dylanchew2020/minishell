@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 17:26:43 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/02 14:43:32 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 17:10:56 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,14 @@ static void	export_declare(t_list **env_list);
 static void	modified_value(t_env *data_node, char *input);
 static int	add_link_list(char	*input, t_list	**env_list);
 
+/**
+ * export - Handles the export command in the shell.
+ *
+ * @param cmd: A pointer to the command string.
+ * @param env_list: A double pointer to the linked list of environment variables.
+ *
+ * @returns EXIT_SUCCESS on success or EXIT_FAILURE on failure.
+ */
 int	export(char **cmd, t_list **env_list)
 {
 	char	**split;
@@ -43,6 +51,12 @@ int	export(char **cmd, t_list **env_list)
 	return (EXIT_SUCCESS);
 }
 
+/**
+ * export_declare - Prints all current environment variables in the
+ * 					 "declare -x" format.
+ *
+ * @param env_list: A double pointer to the linked list of environment variables.
+ */
 static void	export_declare(t_list **env_list)
 {
 	t_list	*tmp;
@@ -60,6 +74,12 @@ static void	export_declare(t_list **env_list)
 	}
 }
 
+/**
+ * modified_value - Modifies the value of an existing environment variable.
+ *
+ * @param data_node: Pointer to the environment variable's data node.
+ * @param input: The new value to set for the environment variable.
+ */
 static void	modified_value(t_env *data_node, char *input)
 {
 	char	*value;
@@ -74,6 +94,15 @@ static void	modified_value(t_env *data_node, char *input)
 	free(tmp);
 }
 
+/**
+ * add_link_list - Adds or updates an environment variable in the linked list.
+ *
+ * @param input: The input string containing the environment variable key 
+ * 				 and value.
+ * @param env_list: A double pointer to the linked list of environment variables.
+ *
+ * @returns EXIT_SUCCESS on success or EXIT_FAILURE on failure.
+ */
 static int	add_link_list(char	*input, t_list	**env_list)
 {
 	char	*key;
@@ -103,6 +132,14 @@ static int	add_link_list(char	*input, t_list	**env_list)
 	return (EXIT_SUCCESS);
 }
 
+/**
+ * invalid_identifier - Validates the identifier format of an environment 
+ * 						variable.
+ *
+ * @param input: The input string containing the environment variable key.
+ *
+ * @returns EXIT_SUCCESS if the identifier is valid, or EXIT_FAILURE if invalid.
+ */
 int	invalid_identifier(char *input)
 {
 	char	*start;

@@ -1,17 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   history.c                                          :+:      :+:    :+:   */
+/*   08g_history.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:25:57 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/30 15:53:47 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/08/02 17:06:32 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief Creates a new history node.
+ *
+ * Allocates and initializes a new history node with the given index and
+ * command. The 'next' and 'prev' pointers are set to NULL.
+ *
+ * @param index The index for the new history node.
+ * @param cmd The command for the new history node.
+ * @return Pointer to the new history node, or NULL if allocation fails.
+ */
 t_history	*history_node_new(int index, void *cmd)
 {
 	t_history	*history;
@@ -99,6 +109,15 @@ void	history_add(t_history **history, char *cmd)
 	}
 }
 
+/**
+ * @brief Prints the history of commands.
+ *
+ * Iterates through a doubly-linked list of history nodes, printing the
+ * index and command of each node.
+ *
+ * @param history A pointer to the head of the doubly-linked list of history nodes.
+ * @return EXIT_SUCCESS, indicating successful execution.
+ */
 int	history_print(t_history *history)
 {
 	t_history	*tmp;

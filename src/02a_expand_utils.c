@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 19:41:17 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/01 23:06:15 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 15:36:21 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	single_quote(t_expand_variable *data)
 		free(data->substring);
 		data->substring = ft_substr(data->start, 0, data->len);
 	}
-	data->new_cmd = sub_or_join(data->new_cmd, \
+	data->n_cmd = sub_or_join(data->n_cmd, \
 					data->start, data->len, data->substring);
 	data->dollar_ptr = data->start;
 	data->dollar_ptr += data->len;
@@ -35,7 +35,7 @@ void	join_dollar_ptr(t_expand_variable *data, t_list **env_list)
 		free(data->substring);
 		data->substring = ft_substr(data->start, 0, data->len);
 	}
-	data->new_cmd = sub_or_join(data->new_cmd, \
+	data->n_cmd = sub_or_join(data->n_cmd, \
 									data->start, data->len, data->substring);
 	data->dollar_ptr++;
 	if (data->dollar_ptr[0] == '?')
@@ -45,10 +45,9 @@ void	join_dollar_ptr(t_expand_variable *data, t_list **env_list)
 		data->key = key_check(data->dollar_ptr);
 		data->value = existed_env(data->key, env_list);
 		if (data->value != NULL)
-			data->new_cmd = sub_or_join(data->new_cmd, \
-											data->start, 0, data->value);
+			data->n_cmd = sub_or_join(data->n_cmd, data->start, 0, data->value);
 		if (data->key == NULL)
-			data->new_cmd = sub_or_join(data->new_cmd, data->start, 0, "$");
+			data->n_cmd = sub_or_join(data->n_cmd, data->start, 0, "$");
 		else if (data->key != NULL)
 		{
 			data->dollar_ptr += ft_strlen(data->key);
@@ -62,7 +61,7 @@ void	replace_exit_status(t_expand_variable *data)
 	char	*exit_status_str;
 
 	exit_status_str = ft_itoa(g_exit_status);
-	data->new_cmd = sub_or_join(data->new_cmd, \
+	data->n_cmd = sub_or_join(data->n_cmd, \
 										data->start, 0, exit_status_str);
 	free(exit_status_str);
 	data->dollar_ptr++;
@@ -70,14 +69,14 @@ void	replace_exit_status(t_expand_variable *data)
 
 /**
  * sub_or_join - Helper function for string substitution or joining.
- *               If new_cmd is NULL, it creates a substring from start
+ *               If n_cmd is NULL, it creates a substring from start
  *               with length len.
- *               Otherwise, it joins new_cmd and substring and frees tmp2.
+ *               Otherwise, it joins n_cmd and substring and frees tmp2.
  *
- * @param new_cmd    The initial string or NULL if not yet defined.
+ * @param n_cmd    The initial string or NULL if not yet defined.
  * @param start   The start position for the substring.
  * @param len     The length of the substring.
- * @param substring    The string to join with new_cmd.
+ * @param substring    The string to join with n_cmd.
  * @return        The resulting string after substitution or joining.
  */
 char	*sub_or_join(char *cmd, char *start, int len, char *substring)

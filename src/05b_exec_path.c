@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 15:52:57 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/01 19:56:05 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 15:34:57 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,6 @@ static char	*join_path_helper(char *cmd, char **tmp, int i)
 {
 	char	*join;
 
-	if (ft_strncmp(tmp[i], cmd, ft_strlen(tmp[i])) == 0)
-	{
-		free_2d(tmp);
-		return (cmd);
-	}
 	join = ft_strjoin(tmp[i], cmd);
 	if (access(join, F_OK) == 0)
 	{
@@ -126,7 +121,7 @@ char	*get_exe_path(char *argv, t_list **env_list)
 	char	*join;
 
 	cmd = ft_strdup(argv);
-	if (ft_strncmp(cmd, "./", 2) == 0 || ft_strncmp(cmd, "../", 3) == 0)
+	if (ft_strrchr(cmd, '/') != NULL)
 	{
 		if (access(cmd, X_OK) == 0)
 			return (cmd);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   11_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 17:38:59 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/29 16:18:29 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/08/02 17:02:45 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,18 @@ void	del_data(void	*content)
 	free(data);
 }
 
+/**
+ * @brief Resets the shell data, closes temporary file descriptors, 
+ *        restores terminal attributes, and frees memory.
+ *
+ * This function is used to reset the state of the shell after execution 
+ * of a command. It closes temporary file descriptors, restores terminal 
+ * attributes, removes temporary files, and frees allocated memory.
+ *
+ * @param sh Pointer to the root shell structure.
+ * @param cmd_lexer Pointer to the command lexer list.
+ * @param head Pointer to the root of the syntax tree.
+ */
 void	reset_data(t_root *sh, t_list **cmd_lexer, t_tree **head)
 {
 	t_list	*current;
@@ -48,6 +60,14 @@ void	reset_data(t_root *sh, t_list **cmd_lexer, t_tree **head)
 	}
 }
 
+/**
+ * @brief Frees a 2D array of strings.
+ *
+ * This function takes a pointer to an array of strings and frees
+ * each string, followed by the array itself.
+ *
+ * @param str Pointer to the array of strings.
+ */
 void	free_2d(char **str)
 {
 	int	i;
@@ -58,6 +78,15 @@ void	free_2d(char **str)
 	free(str);
 }
 
+/**
+ * @brief Frees a binary tree structure.
+ *
+ * This function takes a pointer to the root of a binary tree and
+ * recursively frees each node, starting from the leaves and working
+ * its way to the root.
+ *
+ * @param node Pointer to the root of the tree.
+ */
 void	free_tree(t_tree *node)
 {
 	if (node == NULL)

@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 17:50:58 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/01 19:59:24 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 17:16:56 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,17 @@ int	heredoc_fd(char *node_value, t_root *sh)
 	return (fd);
 }
 
+/**
+ * heredoc_parent - Waits for the child process to handle input and create the
+ * 					temporary file,
+ *                  then opens the file and returns its file descriptor.
+ *
+ * @param child_pid: Process ID of the child handling the input.
+ * @param delim: Delimiter string used for the heredoc.
+ *
+ * @returns fd: File descriptor of the temporary heredoc file, or -1 if an 
+ * 				error occurred.
+ */
 static int	heredoc_parent(pid_t child_pid, char *delim)
 {
 	int	fd;
@@ -67,6 +78,15 @@ static int	heredoc_parent(pid_t child_pid, char *delim)
 
 static char	*heredoc_input(t_root *sh, char *delim);
 
+/**
+ * heredoc_child - Handles the reading of input lines for the heredoc, expanding 
+ * 				   variables, and writing to the temporary heredoc file. Exits 
+ * 				   when the delimiter is matched.
+ *
+ * @param sh: Pointer to the shell root structure.
+ * @param delim: Delimiter string used for the heredoc.
+ * @param heredoc_fd: File descriptor of the temporary heredoc file.
+ */
 static void	heredoc_child(t_root *sh, char *delim, int heredoc_fd)
 {
 	char	*line;
@@ -93,6 +113,15 @@ static void	heredoc_child(t_root *sh, char *delim, int heredoc_fd)
 	exit(EXIT_SUCCESS);
 }
 
+/**
+ * heredoc_input - Reads a line of input for the heredoc, handling
+ * 				   appropriate redirections and shell variables.
+ *
+ * @param sh: Pointer to the shell root structure.
+ * @param delim: Delimiter string used for the heredoc.
+ *
+ * @returns line: Read line of input, or NULL if end of file reached.
+ */
 static char	*heredoc_input(t_root *sh, char *delim)
 {
 	char	*line;

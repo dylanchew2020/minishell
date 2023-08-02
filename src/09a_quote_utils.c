@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 15:31:51 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/02 14:40:56 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 17:03:40 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,16 @@ int	quote_count(char *cmd)
 	return (count);
 }
 
+
+/**
+ * @brief Removes quotes from a string.
+ *
+ * This function takes a string that may contain quoted parts and removes
+ * the quotes, copying the unquoted content into a new string.
+ *
+ * @param str The input string possibly containing quotes.
+ * @return The newly allocated string without quotes.
+ */
 char	*remove_quote(char *str)
 {
 	int	i;

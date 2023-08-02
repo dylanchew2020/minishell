@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:04 by lchew             #+#    #+#             */
-/*   Updated: 2023/08/02 14:47:45 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 17:04:32 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,17 @@
 static char	*nextstr(char const **s, char c);
 static int	countstr(char const *s, char c);
 
+/**
+ * @brief Splits a string by a delimiter, taking quotes into account.
+ *
+ * This function splits the input string by a specified character delimiter,
+ * considering quotes. A quoted segment is treated as a single unit,
+ * preserving the content between quotes.
+ *
+ * @param s Input string.
+ * @param c Delimiter character.
+ * @return An array of strings or NULL if allocation fails.
+ */
 char	**cmd_quote_handler(char const *s, char c)
 {
 	char	**res;
@@ -39,6 +50,16 @@ char	**cmd_quote_handler(char const *s, char c)
 	return (res);
 }
 
+/**
+ * @brief Retrieves the next string segment in the split process.
+ *
+ * This function calculates the length of the next segment, taking quotes
+ * into account, then allocates and copies the content into a new string.
+ *
+ * @param s Pointer to the current position in the input string.
+ * @param c Delimiter character.
+ * @return A newly allocated string containing the next segment.
+ */
 static char	*nextstr(char const **s, char c)
 {
 	char	*start;
@@ -68,6 +89,16 @@ static char	*nextstr(char const **s, char c)
 	return (remove_quote(str));
 }
 
+/**
+ * @brief Counts the number of segments in the split process.
+ *
+ * This function calculates the number of segments that will be produced
+ * by splitting the input string by the given delimiter, considering quotes.
+ *
+ * @param s Input string.
+ * @param c Delimiter character.
+ * @return The number of segments in the input string.
+ */
 static int	countstr(char const *s, char c)
 {
 	int	count;

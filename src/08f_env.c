@@ -6,12 +6,21 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:10 by lchew             #+#    #+#             */
-/*   Updated: 2023/08/02 14:43:32 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 17:07:23 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief Prints the environment variables.
+ *
+ * Iterates through a linked list of environment variables, printing the key
+ * and value for each non-NULL value.
+ *
+ * @param env_list A pointer to the linked list of environment variables.
+ * @return EXIT_SUCCESS, indicating successful execution.
+ */
 int	get_env(t_list **env_list)
 {
 	t_env	*data;
@@ -28,6 +37,16 @@ int	get_env(t_list **env_list)
 	return (EXIT_SUCCESS);
 }
 
+/**
+ * @brief Initializes a linked list of environment variables.
+ *
+ * Creates a linked list of environment variables from the given array of strings.
+ * The array is expected to contain strings in the format "key=value".
+ *
+ * @param envp The array of environment variable strings.
+ * @param env_list A pointer to the linked list of environment variables.
+ * @return EXIT_SUCCESS on success, or EXIT_FAILURE if an allocation fails.
+ */
 int	env_link_list(char **envp, t_list **env_list)
 {
 	int		i;
@@ -52,6 +71,16 @@ int	env_link_list(char **envp, t_list **env_list)
 	return (EXIT_SUCCESS);
 }
 
+/**
+ * @brief Retrieves the value of an environment variable.
+ *
+ * Searches the linked list of environment variables for a key and returns
+ * its corresponding value.
+ *
+ * @param key The key of the environment variable to retrieve.
+ * @param env_list A pointer to the linked list of environment variables.
+ * @return The value of the environment variable if it exists, or NULL if not found.
+ */
 char	*existed_env(char *key, t_list **env_list)
 {
 	char	*value;
@@ -75,6 +104,17 @@ char	*existed_env(char *key, t_list **env_list)
 	return (value);
 }
 
+/**
+ * @brief Creates a new environment variable node.
+ *
+ * Allocates and initializes a new environment variable node with the given
+ * key and input. The input is expected to be in the format "key=value".
+ * The node is added to the end of the linked list.
+ *
+ * @param key The key for the new environment variable.
+ * @param input The input string containing the key and value.
+ * @param env_list A pointer to the linked list of environment variables.
+ */
 void	creat_new_env_node(char *key, char	*input, t_list **env_list)
 {
 	t_env	*data;

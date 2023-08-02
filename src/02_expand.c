@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 12:16:13 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/02 14:43:59 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 15:35:48 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ char	*expand(char *cmd, t_list **env_list)
 	{
 		data->single_quote_ptr = ft_strchr(data->start, SINGLE_QUOTE);
 		if ((data->single_quote_ptr != NULL) && \
-			(data->single_quote_ptr - data->dollar_ptr < 0))
+			(data->single_quote_ptr < data->dollar_ptr) && \
+			(data->single_quote_ptr < ft_strchr(data->start, DOUBLE_QUOTE)))
 			single_quote(data);
 		else
 			join_dollar_ptr(data, env_list);
@@ -50,7 +51,7 @@ char	*expand(char *cmd, t_list **env_list)
 
 static void	init_data(t_expand_variable *data, char *cmd)
 {
-	data->new_cmd = NULL;
+	data->n_cmd = NULL;
 	data->substring = NULL;
 	data->start = cmd;
 	data->dollar_ptr = ft_strchr(cmd, DOLLAR);
@@ -61,7 +62,7 @@ static char	*join_remaining(t_expand_variable *data, char *cmd)
 	if (data->substring != NULL)
 		free(data->substring);
 	data->substring = ft_substr(data->start, 0, ft_strlen(data->start));
-	cmd = sub_or_join(data->new_cmd, data->start, \
+	cmd = sub_or_join(data->n_cmd, data->start, \
 						ft_strlen(data->start), data->substring);
 	free(data->substring);
 	free(data);

@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 15:28:02 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/01 20:00:12 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 17:11:47 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,15 @@
 
 static int	loop_n(char *str);
 
+/**
+ * echo_command - Implements the behavior of the echo command in the shell.
+ *                It prints the arguments to the standard output.
+ *                Recognizes the "-n" option to suppress the trailing newline.
+ *
+ * @param cmd: An array of pointers to the arguments passed to the echo command.
+ *
+ * @returns EXIT_SUCCESS upon successful execution.
+ */
 int	echo_command(char **cmd)
 {
 	t_echo_var	echo;
@@ -43,6 +52,15 @@ int	echo_command(char **cmd)
 	return (EXIT_SUCCESS);
 }
 
+/**
+ * loop_n - Helper function to check if a string consists solely of 'n' 
+ * 			characters.
+ *          Used to verify the format of the "-n" option in the echo command.
+ *
+ * @param str: Pointer to the string to be checked.
+ *
+ * @returns 1 if the string consists solely of 'n' characters, 0 otherwise.
+ */
 static int	loop_n(char *str)
 {
 	int	i;
