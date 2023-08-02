@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 19:59:58 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/02 17:30:48 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 18:21:38 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ void	rdout_handler(t_tree *node, char **envp, t_root *sh)
 	ft_close(fd);
 	tree_transversal(node, envp, sh);
 }
-
 
 /**
  * @brief Handles appending output to a file.

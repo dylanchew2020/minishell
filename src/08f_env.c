@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:10 by lchew             #+#    #+#             */
-/*   Updated: 2023/08/02 17:07:23 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 18:21:17 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ int	get_env(t_list **env_list)
 /**
  * @brief Initializes a linked list of environment variables.
  *
- * Creates a linked list of environment variables from the given array of strings.
- * The array is expected to contain strings in the format "key=value".
+ * Creates a linked list of environment variables from the given array of 
+ * strings. The array is expected to contain strings in the format "key=value".
  *
  * @param envp The array of environment variable strings.
  * @param env_list A pointer to the linked list of environment variables.
@@ -79,7 +79,8 @@ int	env_link_list(char **envp, t_list **env_list)
  *
  * @param key The key of the environment variable to retrieve.
  * @param env_list A pointer to the linked list of environment variables.
- * @return The value of the environment variable if it exists, or NULL if not found.
+ * @return The value of the environment variable if it exists, or NULL if not 
+ * 			found.
  */
 char	*existed_env(char *key, t_list **env_list)
 {

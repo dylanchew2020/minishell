@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 19:41:17 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/02 17:55:57 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 18:17:56 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@
  * This function takes care of the portion of the command enclosed in single
  * quotes. It updates data related to quote handling and command construction.
  *
- * @param data Pointer to a t_expand_variable structure containing necessary 
+ * @param data Pointer to a t_expand_var structure containing necessary 
  * 				data for quote handling.
  */
-void	single_quote(t_expand_variable *data)
+void	single_quote(t_expand_var *data)
 {
 	data->count = quote_count(data->single_quote_ptr);
 	data->len = data->single_quote_ptr - data->start + data->count;
@@ -46,7 +46,7 @@ void	single_quote(t_expand_variable *data)
  * @param data Structure containing expansion-related variables.
  * @param env_list List of environment variables.
  */
-void	join_dollar_ptr(t_expand_variable *data, t_list **env_list)
+void	join_dollar_ptr(t_expand_var *data, t_list **env_list)
 {
 	data->len = data->dollar_ptr - data->start;
 	if (data->substring != NULL)
@@ -83,7 +83,7 @@ void	join_dollar_ptr(t_expand_variable *data, t_list **env_list)
  *
  * @param data Structure containing expansion-related variables.
  */
-void	replace_exit_status(t_expand_variable *data)
+void	replace_exit_status(t_expand_var *data)
 {
 	char	*exit_status_str;
 

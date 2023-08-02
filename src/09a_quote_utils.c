@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 15:31:51 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/02 17:03:40 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 18:21:33 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ int	quote_count(char *cmd)
 	++count;
 	return (count);
 }
-
 
 /**
  * @brief Removes quotes from a string.

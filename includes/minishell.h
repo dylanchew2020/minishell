@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/08/02 15:35:48 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 18:17:56 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,19 +110,20 @@ typedef struct s_echo_var
 	int	flag2;
 }	t_echo_var;
 
-typedef struct s_expand_variable
+typedef struct s_expand_var
 {
 	char	*n_cmd;
 	char	*substring;
 	char	*dollar_ptr;
 	char	*single_quote_ptr;
+	char	*double_quote_ptr;
 	char	*exit_status_str;
 	char	*start;
 	char	*key;
 	char	*value;
 	int		count;
 	int		len;
-}	t_expand_variable;
+}	t_expand_var;
 
 typedef struct s_root
 {
@@ -146,9 +147,9 @@ void		prompt(t_root *sh, char **envp);
 /* 02_EXPAND */
 
 char		*expand(char *cmd, t_list **env_list);
-void		single_quote(t_expand_variable *data);
-void		join_dollar_ptr(t_expand_variable *data, t_list **env_list);
-void		replace_exit_status(t_expand_variable *data);
+void		single_quote(t_expand_var *data);
+void		join_dollar_ptr(t_expand_var *data, t_list **env_list);
+void		replace_exit_status(t_expand_var *data);
 char		*sub_or_join(char *cmd, char *start, int len, char *substring);
 char		*key_check(char *input);
 

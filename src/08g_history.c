@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:25:57 by lchew             #+#    #+#             */
-/*   Updated: 2023/08/02 17:06:32 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 18:21:14 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,8 @@ void	history_add(t_history **history, char *cmd)
  * Iterates through a doubly-linked list of history nodes, printing the
  * index and command of each node.
  *
- * @param history A pointer to the head of the doubly-linked list of history nodes.
+ * @param history A pointer to the head of the doubly-linked list of history 
+ * 					nodes.
  * @return EXIT_SUCCESS, indicating successful execution.
  */
 int	history_print(t_history *history)
