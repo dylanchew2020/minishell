@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:10 by lchew             #+#    #+#             */
-/*   Updated: 2023/08/02 14:14:44 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 14:43:32 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	env_link_list(char **envp, t_list **env_list)
 	int		i;
 	t_env	*content;
 	t_list	*node;
+	char	*equal_ptr;
 
 	i = 0;
 	while (envp[i])
@@ -40,11 +41,10 @@ int	env_link_list(char **envp, t_list **env_list)
 		content = ft_calloc(1, sizeof(t_env));
 		if (!content)
 			return (EXIT_FAILURE);
-		content->key = ft_substr(envp[i], 0, ft_strchr(envp[i], '=') - envp[i]);
-		content->value = ft_substr(envp[i], \
-						ft_strchr(envp[i], '=') - envp[i] + 1, \
-						ft_strlen(envp[i]) - \
-						(ft_strchr(envp[i], '=') - envp[i]));
+		equal_ptr = ft_strchr(envp[i], EQUAL);
+		content->key = ft_substr(envp[i], 0, equal_ptr - envp[i]);
+		content->value = ft_substr(envp[i], equal_ptr - envp[i] + 1, \
+						ft_strlen(envp[i]) - (equal_ptr - envp[i]));
 		node = ft_lstnew(content);
 		ft_lstadd_back(env_list, node);
 		i++;
@@ -82,7 +82,7 @@ void	creat_new_env_node(char *key, char	*input, t_list **env_list)
 	char	*equal_ptr;
 
 	data = ft_calloc(1, sizeof(t_env));
-	equal_ptr = ft_strchr(input, '=');
+	equal_ptr = ft_strchr(input, EQUAL);
 	data->key = ft_substr(key, 0, ft_strlen(key));
 	data->value = NULL;
 	if (equal_ptr != NULL)

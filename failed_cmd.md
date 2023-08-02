@@ -7,7 +7,7 @@ export hi=bye bye=hi hi=test - handled
 unclosed quote leak - handled
 check all ft_strncmp -checked
 
-export a
+export a - handled
 
 
 % ls -l | grep ".txt" > txt_files.txt

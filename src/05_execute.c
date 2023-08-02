@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/08/01 22:04:02 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 14:47:38 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	exec_cmd(char *argv, char **envp, t_root *sh)
 	char	**cmd;
 	pid_t	child;
 
-	cmd = cmd_quote_handler(argv, ' ');
+	cmd = cmd_quote_handler(argv, SPACE);
 	if (sh->tree_arg_value != NULL)
 		cmd = cmd_join(cmd, sh);
 	if (builtin(cmd, sh) == 1)

@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 17:26:43 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/02 14:25:12 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 14:43:32 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int	export(char **cmd, t_list **env_list)
 		{
 			if (invalid_identifier(split[i]) == 1)
 				return (EXIT_FAILURE);
-			// if (ft_strchr(split[i], '=') != NULL)
 			else
 				if (add_link_list(split[i], env_list) == 1)
 					return (EXIT_FAILURE);
@@ -67,7 +66,7 @@ static void	modified_value(t_env *data_node, char *input)
 	char	*tmp;
 	char	*equal_ptr;
 
-	equal_ptr = ft_strchr(input, '=');
+	equal_ptr = ft_strchr(input, EQUAL);
 	value = ft_substr(input, equal_ptr - input + 1, \
 						ft_strlen(input) - (equal_ptr - input));
 	tmp = data_node->value;
@@ -92,7 +91,7 @@ static int	add_link_list(char	*input, t_list	**env_list)
 		i = ft_strncmp(data->key, key, ft_strlen(data->key) + 1);
 		if (i == 0)
 		{
-			if (ft_strchr(input, '=') != NULL)
+			if (ft_strchr(input, EQUAL) != NULL)
 				modified_value(data, input);
 			break ;
 		}
@@ -110,7 +109,7 @@ int	invalid_identifier(char *input)
 	char	*equal_ptr;
 
 	start = input;
-	equal_ptr = ft_strchr(input, '=');
+	equal_ptr = ft_strchr(input, EQUAL);
 	if (start == equal_ptr || (ft_isalpha(*start) == 0 && *start != '_'))
 	{
 		printf("export 1: '%s': not a valid identifier\n", start);

@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:04 by lchew             #+#    #+#             */
-/*   Updated: 2023/08/01 20:56:14 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 14:47:45 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static int	countstr(char const *s, char c)
 				quote_len = 0;
 				if (is_quote(*s) != 0)
 					quote_len = quote_count((char *)s);
-				else if (*s != ' ' && *s != '\0')
+				else if (*s != SPACE && *s != '\0')
 					++s;
 			}
 		}

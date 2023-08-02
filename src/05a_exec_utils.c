@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 17:21:02 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/01 14:54:17 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 14:48:32 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	**cmd_join(char **res, t_root *sh)
 
 	i = 0;
 	j = 0;
-	add_arg = cmd_quote_handler(sh->tree_arg_value, ' ');
+	add_arg = cmd_quote_handler(sh->tree_arg_value, SPACE);
 	while (res[i] != NULL)
 		++i;
 	while (add_arg[j] != NULL)

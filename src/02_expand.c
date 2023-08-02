@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 12:16:13 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/01 22:42:27 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 14:43:59 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ char	*expand(char *cmd, t_list **env_list)
 	init_data(data, cmd);
 	while (data->dollar_ptr)
 	{
-		data->single_quote_ptr = ft_strchr(data->start, '\'');
+		data->single_quote_ptr = ft_strchr(data->start, SINGLE_QUOTE);
 		if ((data->single_quote_ptr != NULL) && \
 			(data->single_quote_ptr - data->dollar_ptr < 0))
 			single_quote(data);
 		else
 			join_dollar_ptr(data, env_list);
 		data->start = data->dollar_ptr;
-		data->dollar_ptr = ft_strchr(data->start, '$');
+		data->dollar_ptr = ft_strchr(data->start, DOLLAR);
 		if (data->dollar_ptr == NULL)
 			break ;
 		if (data->substring != NULL)
@@ -53,7 +53,7 @@ static void	init_data(t_expand_variable *data, char *cmd)
 	data->new_cmd = NULL;
 	data->substring = NULL;
 	data->start = cmd;
-	data->dollar_ptr = ft_strchr(cmd, '$');
+	data->dollar_ptr = ft_strchr(cmd, DOLLAR);
 }
 
 static char	*join_remaining(t_expand_variable *data, char *cmd)

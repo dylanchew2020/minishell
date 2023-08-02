@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_token_count.c                                :+:      :+:    :+:   */
+/*   03a_lexer_token_count.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 14:33:42 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/08 22:50:59 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 14:45:03 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	count_token(char *cmd)
 	token_count = 0;
 	while (*cmd != '\0')
 	{
-		while (*cmd == ' ')
+		while (*cmd == SPACE)
 				++cmd;
 		if (*cmd == '|')
 			pipe_helper(&cmd, &token_count);
@@ -84,7 +84,7 @@ static int	pipe_helper(char **cmd, int *token_count)
 static int	redirection_helper(char **cmd, int *token_count)
 {
 	++(*cmd);
-	while (**cmd == *(*cmd - 1) || **cmd == ' ')
+	while (**cmd == *(*cmd - 1) || **cmd == SPACE)
 		++(*cmd);
 	while (**cmd != '\0' && ft_strchr("|<> ", **cmd) == NULL)
 		if (quotes_helper(cmd) == -1)

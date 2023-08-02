@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 15:51:30 by lchew             #+#    #+#             */
-/*   Updated: 2023/08/01 16:29:13 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 14:48:11 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	cmd_modifier(char *cmd, char **tokens)
 	while (*cmd != '\0')
 	{
 		j = 0;
-		while (*cmd == ' ')
+		while (*cmd == SPACE)
 			++cmd;
 		if (*cmd == '|')
 			pipe_tokenize(&cmd, tokens, &i, &j);
@@ -79,13 +79,13 @@ static void	redir_tokenize(char **cmd, char **tokens, int *i, int *j)
 	tokens[*i] = ft_calloc(count_sp_char(*cmd) + 1, sizeof(char));
 	tokens[*i][(*j)++] = **cmd;
 	++(*cmd);
-	while (**cmd == *(*cmd - 1) || **cmd == ' ')
+	while (**cmd == *(*cmd - 1) || **cmd == SPACE)
 	{
 		tokens[*i][(*j)++] = **cmd;
 		++(*cmd);
 	}
 	if (ft_strchr("<>", *(*cmd - 1)) != NULL && **cmd != ' ' && **cmd != '\0')
-		tokens[*i][(*j)++] = ' ';
+		tokens[*i][(*j)++] = SPACE;
 	while (ft_strchr("|<> ", **cmd) == NULL && **cmd != '\0')
 		quote_cmd_mod(cmd, tokens, i, j);
 	tokens[*i][*j] = '\0';

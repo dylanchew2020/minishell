@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 15:31:51 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/01 19:50:13 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 14:40:56 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@
  */
 int	is_quote(char c)
 {
-	if (c == '\'')
+	if (c == SINGLE_QUOTE)
 		return (1);
-	else if (c == '\"')
+	else if (c == DOUBLE_QUOTE)
 		return (2);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:28:46 by lchew             #+#    #+#             */
-/*   Updated: 2023/08/01 23:04:47 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 14:44:14 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <readline/readline.h>	/* readline, rl_clear_history, rl_on_new_line,
 									rl_replace_line, rl_redisplay,
 									add_history */
+# include <readline/history.h>
 # include <sys/wait.h>			/* wait, waitpid, wait3, wait4 */
 # include <signal.h>			/* signal, sigaction, sigemptyset, sigaddset,
 									kill */
@@ -34,10 +35,6 @@
 
 # include "libft.h"
 # include "get_next_line.h"
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <string.h>
-# include <errno.h>
 
 # define GREEN	"\033[1;32m"
 # define BLUE	"\033[1;34m"
@@ -58,8 +55,11 @@
 # define RDOUT_OP	">"
 # define RDAPP_OP	">>"
 
-# define SINGLE_QUOTE	"\'"
-# define DOUBLE_QUOTE	"\""
+# define SINGLE_QUOTE	'\''
+# define DOUBLE_QUOTE	'\"'
+# define SPACE			' '
+# define EQUAL			'='
+# define DOLLAR			'$'
 
 extern int	g_exit_status;
 

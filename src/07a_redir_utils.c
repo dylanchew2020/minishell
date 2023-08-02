@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirect.c                                         :+:      :+:    :+:   */
+/*   07a_redir_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:03 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/29 14:43:24 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/08/02 14:48:03 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,12 @@ char	*find_file(char *value)
 
 	if ((*value != '<' && *value != '>') && *value != '\0')
 		return (NULL);
-	while ((*value == '<' || *value == '>' || *value == ' ') && *value != '\0')
+	while ((*value == '<' || *value == '>' || *value == SPACE) \
+			&& *value != '\0')
 		++value;
 	if (*value == '\0')
 		return (NULL);
-	result = cmd_quote_handler(value, ' ');
+	result = cmd_quote_handler(value, SPACE);
 	file = ft_strdup(result[0]);
 	free_2d(result);
 	return (file);
