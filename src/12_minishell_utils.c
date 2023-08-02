@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   12_minishell_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:00:27 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/30 17:32:24 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/08/01 16:40:43 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	ft_fork(void)
 	{
 		printf("fork: %d\n", getpid());
 		ft_putstr_fd("Error: Failed to create child process\n", 2);
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 	return (child);
 }

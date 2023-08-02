@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   03_parser.c                                        :+:      :+:    :+:   */
+/*   04_parser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:32:06 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/30 15:16:28 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/08/01 16:04:19 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static t_tree	*token_check(t_list *lexer, char *op, int n_token, t_root *sh)
 		return (tree_node_new(COMMAND, lexer->content, NULL, NULL));
 	while (lexer != NULL && i < n_token)
 	{
-		if (!ft_strncmp(lexer->content, op, ft_strlen(op)))
+		if (ft_strncmp(lexer->content, op, ft_strlen(op)) == 0)
 		{
 			left = parser(head, i, sh);
 			right = parser(lexer->next, n_token - i - 1, sh);

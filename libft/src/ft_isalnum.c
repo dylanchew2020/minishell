@@ -19,7 +19,6 @@
 **	The ft_isalnum() function returns zero if the character tests false and
 **	returns non-zero if the character tests true.
 */
-
 int	ft_isalnum(int c)
 {
 	if (ft_isalpha(c) || ft_isdigit(c))

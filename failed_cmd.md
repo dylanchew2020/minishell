@@ -1,10 +1,13 @@
 
-exit status
-$?
+bash: export: `ee e=123': not a valid identifier - handled
+$asdasd - handled
+export $=2 - handled
+export "hi world"=a - handled
+export hi=bye bye=hi hi=test - handled
+unclosed quote leak - handled
+check all ft_strncmp -checked
 
-
-echo hi > test1 test
-memory overflow
+export a
 
 
 % ls -l | grep ".txt" > txt_files.txt

@@ -11,7 +11,7 @@ NAME		:= minishell
 # CC			:= clang
 CC			:= gcc
 FLAGS		:= -Wall -Wextra -Werror
-FSAN		:= -fsanitize=address -g3
+FSAN		:= #-fsanitize=address -g3
 
 ################################################################################
 #                               PROGRAM'S INCLUDES                             #
@@ -43,6 +43,7 @@ SRC			:= $(addsuffix .c, \
 					03_lexer\
 					03a_lexer_token_count\
 					03b_lexer_char_count\
+					03c_lexer_cmd_mod\
 					04_parser\
 					04a_parser_utils\
 					05_execute\
@@ -93,7 +94,6 @@ $(NAME): $(LIBFT) $(OBJ)
 	@ echo "\n$(GREEN)Compilation $(CLR_RMV)of $(BLUE) $(NAME) $(CLR_RMV)..."
 	@ $(CC) $(FLAGS) $(FSAN) $(LIB) $(READLINE) $(OBJ) $(LIBFT_DIR)/$(LIBFT) -o $(NAME)
 	@ echo "$(GREEN)[Success] $(BLUE)$(NAME) $(CLR_RMV)created ✔️"
-	@ ./$(NAME)
 
 $(LIBFT):
 	@ echo "$(GREEN)Making $(CYAN)Libft $(CLR_RMV) library..."

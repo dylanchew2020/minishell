@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe.c                                             :+:      :+:    :+:   */
+/*   06_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:06 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/30 15:35:13 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/08/01 16:51:00 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,17 @@ static void	pipe_child_process(t_tree *node, char **envp, t_root *sh);
  */
 void	pipe_handler(t_tree *node, char **envp, t_root *sh)
 {
+	int	i;
+
+	i = 0;
+	while (node->value[i] == PIPE_OP[0])
+		++i;
+	if (i > 1)
+	{
+		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
+		g_exit_status = 258;
+		return ;
+	}
 	if (node->left == NULL)
 	{
 		printf("minishell: syntax error near unexpected token `|'\n");
@@ -70,14 +81,14 @@ static void	pipe_child_process(t_tree *node, char **envp, t_root *sh)
 	{
 		if (node->left->token != HEREDOC)
 			left_child(sh->pipe, node, envp, sh);
-		exit(EXIT_SUCCESS);
+		exit(g_exit_status);
 	}
 	children[1] = ft_fork();
 	if (children[1] == 0)
 	{
 		if (node->right->token != HEREDOC)
 			right_child(sh->pipe, node, envp, sh);
-		exit(EXIT_SUCCESS);
+		exit(g_exit_status);
 	}
 	ft_close(sh->pipe[1]);
 	ft_close(sh->pipe[0]);

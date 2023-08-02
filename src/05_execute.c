@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   05_execute.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/07/30 16:31:40 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/08/01 22:04:02 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,14 @@ static void	exec_cmd(char *argv, char **envp, t_root *sh)
 	if (sh->tree_arg_value != NULL)
 		cmd = cmd_join(cmd, sh);
 	if (builtin(cmd, sh) == 1)
-	{
-		free_2d(cmd);
 		return ;
-	}
 	path = get_exe_path(cmd[0], &sh->env_list);
 	child = ft_fork();
 	if (child == 0)
 	{
 		if (execve(path, cmd, envp) == -1)
 		{
+			ft_dup2(sh->stdout_tmp, STDOUT_FILENO);
 			printf("Error: Command not found: %s.\n", *cmd);
 			exit(EXIT_NO_CMD);
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   07b_redir_heredoc.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 17:50:58 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/30 17:28:46 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/08/01 19:59:24 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,7 @@ static void	heredoc_child(t_root *sh, char *delim, int heredoc_fd)
 	{
 		signals(2);
 		line = heredoc_input(sh, delim);
-		if ((ft_strlen(line) == ft_strlen(delim)) \
-		&& (ft_strncmp(line, delim, ft_strlen(delim)) == 0))
+		if (ft_strncmp(line, delim, ft_strlen(delim) + 1) == 0)
 		{
 			free(line);
 			ft_close(heredoc_fd);

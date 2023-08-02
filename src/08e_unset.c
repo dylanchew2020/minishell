@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   08e_unset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 14:45:01 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/30 16:57:19 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/08/01 17:33:25 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,13 @@ static void	unset_helper(char **key, t_list **env_list)
 	t_list	*tmp;
 	t_list	*prev;
 	t_env	*data;
-	
+
 	tmp = *env_list;
 	prev = NULL;
 	while (tmp)
 	{
 		data = (t_env *)tmp->content;
-		if (ft_strnstr(data->key, *key, ft_strlen(*key)) != NULL)
+		if (ft_strncmp(data->key, *key, ft_strlen(data->key) + 1) == 0)
 		{
 			if (prev == NULL)
 				*env_list = tmp->next;
