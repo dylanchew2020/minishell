@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:34:45 by lchew             #+#    #+#             */
-/*   Updated: 2023/08/01 19:51:32 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 17:51:09 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,13 @@
 static char	**tokenizer(char *cmd);
 
 /**
- * lexer - Converts a command string into a list of tokens, where a token can
- *         be either a command or an operator ('|', '<', '>').
- *         It trims leading and trailing spaces from each token.
- * @param cmd: The command string to tokenize.
+ * @brief Converts a command into a linked list of tokens.
  *
- * @returns
- * A linked list where each node holds a token from the command string,
- * or NULL if there's an error during the process.
+ * This function tokenizes the command using the tokenizer function and then
+ * constructs a linked list from the tokens, trimming any extraneous whitespace.
+ *
+ * @param cmd The command string to be tokenized.
+ * @return A linked list of tokens or NULL if an error occurs.
  */
 t_list	*lexer(char *cmd)
 {
@@ -55,6 +54,15 @@ t_list	*lexer(char *cmd)
 	return (head);
 }
 
+/**
+ * @brief Tokenizes the given command.
+ *
+ * This function uses the cmd_modifier to split the command string into
+ * individual tokens and returns them in a dynamically allocated array.
+ *
+ * @param cmd The command string to tokenize.
+ * @return An array of tokens or NULL if an error occurs.
+ */
 static char	**tokenizer(char *cmd)
 {
 	int		token_num;

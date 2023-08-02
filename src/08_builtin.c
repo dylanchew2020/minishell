@@ -6,20 +6,23 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:11 by lchew             #+#    #+#             */
-/*   Updated: 2023/08/01 17:09:12 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 17:37:18 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * builtin - Executes built-in commands based on the command array.
- *           Supported built-in commands: unset, cd, pwd, export, env.
+ * @brief Executes a built-in shell command.
  *
- * @param cmd       Double pointer to the command array.
- * @param env_list  Double pointer to the linked list containing environment
-					   variables.
- * @return          1 if a built-in command is executed, 0 otherwise.
+ * This function checks the given command and executes the corresponding
+ * built-in shell command such as echo, cd, pwd, export, unset, env,
+ * history, or exit. It sets the global exit status accordingly.
+ *
+ * @param cmd Array of strings representing the command and its arguments.
+ * @param sh Pointer to the shell root structure.
+ * @return 1 if the command is a built-in and executed successfully,
+ *         0 if the command is not a built-in.
  */
 int	builtin(char **cmd, t_root *sh)
 {

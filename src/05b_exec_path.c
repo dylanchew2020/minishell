@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 15:52:57 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/02 15:34:57 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 17:44:49 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,17 @@ char	**find_path(t_list **env_list)
 	return (NULL);
 }
 
+/**
+ * @brief Helper function to join a command with a path and check file access.
+ *
+ * This function constructs a full path by joining the command with a path from
+ * the PATH array. If the file exists, it returns the path, otherwise NULL.
+ *
+ * @param cmd Command name.
+ * @param tmp Array of path strings.
+ * @param i Index of the current path in the array.
+ * @return Full path of the executable if found, NULL otherwise.
+ */
 static char	*join_path_helper(char *cmd, char **tmp, int i)
 {
 	char	*join;
@@ -81,6 +92,16 @@ static char	*join_path_helper(char *cmd, char **tmp, int i)
 	return (NULL);
 }
 
+/**
+ * @brief Joins a command name with paths from the system PATH.
+ *
+ * This function iterates over the paths from the system PATH and uses the
+ * join_path_helper to find a valid path for the given command.
+ *
+ * @param env_list Pointer to the list of environment variables.
+ * @param cmd Command name.
+ * @return Full path of the executable if found, NULL otherwise.
+ */
 char	*join_path(t_list **env_list, char *cmd)
 {
 	char	**tmp;

@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 15:28:02 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/02 17:11:47 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 17:38:13 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,14 @@
 static int	loop_n(char *str);
 
 /**
- * echo_command - Implements the behavior of the echo command in the shell.
- *                It prints the arguments to the standard output.
- *                Recognizes the "-n" option to suppress the trailing newline.
+ * @brief Implements the echo command in the shell.
  *
- * @param cmd: An array of pointers to the arguments passed to the echo command.
+ * This function handles the echo command, printing the provided
+ * arguments to the standard output. The "-n" option is also handled,
+ * which suppresses the trailing newline if specified.
  *
- * @returns EXIT_SUCCESS upon successful execution.
+ * @param cmd Array of strings representing the command and its arguments.
+ * @return EXIT_SUCCESS upon successful completion.
  */
 int	echo_command(char **cmd)
 {
@@ -53,13 +54,14 @@ int	echo_command(char **cmd)
 }
 
 /**
- * loop_n - Helper function to check if a string consists solely of 'n' 
- * 			characters.
- *          Used to verify the format of the "-n" option in the echo command.
+ * @brief Checks if the given string consists only of the character 'n'.
  *
- * @param str: Pointer to the string to be checked.
+ * This function iterates through the provided string and checks if
+ * all the characters in the string are 'n'. It's used to handle
+ * the "-n" option in the echo command.
  *
- * @returns 1 if the string consists solely of 'n' characters, 0 otherwise.
+ * @param str Input string to be checked.
+ * @return 1 if all characters are 'n', 0 otherwise.
  */
 static int	loop_n(char *str)
 {

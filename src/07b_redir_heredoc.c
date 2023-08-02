@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 17:50:58 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/02 17:16:56 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 17:33:06 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,12 @@ static int	heredoc_parent(pid_t child_pid, char *delim);
 static void	heredoc_child(t_root *sh, char *delim, int heredoc_fd);
 
 /**
- * heredoc_fd - to check whether the redirect in file exists or not.
- *  		if "infile" do not exist, exit with error message.
- * 			else return the file descriptor of the file.
- * @param path: node->value
- * @returns fd: file descriptor of the infile.
+ * @brief Handles the heredoc redirection by checking if the "infile" exists,
+ *        then returns the file descriptor or exits with an error message.
+ *
+ * @param node_value Path from node->value.
+ * @param sh Shell state.
+ * @return File descriptor of the infile or error code.
  */
 int	heredoc_fd(char *node_value, t_root *sh)
 {
@@ -47,15 +48,13 @@ int	heredoc_fd(char *node_value, t_root *sh)
 }
 
 /**
- * heredoc_parent - Waits for the child process to handle input and create the
- * 					temporary file,
- *                  then opens the file and returns its file descriptor.
+ * @brief Waits for the child process to handle input and create the
+ *        temporary file, then opens the file and returns its file descriptor.
  *
- * @param child_pid: Process ID of the child handling the input.
- * @param delim: Delimiter string used for the heredoc.
- *
- * @returns fd: File descriptor of the temporary heredoc file, or -1 if an 
- * 				error occurred.
+ * @param child_pid Process ID of the child handling the input.
+ * @param delim Delimiter string used for the heredoc.
+ * @return File descriptor of the temporary heredoc file or -1 if an error
+ *         occurred.
  */
 static int	heredoc_parent(pid_t child_pid, char *delim)
 {
@@ -79,13 +78,13 @@ static int	heredoc_parent(pid_t child_pid, char *delim)
 static char	*heredoc_input(t_root *sh, char *delim);
 
 /**
- * heredoc_child - Handles the reading of input lines for the heredoc, expanding 
- * 				   variables, and writing to the temporary heredoc file. Exits 
- * 				   when the delimiter is matched.
+ * @brief Handles reading input lines for the heredoc, expanding variables,
+ *        and writing to the temporary heredoc file. Exits when the delimiter
+ *        is matched.
  *
- * @param sh: Pointer to the shell root structure.
- * @param delim: Delimiter string used for the heredoc.
- * @param heredoc_fd: File descriptor of the temporary heredoc file.
+ * @param sh Pointer to the shell root structure.
+ * @param delim Delimiter string used for the heredoc.
+ * @param heredoc_fd File descriptor of the temporary heredoc file.
  */
 static void	heredoc_child(t_root *sh, char *delim, int heredoc_fd)
 {
@@ -114,13 +113,12 @@ static void	heredoc_child(t_root *sh, char *delim, int heredoc_fd)
 }
 
 /**
- * heredoc_input - Reads a line of input for the heredoc, handling
- * 				   appropriate redirections and shell variables.
+ * @brief Reads a line of input for the heredoc, handling appropriate
+ *        redirections and shell variables.
  *
- * @param sh: Pointer to the shell root structure.
- * @param delim: Delimiter string used for the heredoc.
- *
- * @returns line: Read line of input, or NULL if end of file reached.
+ * @param sh Pointer to the shell root structure.
+ * @param delim Delimiter string used for the heredoc.
+ * @return Read line of input, or NULL if the end of file is reached.
  */
 static char	*heredoc_input(t_root *sh, char *delim)
 {

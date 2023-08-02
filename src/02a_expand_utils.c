@@ -6,12 +6,21 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 19:41:17 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/02 15:36:21 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 17:55:57 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief Handles a single quote within the command.
+ *
+ * This function takes care of the portion of the command enclosed in single
+ * quotes. It updates data related to quote handling and command construction.
+ *
+ * @param data Pointer to a t_expand_variable structure containing necessary 
+ * 				data for quote handling.
+ */
 void	single_quote(t_expand_variable *data)
 {
 	data->count = quote_count(data->single_quote_ptr);
@@ -27,6 +36,16 @@ void	single_quote(t_expand_variable *data)
 	data->dollar_ptr += data->len;
 }
 
+/**
+ * @brief Joins the segment pointed to by the dollar pointer and handles
+ * environment variables replacement.
+ *
+ * This function calculates the length of the segment and replaces
+ * environment variables found with their corresponding values.
+ *
+ * @param data Structure containing expansion-related variables.
+ * @param env_list List of environment variables.
+ */
 void	join_dollar_ptr(t_expand_variable *data, t_list **env_list)
 {
 	data->len = data->dollar_ptr - data->start;
@@ -56,6 +75,14 @@ void	join_dollar_ptr(t_expand_variable *data, t_list **env_list)
 	}
 }
 
+/**
+ * @brief Replaces the exit status code within the command expansion.
+ *
+ * This function replaces the $? expression with the last exit status
+ * in the command expansion.
+ *
+ * @param data Structure containing expansion-related variables.
+ */
 void	replace_exit_status(t_expand_variable *data)
 {
 	char	*exit_status_str;
@@ -68,16 +95,17 @@ void	replace_exit_status(t_expand_variable *data)
 }
 
 /**
- * sub_or_join - Helper function for string substitution or joining.
- *               If n_cmd is NULL, it creates a substring from start
- *               with length len.
- *               Otherwise, it joins n_cmd and substring and frees tmp2.
+ * @brief Concatenates the provided substring with the command or creates
+ * a new substring.
  *
- * @param n_cmd    The initial string or NULL if not yet defined.
- * @param start   The start position for the substring.
- * @param len     The length of the substring.
- * @param substring    The string to join with n_cmd.
- * @return        The resulting string after substitution or joining.
+ * This function either joins the given substring to the command string
+ * or creates a new substring based on the parameters provided.
+ *
+ * @param cmd Command string.
+ * @param start Starting position.
+ * @param len Length of the substring.
+ * @param substring The substring to concatenate.
+ * @return The concatenated or new substring.
  */
 char	*sub_or_join(char *cmd, char *start, int len, char *substring)
 {
@@ -91,6 +119,15 @@ char	*sub_or_join(char *cmd, char *start, int len, char *substring)
 	return (cmd);
 }
 
+/**
+ * @brief Extracts a key from the input string.
+ *
+ * This function extracts a key that consists of alphanumeric characters
+ * and underscores from the input string.
+ *
+ * @param input Input string.
+ * @return The extracted key or NULL if not found.
+ */
 char	*key_check(char *input)
 {
 	int		i;

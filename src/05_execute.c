@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:08 by lchew             #+#    #+#             */
-/*   Updated: 2023/08/02 14:47:38 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 17:47:00 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,15 @@
 static void	exec_cmd(char *argv, char **envp, t_root *sh);
 
 /**
- * recurse_bst - Traverses a binary syntax tree (BST) recursively, processing
- *               each node based on its token type. When a PIPE token is found,
- *               it forks new processes. When RDIN or RDOUT tokens are found,
- *               it changes the file descriptor of STDIN or STDOUT respectively,
- *               then handles redirection arguments. When a COMMAND token is
- *               found, it executes the command.
+ * @brief Recursively traverses the binary syntax tree.
  *
- * @param node: A pointer to the current node in the BST.
- * @param envp: The current environment variables.
+ * This function traverses the binary syntax tree and calls appropriate
+ * handlers based on the token type of each node, including pipe handling,
+ * input/output redirection, and command execution.
  *
- * @returns
- * Void.
+ * @param node Current node in the binary syntax tree.
+ * @param envp Environment variables array.
+ * @param sh Root structure containing shell information.
  */
 void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 {
@@ -47,15 +44,15 @@ void	recurse_bst(t_tree *node, char **envp, t_root *sh)
 }
 
 /**
- * exec_cmd - Executes a command by searching for its path, forking a
- * 			  child process, and using execve to run the command in the
- * 			  child process.
+ * @brief Executes a command.
  *
- * @param argv: A string containing the command to be executed.
- * @param envp: The current environment variables.
+ * This function takes a command string, processes it into a command array,
+ * and executes it. If the command is a built-in, it handles it accordingly.
+ * It also sets the global exit status after execution.
  *
- * @returns
- *  void.
+ * @param argv Command string.
+ * @param envp Environment variables array.
+ * @param sh Root structure containing shell information.
  */
 static void	exec_cmd(char *argv, char **envp, t_root *sh)
 {

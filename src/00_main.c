@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:26:51 by lchew             #+#    #+#             */
-/*   Updated: 2023/08/01 17:10:11 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 17:58:52 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,17 @@ static void	print_banner(void);
 
 int	g_exit_status = EXIT_SUCCESS;
 
+/**
+ * @brief Main entry point of the shell.
+ *
+ * This function initializes the shell root structure, prints the banner,
+ * and invokes the prompt loop.
+ *
+ * @param argc Number of arguments.
+ * @param argv Array of arguments.
+ * @param envp Environment variables.
+ * @return EXIT_SUCCESS if successful, or EXIT_FAILURE if an error occurs.
+ */
 int	main(int argc, char **argv, char **envp)
 {
 	t_root	sh;
@@ -33,6 +44,11 @@ int	main(int argc, char **argv, char **envp)
 	return (g_exit_status);
 }
 
+/**
+ * @brief Prints the banner.
+ *
+ * This function prints the banner to the standard output.
+ */
 static int	init_root(t_root *sh, char **envp)
 {
 	sh->history = NULL;
@@ -60,6 +76,14 @@ static int	init_root(t_root *sh, char **envp)
 	return (EXIT_SUCCESS);
 }
 
+/**
+ * @brief Initializes the token check array.
+ *
+ * This function initializes the token check array with the token and
+ * corresponding operator.
+ *
+ * @param tkchk The token check array.
+ */
 static void	init_token_check(t_token_check	*tkchk)
 {
 	tkchk[0].token = RDAPP;
@@ -78,6 +102,11 @@ static void	init_token_check(t_token_check	*tkchk)
 	tkchk[6].op = NULL;
 }
 
+/**
+ * @brief Prints the banner.
+ *
+ * This function prints the banner to the standard output.
+ */
 static void	print_banner(void)
 {
 	printf("\n");

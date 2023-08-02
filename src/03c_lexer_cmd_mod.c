@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 15:51:30 by lchew             #+#    #+#             */
-/*   Updated: 2023/08/02 14:48:11 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 17:50:07 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,15 @@ static void	quote_cmd_mod(char **cmd, char **tokens, int *i, int *j);
 static void	pipe_tokenize(char **cmd, char **tokens, int *i, int *j);
 static void	redir_tokenize(char **cmd, char **tokens, int *i, int *j);
 
+/**
+ * @brief Modifies the command to handle special tokens.
+ *
+ * This function processes the command string and handles special characters
+ * such as quotes, pipes, and redirections, tokenizing them into an array.
+ *
+ * @param cmd Input command string.
+ * @param tokens Array to store the tokenized command components.
+ */
 void	cmd_modifier(char *cmd, char **tokens)
 {
 	int	i;
@@ -41,6 +50,17 @@ void	cmd_modifier(char *cmd, char **tokens)
 	}
 }
 
+/**
+ * @brief Handles quote modifications within the command.
+ *
+ * This function processes quotes within the command and modifies the tokens
+ * array to include the quoted content as required.
+ *
+ * @param cmd Pointer to the current position in the command string.
+ * @param tokens Array to store the tokenized command components.
+ * @param i Pointer to the current token index.
+ * @param j Pointer to the current character index within the token.
+ */
 static void	quote_cmd_mod(char **cmd, char **tokens, int *i, int *j)
 {
 	int	quote_len;
@@ -61,6 +81,17 @@ static void	quote_cmd_mod(char **cmd, char **tokens, int *i, int *j)
 	}
 }
 
+/**
+ * @brief Tokenizes the pipe characters within the command.
+ *
+ * This function handles pipe characters '|' in the command string and
+ * tokenizes them into the tokens array.
+ *
+ * @param cmd Pointer to the current position in the command string.
+ * @param tokens Array to store the tokenized command components.
+ * @param i Pointer to the current token index.
+ * @param j Pointer to the current character index within the token.
+ */
 static void	pipe_tokenize(char **cmd, char **tokens, int *i, int *j)
 {
 	tokens[*i] = ft_calloc(count_sp_char(*cmd) + 1, sizeof(char));
@@ -74,6 +105,17 @@ static void	pipe_tokenize(char **cmd, char **tokens, int *i, int *j)
 	tokens[(*i)++][*j] = '\0';
 }
 
+/**
+ * @brief Tokenizes the redirection characters within the command.
+ *
+ * This function handles redirection characters '<' and '>' in the command
+ * string and tokenizes them, along with related spaces, into the tokens array.
+ *
+ * @param cmd Pointer to the current position in the command string.
+ * @param tokens Array to store the tokenized command components.
+ * @param i Pointer to the current token index.
+ * @param j Pointer to the current character index within the token.
+ */
 static void	redir_tokenize(char **cmd, char **tokens, int *i, int *j)
 {
 	tokens[*i] = ft_calloc(count_sp_char(*cmd) + 1, sizeof(char));

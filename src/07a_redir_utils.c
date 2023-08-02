@@ -6,18 +6,21 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:03 by lchew             #+#    #+#             */
-/*   Updated: 2023/08/02 14:48:03 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 17:32:09 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * rdin_fd - to check whether the redirect in file exists or not.
- *  		if "infile" do not exist, exit with error message.
- * 			else return the file descriptor of the file.
- * @param path: node->value
- * @returns fd: file descriptor of the infile.
+ * @brief Checks if the redirect-in file exists and returns its descriptor.
+ *
+ * If the "infile" does not exist, it exits with an error message.
+ * Otherwise, it returns the file descriptor of the file.
+ *
+ * @param node_value Path from node->value.
+ * @param sh Shell state.
+ * @return File descriptor of the infile or error code.
  */
 int	rdin_fd(char *node_value, t_root *sh)
 {
@@ -44,10 +47,13 @@ int	rdin_fd(char *node_value, t_root *sh)
 }
 
 /**
- * rdout_fd - check whether the redirect out file exists or not.
- * 					if "outfile" do not exist, create the file.
- * @param path: node->value
- * @returns fd: file descriptor of the outfile.
+ * @brief Checks or creates the redirect-out file and returns its descriptor.
+ *
+ * If the "outfile" does not exist, it creates the file.
+ *
+ * @param node_value Path from node->value.
+ * @param sh Shell state.
+ * @return File descriptor of the outfile.
  */
 int	rdout_fd(char *node_value, t_root *sh)
 {
@@ -66,6 +72,15 @@ int	rdout_fd(char *node_value, t_root *sh)
 	return (fd);
 }
 
+/**
+ * @brief Checks or creates the redirect-append file and returns its descriptor.
+ *
+ * Similar to rdout_fd, but opens the file in append mode.
+ *
+ * @param node_value Append node value.
+ * @param sh Shell state.
+ * @return File descriptor of the appended file.
+ */
 int	rdapp_fd(char *node_value, t_root *sh)
 {
 	char	*file;
@@ -84,9 +99,13 @@ int	rdapp_fd(char *node_value, t_root *sh)
 }
 
 /**
- * find_file - remove the redirection and spaces
- * @param path: the value that stored in node
- * @returns fd: file in char*
+ * @brief Removes redirection and spaces from the path to find the file.
+ *
+ * It parses the value from a node, skipping redirection symbols
+ * and spaces to find the file path.
+ *
+ * @param value The value that is stored in the node.
+ * @return File path as a string.
  */
 char	*find_file(char *value)
 {

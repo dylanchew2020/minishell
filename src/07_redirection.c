@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 19:59:58 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/01 16:28:24 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 17:30:48 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,16 @@
 
 static void	tree_transversal(t_tree *node, char **envp, t_root *sh);
 
+/**
+ * @brief Handles input redirection from a file.
+ *
+ * Reads from the file specified in the node's value and
+ * redirects it to the standard input.
+ *
+ * @param node Pointer to the node in the binary syntax tree.
+ * @param envp Environment variables.
+ * @param sh Shell state.
+ */
 void	rdin_handler(t_tree *node, char **envp, t_root *sh)
 {
 	int	fd;
@@ -27,6 +37,16 @@ void	rdin_handler(t_tree *node, char **envp, t_root *sh)
 	tree_transversal(node, envp, sh);
 }
 
+/**
+ * @brief Handles output redirection to a file.
+ *
+ * Redirects the standard output to the file specified
+ * in the node's value.
+ *
+ * @param node Pointer to the node in the binary syntax tree.
+ * @param envp Environment variables.
+ * @param sh Shell state.
+ */
 void	rdout_handler(t_tree *node, char **envp, t_root *sh)
 {
 	int	fd;
@@ -40,6 +60,17 @@ void	rdout_handler(t_tree *node, char **envp, t_root *sh)
 	tree_transversal(node, envp, sh);
 }
 
+
+/**
+ * @brief Handles appending output to a file.
+ *
+ * Redirects the standard output to the file specified
+ * in the node's value, appending to the file.
+ *
+ * @param node Pointer to the node in the binary syntax tree.
+ * @param envp Environment variables.
+ * @param sh Shell state.
+ */
 void	rdapp_handler(t_tree *node, char **envp, t_root *sh)
 {
 	int	fd;
@@ -66,6 +97,16 @@ void	rdapp_handler(t_tree *node, char **envp, t_root *sh)
 	tree_transversal(node, envp, sh);
 }
 
+/**
+ * @brief Handles here-document input redirection.
+ *
+ * Reads from a temporary file created from here-document
+ * syntax and redirects it to standard input.
+ *
+ * @param node Pointer to the node in the binary syntax tree.
+ * @param envp Environment variables.
+ * @param sh Shell state.
+ */
 void	heredoc_handler(t_tree *node, char **envp, t_root *sh)
 {
 	int	fd;
@@ -95,19 +136,14 @@ void	heredoc_handler(t_tree *node, char **envp, t_root *sh)
 }
 
 /**
- * tree_transversal - Calls the function recurse_bst for the right and left child
- *             of a node if they exist. This function is called when a
- *             redirection token (RDIN or RDOUT) is found in the
- *             binary syntax tree (BST) during traversal by recurse_bst.
+ * @brief Traverses tree for input/output redirection.
  *
- * @param node
- * A pointer to the current node in the BST.
+ * Calls a recursive function for the right and left children
+ * of a node for redirection tokens found during BST traversal.
  *
- * @param envp
- * The current environment variables.
- *
- * @returns
- * Void.
+ * @param node Pointer to the current node in the BST.
+ * @param envp Environment variables.
+ * @param sh Shell state.
  */
 static void	tree_transversal(t_tree *node, char **envp, t_root *sh)
 {

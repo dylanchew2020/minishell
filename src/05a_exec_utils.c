@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 17:21:02 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/02 14:48:32 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 17:46:20 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,16 @@
 static int	join_first_cmd(char **new_res, char **res);
 static char	**join_second_cmd(char **new_res, char **add_arg, int i);
 
+/**
+ * @brief Joins two command arrays.
+ *
+ * This function concatenates two arrays of commands, the original command
+ * array and additional commands processed by the cmd_quote_handler.
+ *
+ * @param res Original command array.
+ * @param sh Root structure containing tree arguments.
+ * @return The new concatenated command array.
+ */
 char	**cmd_join(char **res, t_root *sh)
 {
 	int		i;
@@ -37,6 +47,16 @@ char	**cmd_join(char **res, t_root *sh)
 	return (join_second_cmd(new_res, add_arg, i));
 }
 
+/**
+ * @brief Joins the first part of the command array.
+ *
+ * This function copies the original command array into the new array and
+ * returns the index of the last element.
+ *
+ * @param new_res New command array.
+ * @param res Original command array.
+ * @return The index of the last element, or -1 on error.
+ */
 static int	join_first_cmd(char **new_res, char **res)
 {
 	int	i;
@@ -56,6 +76,17 @@ static int	join_first_cmd(char **new_res, char **res)
 	return (i);
 }
 
+/**
+ * @brief Joins the second part of the command array.
+ *
+ * This function copies the additional commands into the new array starting
+ * at the given index, and returns the new concatenated command array.
+ *
+ * @param new_res New command array.
+ * @param add_arg Additional commands array.
+ * @param i Index to start copying at.
+ * @return The new concatenated command array.
+ */
 static char	**join_second_cmd(char **new_res, char **add_arg, int i)
 {
 	int		j;

@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 12:16:13 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/02 15:35:48 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 17:56:50 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,15 @@ static void	init_data(t_expand_variable *data, char *cmd);
 static char	*join_remaining(t_expand_variable *data, char *cmd);
 
 /**
- * expand - Expands environment variables in the command string.
+ * @brief Expands the command string, replacing variables with their values.
  *
- * @param cmd        The command string to expand.
- * @param env_list   Double ptr to the linked list containing env variables.
- * @return           The expanded command string.
+ * This function processes the command string to replace variable references
+ * with their corresponding values. It considers both single and double quotes,
+ * handling them appropriately.
+ *
+ * @param cmd Original command string.
+ * @param env_list List of environment variables.
+ * @return Expanded command string with variable values replaced.
  */
 char	*expand(char *cmd, t_list **env_list)
 {
@@ -49,6 +53,16 @@ char	*expand(char *cmd, t_list **env_list)
 	return (join_remaining(data, cmd));
 }
 
+/**
+ * @brief Initializes the data structure for command expansion.
+ *
+ * This function initializes the expansion-related variables, setting the
+ * start pointer to the command and the dollar pointer to the first dollar
+ * character found.
+ *
+ * @param data Structure containing expansion-related variables.
+ * @param cmd Command string to be expanded.
+ */
 static void	init_data(t_expand_variable *data, char *cmd)
 {
 	data->n_cmd = NULL;
@@ -57,6 +71,17 @@ static void	init_data(t_expand_variable *data, char *cmd)
 	data->dollar_ptr = ft_strchr(cmd, DOLLAR);
 }
 
+/**
+ * @brief Joins the remaining part of the command after expansion.
+ *
+ * This function creates a substring from the remaining part of the
+ * command and joins it to the newly created command string, finalizing
+ * the expansion process.
+ *
+ * @param data Structure containing expansion-related variables.
+ * @param cmd Command string to be expanded.
+ * @return Final expanded command string.
+ */
 static char	*join_remaining(t_expand_variable *data, char *cmd)
 {
 	if (data->substring != NULL)

@@ -1,19 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   08c_pwd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzi-qi <tzi-qi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 16:30:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/07/30 14:58:30 by tzi-qi           ###   ########.fr       */
+/*   Updated: 2023/08/02 17:38:43 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * pwd - Prints the current working directory.
+ * @brief Prints the current working directory.
+ *
+ * This function retrieves and prints the current working directory to
+ * the standard output using the getcwd system call.
+ *
+ * @return EXIT_SUCCESS if successful, or EXIT_FAILURE if an error occurs.
  */
 int	pwd(void)
 {

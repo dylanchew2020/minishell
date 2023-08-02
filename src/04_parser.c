@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:32:06 by lchew             #+#    #+#             */
-/*   Updated: 2023/08/01 16:04:19 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 17:49:13 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,16 @@ static t_tree	*token_check(t_list *lexer, char *op, int n_token, t_root *sh);
 static t_token	type_assign(char *value, t_root *sh);
 
 /**
- * parser - Constructs a binary tree from the given list of tokens representing
- *          the command line.
- * @param lexer: The list of tokens.
- * @param n_token: The number of tokens in the list.
- * @param sh: A pointer to the root structure.
+ * @brief Parses tokens from the lexer and constructs a syntax tree.
  *
- * @returns
- * A pointer to the root of the tree, or NULL if an error occurs or if no tokens
- * are available for parsing.
+ * This function takes a list of tokens from the lexer and parses them into
+ * a syntax tree, considering different types of operations, including pipes
+ * and redirection. 
+ *
+ * @param lexer List of tokens.
+ * @param n_token Number of tokens in the list.
+ * @param sh Shell root structure.
+ * @return Root of the constructed syntax tree, or NULL if parsing fails.
  */
 t_tree	*parser(t_list *lexer, int n_token, t_root *sh)
 {
@@ -44,18 +45,17 @@ t_tree	*parser(t_list *lexer, int n_token, t_root *sh)
 }
 
 /**
- * token_check - Checks if a specific operator is present in the lexer list and
- *               creates a binary tree node accordingly. Uses a pointer to the
- *               shell's root node to access operator-check structures and
- *               determine the corresponding tree node type.
- * @param lexer: The current position in the list of tokens.
- * @param op: The operator to search for.
- * @param n_token: The number of tokens remaining.
- * @param sh: A pointer to the root structure.
+ * @brief Checks tokens for specific operators and constructs a subtree.
  *
- * @returns
- * A pointer to the new tree node, or NULL if the operator is not found in the
- * lexer list, no operator is provided, or no tokens are available for parsing.
+ * This recursive function inspects tokens for specific operators (e.g., pipes,
+ * redirection) and constructs a subtree based on the type and occurrence of
+ * the operator.
+ *
+ * @param lexer List of tokens.
+ * @param op Operator to look for.
+ * @param n_token Number of tokens in the list.
+ * @param sh Shell root structure.
+ * @return A subtree constructed based on the operator, or NULL if not found.
  */
 static t_tree	*token_check(t_list *lexer, char *op, int n_token, t_root *sh)
 {
@@ -85,18 +85,14 @@ static t_tree	*token_check(t_list *lexer, char *op, int n_token, t_root *sh)
 }
 
 /**
- * type_assign - Determines the token type based on the string value, using
- *               operator-check structures in the shell's root structure.
- * @param value: The string value to check.
- * @param left: The left child of the potential node (unused in this function,
- *              included for completeness).
- * @param right: The right child of the potential node (unused in this function,
- *               included for completeness).
- * @param sh: A pointer to the root structure.
+ * @brief Assigns a token type based on a given value.
  *
- * @returns
- * The token type corresponding to the string value, or END if the value does
- * not match any operator in the shell's operator-check structures.
+ * This function maps a given value to a corresponding token type by
+ * looking up the value in the shell's token check structure.
+ *
+ * @param value Value to look for.
+ * @param sh Shell root structure.
+ * @return The corresponding token type, or END if the value is not found.
  */
 static t_token	type_assign(char *value, t_root *sh)
 {

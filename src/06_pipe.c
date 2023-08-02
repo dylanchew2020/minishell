@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:06 by lchew             #+#    #+#             */
-/*   Updated: 2023/08/01 16:51:00 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 17:42:10 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,15 @@ static void	pipe_heredoc(t_tree *node, char **envp, t_root *sh);
 static void	pipe_child_process(t_tree *node, char **envp, t_root *sh);
 
 /**
- * children - Handles the child processes in a binary syntax tree (BST)
- *            traversal, creating pipes, forking child processes, and
- *            waiting for them to complete.
+ * @brief Handles the piping and heredoc execution within the shell.
  *
- * @param node: A pointer to the current node in the BST.
- * @param envp: The current environment variables.
+ * This function processes the pipe operator and calls appropriate functions
+ * to handle child processes and heredoc input. It also handles errors
+ * related to the pipe syntax.
  *
- * @returns void.
+ * @param node Pointer to the syntax tree node containing the command.
+ * @param envp Array of environment variable strings.
+ * @param sh Pointer to the shell root structure.
  */
 void	pipe_handler(t_tree *node, char **envp, t_root *sh)
 {
@@ -53,6 +54,17 @@ void	pipe_handler(t_tree *node, char **envp, t_root *sh)
 	pipe_child_process(node, envp, sh);
 }
 
+/**
+ * @brief Handles the heredoc input within the pipe.
+ *
+ * This function checks if the left or right child of the current node
+ * is a heredoc token and performs the necessary operations to handle
+ * the heredoc within a pipe.
+ *
+ * @param node Pointer to the syntax tree node containing the command.
+ * @param envp Array of environment variable strings.
+ * @param sh Pointer to the shell root structure.
+ */
 static void	pipe_heredoc(t_tree *node, char **envp, t_root *sh)
 {
 	if (node->left->token == HEREDOC)
@@ -72,6 +84,17 @@ static void	pipe_heredoc(t_tree *node, char **envp, t_root *sh)
 static void	left_child(int	*pipe, t_tree *node, char **envp, t_root *sh);
 static void	right_child(int *pipe, t_tree *node, char **envp, t_root *sh);
 
+/**
+ * @brief Manages the child processes during piping.
+ *
+ * This function creates child processes to handle the left and right
+ * sides of the pipe, executing the corresponding functions and managing
+ * the exit statuses.
+ *
+ * @param node Pointer to the syntax tree node containing the command.
+ * @param envp Array of environment variable strings.
+ * @param sh Pointer to the shell root structure.
+ */
 static void	pipe_child_process(t_tree *node, char **envp, t_root *sh)
 {
 	pid_t	children[2];
@@ -100,17 +123,17 @@ static void	pipe_child_process(t_tree *node, char **envp, t_root *sh)
 }
 
 /**
- * left_child - Handles the left child process in a binary syntax tree
- * 				(BST) traversal, redirecting STDOUT to the pipe WRITE-end and
- * 				recursively processing the left child node.
+ * @brief Executes the left child node of the pipe command.
  *
- * @param data: A pointer to the pipe data structure.
- * @param node: A pointer to the current node in the BST.
- * @param envp: The current environment variables.
+ * This function duplicates the STDOUT file descriptor to the pipe's write end
+ * and then recursively processes the left child node of the current pipe
+ * command.
  *
- * @returns void.
+ * @param pipe Array of pipe file descriptors.
+ * @param node Pointer to the syntax tree node containing the command.
+ * @param envp Array of environment variable strings.
+ * @param sh Pointer to the shell root structure.
  */
-
 static void	left_child(int	*pipe, t_tree *node, char **envp, t_root *sh)
 {
 	ft_dup2(pipe[1], STDOUT_FILENO);
@@ -121,16 +144,16 @@ static void	left_child(int	*pipe, t_tree *node, char **envp, t_root *sh)
 }
 
 /**
- * right_child - Handles the right child process in a binary syntax
- * 				 tree (BST) traversal, redirecting STDIN to the
- * 				 pipe READ-end and recursively processing the right
- * 				 child node.
+ * @brief Executes the right child node of the pipe command.
  *
- * @param data: A pointer to the pipe data structure.
- * @param node: A pointer to the current node in the BST.
- * @param envp: The current environment variables.
+ * This function duplicates the STDIN file descriptor to the pipe's read end
+ * and then recursively processes the right child node of the current pipe
+ * command.
  *
- * @returns void.
+ * @param pipe Array of pipe file descriptors.
+ * @param node Pointer to the syntax tree node containing the command.
+ * @param envp Array of environment variable strings.
+ * @param sh Pointer to the shell root structure.
  */
 static void	right_child(int *pipe, t_tree *node, char **envp, t_root *sh)
 {

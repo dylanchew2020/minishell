@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 18:42:18 by tzi-qi            #+#    #+#             */
-/*   Updated: 2023/08/02 14:20:54 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 17:57:30 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,15 @@
 static char	*get_prompt_str(void);
 static int	lexer_paser_exec(t_root *sh, char **envp, char **cmd);
 
+/**
+ * @brief Main prompt loop of the shell.
+ *
+ * This function controls the main prompt loop of the shell, managing signals,
+ * reading user input, and invoking lexer, parser, and execution functions.
+ *
+ * @param sh The shell root structure.
+ * @param envp Environment variables.
+ */
 void	prompt(t_root *sh, char **envp)
 {
 	char	*cmd;
@@ -39,6 +48,14 @@ void	prompt(t_root *sh, char **envp)
 	}
 }
 
+/**
+ * @brief Generates the prompt string with current working directory.
+ *
+ * This function constructs the prompt string to be displayed, replacing the
+ * home directory with tilde and adding color codes for aesthetic purposes.
+ *
+ * @return The formatted prompt string.
+ */
 static char	*get_prompt_str(void)
 {
 	char	cwd[1024];
@@ -67,6 +84,19 @@ static char	*get_prompt_str(void)
 	return (p);
 }
 
+/**
+ * @brief Executes the lexer, parser, and recursive execution for the given
+ * command.
+ *
+ * This function takes the user's command input, processes it through the
+ * lexer and parser, then recursively executes the command, handling shell
+ * attributes and signals as necessary.
+ *
+ * @param sh The shell root structure.
+ * @param envp Environment variables.
+ * @param cmd Command string input by the user.
+ * @return 0 if successful, -1 if an error occurred.
+ */
 static int	lexer_paser_exec(t_root *sh, char **envp, char **cmd)
 {
 	char	*tmp;
