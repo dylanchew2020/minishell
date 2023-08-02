@@ -6,7 +6,7 @@
 /*   By: lchew <lchew@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 17:25:10 by lchew             #+#    #+#             */
-/*   Updated: 2023/08/01 22:01:32 by lchew            ###   ########.fr       */
+/*   Updated: 2023/08/02 14:14:44 by lchew            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int	get_env(t_list **env_list)
 	while (tmp)
 	{
 		data = (t_env *)tmp->content;
-		printf("%s=%s\n", data->key, data->value);
+		if (data->value != NULL)
+			printf("%s=%s\n", data->key, data->value);
 		tmp = tmp->next;
 	}
 	return (EXIT_SUCCESS);
@@ -78,12 +79,15 @@ void	creat_new_env_node(char *key, char	*input, t_list **env_list)
 {
 	t_env	*data;
 	t_list	*node;
+	char	*equal_ptr;
 
 	data = ft_calloc(1, sizeof(t_env));
+	equal_ptr = ft_strchr(input, '=');
 	data->key = ft_substr(key, 0, ft_strlen(key));
-	data->value = ft_substr(input, ft_strchr(input, '=') \
-					- input + 1, ft_strlen(input) - \
-					(ft_strchr(input, '=') - input));
+	data->value = NULL;
+	if (equal_ptr != NULL)
+		data->value = ft_substr(input, equal_ptr - input + 1, \
+							ft_strlen(input) - (equal_ptr - input));
 	node = ft_lstnew(data);
 	ft_lstadd_back(env_list, node);
 }
