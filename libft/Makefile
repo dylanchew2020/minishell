@@ -19,7 +19,9 @@ SRC = $(addprefix ft_, $(addsuffix .c, \
 		memset memcpy memmove memchr memcmp atoi bzero calloc\
 		strlen strlcpy strlcat strncmp strchr strrchr strnstr strdup \
 		substr strjoin strtrim split itoa itoa_base strmapi striteri \
-		putchar_fd putstr_fd putendl_fd putnbr_fd )) get_next_line.c
+		putchar_fd putstr_fd putendl_fd putnbr_fd \
+		lstnew lstadd_front lstsize lstlast lstadd_back lstdelone \
+		lstclear lstiter lstmap)) get_next_line.c
 OBJ_DIR = ./obj/
 OBJ = $(SRC:%.c=$(OBJ_DIR)%.o)
 
@@ -54,6 +56,7 @@ BLUE		:= \033[1;34m
 CYAN 		:= \033[1;36m
 
 all: $(NAME)
+	@:
 
 $(NAME): $(OBJ_DIR) $(OBJ)
 	@ echo "\n$(GREEN)[Success] $(CYAN)libft $(CLR_RMV)object files generated ✔️"

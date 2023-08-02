@@ -11,14 +11,19 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-/*
-**	Allocates with ft_calloc and returns a substring from the string 's'.
-**	The substring begins at index 'start' and is of maximum size 'len'.
-**	
-**	The ft_substr() returns the pointer to the index 'start' of the substring.
-**	Returns NULL if the allocation fails.
-*/
 
+/**
+ * @brief Extracts a substring from a string, starting at 'start' for 'len'
+ *        characters.
+ *
+ * If 'start' is beyond the string length, it returns an empty string.
+ * If 's' is NULL, it also returns NULL.
+ *
+ * @param s The source string.
+ * @param start Starting index from where substring begins.
+ * @param len Length of the substring to be extracted.
+ * @return Pointer to the new substring, NULL on error or if 's' is NULL.
+ */
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char			*sub;

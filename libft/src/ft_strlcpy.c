@@ -12,20 +12,18 @@
 
 #include "libft.h"
 
-/*
-**	The ft_strlcpy() copy strings by taking the full size of the destination 
-**	buffer and guarantee NUL-termination if there is room.  Note that room for 
-**	the NULL should be included in dstsize.
-**
-**	ft_strlcpy() copies up to dstsize - 1 characters from the string src to dst,
-**	NUL-terminating the result if dstsize is not 0. If the src and dst strings
-**	overlap, the behavior is undefined.
-**
-**	Return the total length of the string they tried to create, that means the
-**	length of src. If the return value is >= dstsize, the output string has been
-**	truncated.
-*/
-
+/**
+ * @brief Copies up to dstsize - 1 characters from the string 'src' to 'dst', 
+ *        null-terminating the result.
+ *
+ * If 'dstsize' is 0, it does not write anything to 'dst' and simply returns 
+ * the length of 'src'. 
+ *
+ * @param dst The destination string.
+ * @param src The source string.
+ * @param dstsize Size of the destination string buffer.
+ * @return The length of 'src'.
+ */
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
 	size_t	i;
