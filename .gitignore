@@ -60,3 +60,5 @@ minishell
 *.tmp*
 tmp/
 *.txt
+failed_cmd.md
+quote.md
