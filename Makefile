@@ -8,10 +8,8 @@
 ################################################################################
 
 NAME		:= minishell
-# CC			:= clang
 CC			:= gcc
 FLAGS		:= -Wall -Wextra -Werror
-FSAN		:= #-fsanitize=address -g3
 
 ################################################################################
 #                               PROGRAM'S INCLUDES                             #
@@ -19,16 +17,24 @@ FSAN		:= #-fsanitize=address -g3
 
 LIBFT_DIR = libft/
 LIBFT = libft.a
-
 LIB := -lft -L./$(LIBFT_DIR)
-READLINE = -lreadline -L/usr/local/opt/readline/lib
-# READLINE =  -lreadline
+
+UNAME 		= $(shell uname)
+
+ifeq ($(UNAME), Linux)
+READLINE = -lreadline
+INC_RL   = -I/usr/include/readline
+FSAN	 = -fsanitize=address -g3
+endif
+
+ifeq ($(UNAME), Darwin)
+READLINE 	= -lreadline -L/usr/local/opt/readline/lib
+INC_RL		= -I/usr/local/opt/readline/include
+endif
 
 INC_DIR		= includes
 INC			= -I./$(INC_DIR)
 INC_LIBFT	= -I./$(LIBFT_DIR)$(INC_DIR)
-INC_RL		= -I/usr/local/opt/readline/include
-# INC_RL		= -I/usr/include/readline
 
 ################################################################################
 #                                 PROGRAM'S SRCS                               #

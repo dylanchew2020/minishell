@@ -88,5 +88,6 @@ void	exit_prompt(t_root *sh)
 		ft_close(sh->stdout_tmp);
 		history_clear(&sh->history);
 		ft_lstclear(&sh->env_list, del_data);
+		free(sh->pipe);
 	}
 }
